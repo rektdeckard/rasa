@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Brew Keeper</string>
+    <string name="title_activity_landing">LandingActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="completed">Completed</string>
+    <string name="current">Current</string>
+    <string name="recipes">Recipes</string>
+</resources>

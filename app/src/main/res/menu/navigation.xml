@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_completed"
+        android:icon="@drawable/ic_check_black_24dp"
+        android:title="@string/completed" />
+
+    <item
+        android:id="@+id/navigation_current"
+        android:icon="@drawable/ic_timelapse_black_24dp"
+        android:title="@string/current" />
+
+    <item
+        android:id="@+id/navigation_recipes"
+        android:icon="@drawable/ic_assignment_black_24dp"
+        android:title="@string/recipes" />
+
+</menu>
