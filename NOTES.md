@@ -5,13 +5,19 @@ Track your brewing and fermentation projects with simple tools to keep you organ
 ### Structure
 #### Database
   + Local SQLite DB
-    - Recipes table for saved [Recipes](#recipes)
-      1. -id INTEGER PRIMARY KEY AUTOINCREMENT
-      2.
+    - Recipes table for saved [Recipes](#recipe)
+      1. `_id INTEGER PRIMARY KEY AUTOINCREMENT`
+      2. `name TEXT NOT NULL`
+      3. `tea_name TEXT NOT NULL`
+      4. `tea_type TEXT`
+      5. `tea_amount INTEGER DEFAULT 0` // default units is grams
+      6. ``
+      6. `1f_time INTEGER DEFAULT 0` // primary fermentation brew time in milliseconds
+      7.
     - Current Brews table for ongoing [Brews](#brew)
     - Completed Brews table for completed projects
   + Contract
-    -     
+    - Defines all DB   
   + ContentResolver
     - Handles content URI requests
     - Declares Provider in manifest
@@ -20,12 +26,11 @@ Track your brewing and fermentation projects with simple tools to keep you organ
     - Parses table projections and selections
     - Directs queries to correct DB and table by matching URI
     - Rregisters MIME types for content URIs
-  + SQLiteOpenHelper  
-    - Holds reference to:
+  + SQLiteOpenHelper
+    - Handles table creation and initialization with respect to:
       - DB name, version
-      - DB tables
-      - Table columns and column arguments
-      - Handles raw queries in SQL
+      - Table creation
+    - Serves readable and writable DBs to ContentProvider  
 
 #### Brew
 
