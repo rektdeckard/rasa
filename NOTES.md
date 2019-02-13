@@ -5,26 +5,26 @@ Track your brewing and fermentation projects with simple tools to keep you organ
 ## Structure
 #### Database
   1. Local SQLite DB
-    - Recipes table for saved [Recipes](#recipe)
-    - Brews table for both current and completed [Brews](#brew)
-    - Ingredients table for all previously used [Ingredients](#ingredient)
+     - Recipes table for saved [Recipes](#recipe)
+     - Brews table for both current and completed [Brews](#brew)
+     - Ingredients table for all previously used [Ingredients](#ingredient)
   2. SQLiteOpenHelper
-    - One for each table: [Recipes](#recipe), [Brew](#brew), [Ingredient](#ingredient)
-    - Handles table creation and initialization with:
-      - DB name, version
-      - Table columns and constraints
-    - Serves readable and writable DBs to ContentProvider  
+     - One for each table: [Recipes](#recipe), [Brew](#brew), [Ingredient](#ingredient)
+     - Handles table creation and initialization with:
+       - DB name, version
+       - Table columns and constraints
+     - Serves readable and writable DBs to ContentProvider  
   3. Contract
-    - Defines all DB & Table Constants
-    - Inner abstract classes for each table: [Recipes](#recipe), [Brew](#brew), [Ingredient](#ingredient)  
+     - Defines all DB & Table Constants
+     - Inner abstract classes for each table: [Recipes](#recipe), [Brew](#brew), [Ingredient](#ingredient)  
   4. ContentProvider
-    - Validates queries
-    - Parses table projections and selections
-    - Directs queries to correct DB and table by matching URI
-    - Registers MIME types for content URIs
+     - Validates queries
+     - Parses table projections and selections
+     - Directs queries to correct DB and table by matching URI
+     - Registers MIME types for content URIs
   5. ContentResolver
-    - Handles content URI requests
-    - Declares Provider in manifest
+     - Handles content URI requests
+     - Declares Provider in manifest
 
 #### Brew
   - Schema
