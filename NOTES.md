@@ -28,6 +28,7 @@ Track your brewing and fermentation projects with simple tools to keep you organ
 
 #### Brew
   - Schema
+
 | Column Name            | Type & Constraints                 | Notes                       |
 |------------------------|------------------------------------|-----------------------------|
 | `_id`                  | `INTEGER PRIMARY KEY AUTOINCREMENT`|                             |
@@ -50,6 +51,7 @@ Track your brewing and fermentation projects with simple tools to keep you organ
 
 #### Recipe
   - Schema
+
 | Column Name            | Type & Constraints                  | Notes                       |
 |------------------------|-------------------------------------|-----------------------------|
 | `_id`                  | `INTEGER PRIMARY KEY AUTOINCREMENT` |                             |
@@ -69,6 +71,7 @@ Track your brewing and fermentation projects with simple tools to keep you organ
 
 #### Ingredient
   - Schema
+
 | Column Name     | Type & Constraints                  | Notes                                             |
 |-----------------|-------------------------------------|---------------------------------------------------|
 | `_id`           | `INTEGER PRIMARY KEY AUTOINCREMENT` | referenced in [Brew](#brew) and [Recipe](#recipe) |
