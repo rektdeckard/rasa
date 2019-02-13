@@ -78,7 +78,8 @@ Track your brewing and fermentation projects with simple tools to keep you organ
 | `name`          | `TEXT NOT NULL`                     |                                                   |
 | `type`          | `TEXT NOT NULL`                     |                                                   |
 
-### User Interface
+## User Interface
+#### Screens
   1. Current Brews
   2. Completed Brews
   3. Recipes
