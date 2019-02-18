@@ -7,4 +7,29 @@
     <string name="completed">Completed</string>
     <string name="current">Current</string>
     <string name="recipes">Recipes</string>
+    <string name="brew_name">Brew Name</string>
+    <string name="tea_name">Tea Name</string>
+    <string name="number_picker_formatter">%02d</string>
+    <string name="tea_type">Type</string>
+    <string name="sugar">Sugar</string>
+
+    <string name="tea_white">White Tea</string>
+    <string name="tea_green">Green Tea</string>
+    <string name="tea_oolong">Oolong</string>
+    <string name="tea_black">Black</string>
+    <string name="tea_puerh">Puerh</string>
+    <string name="tea_herbal">Herbal</string>
+    <string name="tea_other">Other</string>
+
+    <string name="sweetener_white_sugar">White sugar</string>
+    <string name="sweetener_raw_sugar">Raw sugar</string>
+    <string name="sweetener_agave">Agave</string>
+    <string name="sweetener_honey">Honey</string>
+    <string name="sweetener_other">Other</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="action_save">Save brew</string>
+    <string name="action_delete">Delete brew</string>
+    <string name="action_delete_all">Delete all</string>
 </resources>

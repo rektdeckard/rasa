@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="array_tea_types">
+        <item>@string/tea_white</item>
+        <item>@string/tea_green</item>
+        <item>@string/tea_oolong</item>
+        <item>@string/tea_black</item>
+        <item>@string/tea_puerh</item>
+        <item>@string/tea_herbal</item>
+        <item>@string/tea_other</item>
+    </string-array>
+
+    <string-array name="array_sugar_types">
+        <item>@string/sweetener_white_sugar</item>
+        <item>@string/sweetener_raw_sugar</item>
+        <item>@string/sweetener_agave</item>
+        <item>@string/sweetener_honey</item>
+        <item>@string/sweetener_other</item>
+    </string-array>
+
+</resources>

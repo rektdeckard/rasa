@@ -1,9 +1,6 @@
 package com.tobiasfried.brewkeeper;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +11,9 @@ import android.widget.TextView;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class BrewAdapter extends ArrayAdapter<Brew> {
 
@@ -50,7 +50,7 @@ public class BrewAdapter extends ArrayAdapter<Brew> {
 //        remainingTextView.setText(currentBrew.getDate().toString());
 
         ImageView stageImageView = listItemView.findViewById(R.id.stage_image_view);
-        if (currentBrew.getStage().equals(Stage.PRIMARY)) {
+        if (currentBrew.getStage() == (Brew.STAGE_PRIMARY)) {
             stageImageView.setImageResource(R.drawable.ic_one);
         } else {
             stageImageView.setImageResource(R.drawable.ic_two);

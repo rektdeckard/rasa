@@ -33,41 +33,44 @@ Track your brewing and fermentation projects with simple tools to keep you organ
 |------------------------|------------------------------------|-----------------------------|
 | `_id`                  | `INTEGER PRIMARY KEY AUTOINCREMENT`|                             |
 | `name`                 | `TEXT NOT NULL`                    |                             |
-| `tea_name`             | `TEXT NOT NULL`                    |                             |
-| `tea_type`             | `TEXT NOT NULL`                    |                             |
+| `tea_name`             | `INTEGER NOT NULL`                 | id from [Teas](#tea) table  |
+| `tea_type`             | `INTEGER NOT NULL`            | tea_type from [Teas](#tea) table |
 | `tea_amount`           | `INTEGER DEFAULT 0`                | in grams                    |
-| `1f_sugar_type`        | `TEXT DEFAULT 'Sugar'`             |                             |
+| `1f_sugar_type`        | `INTEGER`             | id from [Ingredients](#ingredient) table |
 | `1f_sugar_amount`      | `INTEGER DEFAULT 0`                | in grams                    |
-| `1f_time`              | `INTEGER DEFAULT 0`                | in milliseconds             |
-| `2f_sugar_type`        | `TEXT DEFAULT 'Sugar'`             |                             |
+| `1f_time`              | `INTEGER DEFAULT 0`                | in seconds UTC              |
+| `2f_sugar_type`        | `INTEGER`             | id from [Ingredients](#ingredient) table |
 | `2f_sugar_amount`      | `INTEGER DEAULT 0`                 | in grams                    |
 | `2f_time`              | `INTEGER DEAFULT 0`                | in seconds UTC              |
-| `2f_ingredient1_id`    | `INTEGER` | ingredient1 id from [Ingredients](#ingredient) table |
-| `2f_ingredient1_amount`| `INTEGER DEFAULT 0`                | in grams                    |
-| `2f_ingredient2_id`    | `INTEGER` | ingredient2 if from [Ingredients](#ingredient) table |
+| `ingredient_1  `       | `INTEGER`             | id from [Ingredients](#ingredient) table |
+| `ingredient_1_amount`  | `INTEGER DEFAULT 0`                | in grams                    |
+| `ingredient_2`         | `INTEGER`             | id from [Ingredients](#ingredient) table |
+| `ingredient_2_amount`  | `INTEGER DEFAULT 0`                | in grams                    |
 | `start_time`           | `INTEGER NOT NULL`                 | in seconds UTC              |
 | `end_time`             | `INTEGER NOT NULL`                 | in seconds UTC              |
+| `stage`                | `INTEGER NOT NULL`                 | where 1 or 2                |
 | `is_running`           | `BOOLEAN NOT NULL`                 | where 0 or 1                |
 
 #### Recipe
   - Schema
 
-| Column Name            | Type & Constraints                  | Notes                       |
-|------------------------|-------------------------------------|-----------------------------|
-| `_id`                  | `INTEGER PRIMARY KEY AUTOINCREMENT` |                             |
-| `name`                 | `TEXT NOT NULL`                     |                             |
-| `tea_name`             | `TEXT NOT NULL`                     |                             |
-| `tea_type`             | `TEXT NOT NULL`                     |                             |
-| `tea_amount`           | `INTEGER DEFAULT 0`                 | in grams                    |
-| `1f_sugar_type`        | `TEXT DEFAULT 'Sugar'`              |                             |
-| `1f_sugar_amount`      | `INTEGER DEFAULT 0`                 | in grams                    |
-| `1f_time`              | `INTEGER DEFAULT 0`                 | in milliseconds             |
-| `2f_sugar_type`        | `TEXT DEFAULT 'Sugar'`              |                             |
-| `2f_sugar_amount`      | `INTEGER DEAULT 0`                  | in grams                    |
-| `2f_time`              | `INTEGER DEAFULT 0`                 | in seconds UTC              |
-| `2f_ingredient1_id`    | `INTEGER`  | ingredient1 id from [Ingredients](#ingredient) table |
-| `2f_ingredient1_amount`| `INTEGER DEFAULT 0`                 | in grams                    |
-| `2f_ingredient2_id`    | `INTEGER`  | ingredient2 if from [Ingredients](#ingredient) table |
+| Column Name            | Type & Constraints                 | Notes                       |
+|------------------------|------------------------------------|-----------------------------|
+| `_id`                  | `INTEGER PRIMARY KEY AUTOINCREMENT`|                             |
+| `name`                 | `TEXT NOT NULL`                    |                             |
+| `tea_name`             | `INTEGER NOT NULL`                 | id from [Teas](#tea) table  |
+| `tea_type`             | `INTEGER NOT NULL`            | tea_type from [Teas](#tea) table |
+| `tea_amount`           | `INTEGER DEFAULT 0`                | in grams                    |
+| `1f_sugar_type`        | `INTEGER`             | id from [Ingredients](#ingredient) table |
+| `1f_sugar_amount`      | `INTEGER DEFAULT 0`                | in grams                    |
+| `1f_time`              | `INTEGER DEFAULT 0`                | in seconds UTC              |
+| `2f_sugar_type`        | `INTEGER`             | id from [Ingredients](#ingredient) table |
+| `2f_sugar_amount`      | `INTEGER DEAULT 0`                 | in grams                    |
+| `2f_time`              | `INTEGER DEAFULT 0`                | in seconds UTC              |
+| `ingredient_1  `       | `INTEGER`             | id from [Ingredients](#ingredient) table |
+| `ingredient_1_amount`  | `INTEGER DEFAULT 0`                | in grams                    |
+| `ingredient_2`         | `INTEGER`             | id from [Ingredients](#ingredient) table |
+| `ingredient_2_amount`  | `INTEGER DEFAULT 0`                | in grams                    |
 
 #### Ingredient
   - Schema
@@ -77,6 +80,15 @@ Track your brewing and fermentation projects with simple tools to keep you organ
 | `_id`           | `INTEGER PRIMARY KEY AUTOINCREMENT` | referenced in [Brew](#brew) and [Recipe](#recipe) |
 | `name`          | `TEXT NOT NULL`                     |                                                   |
 | `type`          | `TEXT NOT NULL`                     |                                                   |
+
+#### Tea
+  - Schema
+
+| Column Name            | Type & Constraints                 | Notes                       |
+|------------------------|------------------------------------|-----------------------------|
+| `_id`                  | `INTEGER PRIMARY KEY AUTOINCREMENT`|                             |
+| `tea_name`             | `INTEGER NOT NULL`                 | int 0 - 5                   |
+| `tea_type`             | `INTEGER NOT NULL`                 | int 0 - 5                   |  
 
 ## User Interface
 #### Screens
