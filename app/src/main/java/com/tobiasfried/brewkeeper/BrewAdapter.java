@@ -8,16 +8,20 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.time.Duration;
-import java.time.Instant;
-import java.util.ArrayList;
+import com.tobiasfried.brewkeeper.data.Brew;
+import com.tobiasfried.brewkeeper.constants.*;
+
+import java.time.Period;
+import java.time.ZonedDateTime;
+import java.util.List;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class BrewAdapter extends ArrayAdapter<Brew> {
 
-    public BrewAdapter(Context context, ArrayList<Brew> brews) {
+    public BrewAdapter(Context context, List<Brew> brews) {
         super(context, 0, brews);
     }
 
@@ -41,16 +45,18 @@ public class BrewAdapter extends ArrayAdapter<Brew> {
 
         // Find remaining time until brew is done
         // TODO figure out how to format date in API 24 (requires API 26)
-        Instant event = currentBrew.getDate().toInstant();
-        Instant now = Instant.now();
-        Duration diff = Duration.between(now, event);
-        long days = diff.toDays();
-        String remainingDays = days + " Days Remaining";
+        ZonedDateTime endDate;
+        if (currentBrew.getStage() == Stage.PRIMARY) {
+            endDate = currentBrew.getSecondaryStartDate();
+        } else {
+            endDate = currentBrew.getEndDate();
+        }
+
+        String remainingDays = Period.between(ZonedDateTime.now().toLocalDate(), endDate.toLocalDate()).getDays() + " Days Remaining";
         remainingTextView.setText(remainingDays);
-//        remainingTextView.setText(currentBrew.getDate().toString());
 
         ImageView stageImageView = listItemView.findViewById(R.id.stage_image_view);
-        if (currentBrew.getStage() == (Brew.STAGE_PRIMARY)) {
+        if (currentBrew.getStage() == (Stage.PRIMARY)) {
             stageImageView.setImageResource(R.drawable.ic_one);
         } else {
             stageImageView.setImageResource(R.drawable.ic_two);

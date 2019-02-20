@@ -9,256 +9,120 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <AutoCompleteTextView
-            android:id="@+id/brew_name_autocomplete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/entry_left_margin"
-            android:backgroundTint="@android:color/transparent"
-            android:hint="@string/brew_name"
-            android:textAppearance="@android:style/TextAppearance.Medium" />
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="?android:attr/listDivider" />
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <LinearLayout
+            <AutoCompleteTextView
+                android:id="@+id/brew_name_autocomplete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="18dp"
-                    android:layout_marginEnd="18dp"
-                    android:src="@drawable/ic_free_breakfast_black_24dp" />
-
-                <AutoCompleteTextView
-                    android:id="@+id/tea_name_autocomplete"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:backgroundTint="@android:color/transparent"
-                    android:hint="@string/tea_name" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:layout_gravity="center_vertical"
-                    android:text="100g"
-                    tools:text="100g"/>
-
-            </LinearLayout>
-
-            <Spinner
-                android:id="@+id/tea_spinner"
-                android:layout_height="48dp"
-                android:layout_width="match_parent"
-                android:layout_marginStart="@dimen/entry_left_margin"
-                android:spinnerMode="dropdown"/>
-            <!--<TextView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:layout_marginStart="@dimen/entry_left_margin"-->
-                <!--android:layout_marginEnd="16dp"-->
-                <!--android:paddingStart="6dp"-->
-                <!--android:paddingEnd="6dp"-->
-                <!--android:text="@string/tea_type"-->
-                <!--android:textAppearance="@android:style/TextAppearance.Small" />-->
-
-        </LinearLayout>
-
-        <!--<Spinner-->
-        <!--android:id="@+id/tea_type_spinner"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_marginStart="@dimen/entry_left_margin"-->
-        <!--android:spinnerMode="dialog"/>-->
-
-
-        <View
-            android:id="@+id/divider2"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="?android:attr/listDivider" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="18dp"
-                android:layout_marginEnd="18dp"
-                android:src="@drawable/ic_grain_black_24dp" />
-
-            <Spinner
-                android:id="@+id/sugar_spinner"
-                android:layout_height="48dp"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:spinnerMode="dropdown"/>
-            <!--<TextView-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_weight="1"-->
-                <!--android:layout_gravity="center_vertical"-->
-                <!--android:layout_marginEnd="16dp"-->
-                <!--android:paddingStart="6dp"-->
-                <!--android:text="@string/sugar"-->
-                <!--android:textAppearance="@android:style/TextAppearance.Small" />-->
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_gravity="center_vertical"
-                android:text="50g"
-                tools:text="50g"/>
-
-        </LinearLayout>
-
-        <View
-            android:id="@+id/divider3"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="?android:attr/listDivider" />
-
-        <LinearLayout
-            android:id="@+id/date_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="18dp"
-                android:layout_marginEnd="18dp"
-                android:src="@drawable/ic_date_range_black_24dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="16dp"
-                android:paddingStart="6dp"
-                android:paddingEnd="6dp"
-                android:text="Monday, February 18"
-                android:textAppearance="@android:style/TextAppearance.Small" />
-
-        </LinearLayout>
-
-        <View
-            android:id="@+id/divider4"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="?android:attr/listDivider" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+                android:backgroundTint="@android:color/transparent"
+                android:hint="@string/brew_name"
+                android:textAppearance="@android:style/TextAppearance.Medium" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="18dp"
-                    android:layout_marginEnd="18dp"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_add_black_24dp" />
-
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/ingredient_chip_group"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip1"
-                        android:layout_width="wrap_content"
+                    <AutoCompleteTextView
+                        android:id="@+id/tea_name_autocomplete"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:checkable="true"
-                        android:text="ginger" />
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:backgroundTint="@android:color/transparent"
+                        android:hint="@string/tea_name" />
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip2"
+                    <NumberPicker
+                        android:id="@+id/tea_amount_picker"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="peach" />
+                        android:layout_height="48dp"/>
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chip3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="strawberry" />
+                </LinearLayout>
 
-                    <com.google.android.material.chip.Chip
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="pomegranate" />
-
-                    <com.google.android.material.chip.Chip
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="blueberry" />
-
-                    <com.google.android.material.chip.Chip
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="raspberry" />
-
-                    <com.google.android.material.chip.Chip
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="lemon" />
-
-                    <com.google.android.material.chip.Chip
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="lime" />
-
-                    <com.google.android.material.chip.Chip
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="blackberry" />
-
-                </com.google.android.material.chip.ChipGroup>
+                <Spinner
+                    android:id="@+id/tea_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:spinnerMode="dropdown" />
 
             </LinearLayout>
+
+            <!--<Spinner-->
+            <!--android:id="@+id/tea_type_spinner"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginStart="@dimen/entry_left_margin"-->
+            <!--android:spinnerMode="dialog"/>-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/sugar_spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:spinnerMode="dropdown" />
+
+                <NumberPicker
+                    android:id="@+id/sugar_amount_picker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp" />
+
+            </LinearLayout>
+
+
+            <CalendarView
+                android:id="@+id/secondary_date_calendar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/sugar_spinner_2"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:spinnerMode="dropdown" />
+
+                <NumberPicker
+                    android:id="@+id/sugar_amount_picker_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp" />
+
+            </LinearLayout>
+
+
+            <!-- ChipGroup -->
+
+
+            <CalendarView
+                android:id="@+id/start_date_calendar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
 
         </LinearLayout>
 
     </LinearLayout>
+
 
 </ScrollView>

@@ -1,10 +1,13 @@
 package com.tobiasfried.brewkeeper;
 
 import android.content.Intent;
+
 import androidx.annotation.NonNull;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.tobiasfried.brewkeeper.data.BrewContract.BasicEntry;
+import com.jakewharton.threetenabp.AndroidThreeTen;
+import com.tobiasfried.brewkeeper.data.AppDatabase;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,10 +19,16 @@ import android.view.View;
 
 public class MainActivity extends AppCompatActivity implements CurrentFragment.OnFragmentInteractionListener {
 
+    private AppDatabase mDb;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AndroidThreeTen.init(this);
         setContentView(R.layout.activity_main);
+
+        // Get instance of AppDatabase
+        mDb = AppDatabase.getInstance(getApplicationContext());
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, new CurrentFragment()).commit();
 
@@ -69,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements CurrentFragment.O
         int selected = item.getItemId();
         switch (selected) {
             case R.id.action_delete_all:
-                getContentResolver().delete(BasicEntry.CONTENT_URI, null, null);
+                // TODO delete
                 break;
             default:
                 break;
