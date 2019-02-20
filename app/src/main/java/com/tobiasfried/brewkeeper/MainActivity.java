@@ -1,48 +1,93 @@
 package com.tobiasfried.brewkeeper;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.widget.ListView;
-import java.util.ArrayList;
-import java.util.Date;
 
-public class MainActivity extends AppCompatActivity {
+import androidx.annotation.NonNull;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.jakewharton.threetenabp.AndroidThreeTen;
+import com.tobiasfried.brewkeeper.data.AppDatabase;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+
+public class MainActivity extends AppCompatActivity implements CurrentFragment.OnFragmentInteractionListener {
+
+    private AppDatabase mDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AndroidThreeTen.init(this);
         setContentView(R.layout.activity_main);
 
-        ArrayList<Brew> brewList = new ArrayList<>();
-        brewList.add(new Brew("Moonlight White", Stage.PRIMARY, new Date(119, 1, 10)));
-        brewList.add(new Brew("Bai Liu Dan", Stage.PRIMARY, new Date(119, 1, 12)));
-        brewList.add(new Brew("Ginger Lime Yerba Mate", Stage.SECONDARY, new Date(119, 1, 8)));
+        // Get instance of AppDatabase
+        mDb = AppDatabase.getInstance(getApplicationContext());
 
-        ListView listView = findViewById(R.id.list_view);
-        listView.setAdapter(new BrewAdapter(this, brewList));
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, new CurrentFragment()).commit();
 
-//        BottomNavigationView bottomNavigationView = findViewById(R.id.navigation_completed);
-//        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-//            @Override
-//            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-//                switch (menuItem.getItemId()) {
-//                    case R.id.navigation_completed:
-//                        Intent completed = new Intent(MainActivity.this, CompletedActivity.class);
-//                        startActivity(completed);
-//                        break;
-//                    case R.id.navigation_current:
-//                        Intent current = new Intent(MainActivity.this, MainActivity.class);
-//                        break;
-//                    case R.id.navigation_recipes:
-//                        Intent recipes = new Intent(MainActivity.this, RecipesActivity.class);
-//                        break;
-//                }
-//                return true;
-//            }
-//        });
+        final BottomNavigationView bottomNavigationView = findViewById(R.id.navigation);
+        bottomNavigationView.setSelectedItemId(R.id.navigation_current);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                int selected = menuItem.getItemId();
+                if (!(selected == bottomNavigationView.getSelectedItemId())) {
+                    switch (selected) {
+                        case R.id.navigation_completed:
+                            //getSupportFragmentManager().beginTransaction().replace(R.id.container, new CompletedFragment());
+                            break;
+                        case R.id.navigation_current:
+                            getSupportFragmentManager().beginTransaction().replace(R.id.container, new CurrentFragment());
+                            break;
+                        case R.id.navigation_recipes:
+                            //getSupportFragmentManager().beginTransaction().replace(R.id.container, new RecipesFragment());
+                            break;
+                    }
+                }
+                return true;
+            }
+        });
+
+        FloatingActionButton floatingActionButton = findViewById(R.id.floating_action_button);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, EntryActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // TODO
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int selected = item.getItemId();
+        switch (selected) {
+            case R.id.action_delete_all:
+                // TODO delete
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }
