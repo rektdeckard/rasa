@@ -2,6 +2,7 @@ package com.tobiasfried.brewkeeper.data;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.tobiasfried.brewkeeper.constants.*;
@@ -61,6 +62,13 @@ public class Ingredient {
         this.teaType = teaType;
     }
 
+    /**
+     * Empty constructor for entry activity
+     */
+    @Ignore
+    public Ingredient() {
+
+    }
 
     // GETTERS
 

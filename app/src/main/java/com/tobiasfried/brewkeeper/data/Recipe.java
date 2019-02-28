@@ -142,6 +142,14 @@ public class Recipe {
         this.ingredientThreeId = ingredientThreeId;
     }
 
+    /**
+     * Empty constructor for entry activity
+     */
+    @Ignore
+    public Recipe() {
+
+    }
+
     // GETTERS
 
     public int getId() {

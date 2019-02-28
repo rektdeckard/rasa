@@ -15,8 +15,14 @@ public interface BrewDao {
     @Query("SELECT * FROM brews ORDER BY id")
     List<Brew> loadAllBrews();
 
+    @Query("SELECT * FROM brews WHERE id = :id")
+    Brew loadBrewById(int id);
+
     @Insert
     long insertBrew(Brew brew);
+
+    @Insert
+    void insertBrewList(List<Brew> brews);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     int updateBrew(Brew brew);

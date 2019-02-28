@@ -1,11 +1,38 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="@style/Theme.MaterialComponents.Light.DarkActionBar">
+
+        <!-- Main colors -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+
+        <!-- Additional colors -->
+        <!--<item name="colorPrimaryVariant">@color/primaryVariant</item>-->
+        <!--<item name="colorOnPrimary">@color/onPrimary</item>-->
+        <!-- (responsible for FAB and button text/icons -->
+        <!--<item name="colorSecondary">@color/colorSecondary</item>-->
+        <!--<item name="colorSecondaryVariant">@color/secondaryVariant</item>-->
+        <!--<item name="colorOnSecondary">@color/onSecondary</item>-->
+        <!--<item name="colorSurface">@color/surface</item>-->
+        <!--<item name="colorOnSurface">@color/onSurface</item>-->
+        <!--<item name="colorError">@color/error</item>-->
+        <!--<item name="colorOnError">@color/onError</item>-->
+        <!--<item name="colorButtonNormal">@color/buttonNormal</item>-->
+        <!--<item name="colorControlNormal">@color/controlNormal</item>-->
+        <!--<item name="colorControlActivated">@color/controlActivated</item>-->
+        <!--<item name="colorControlHighlight">@color/controlHighlight</item>-->
+        <!--<item name="colorBackgroundFloating">@color/backgroundFloating</item>-->
+
+    </style>
+
+    <!-- Chip colors -->
+    <style name="CustomChipColors" parent="@style/Widget.MaterialComponents.Chip.Filter">
+        <item name="chipBackgroundColor">@color/background_color_chip_state_list</item>
+        <item name="android:textColor">@color/text_color_chip_state_list</item>
+        <item name="closeIconTint">@color/text_color_chip_state_list</item>
     </style>
 
 </resources>

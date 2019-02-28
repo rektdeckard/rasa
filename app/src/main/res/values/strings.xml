@@ -15,14 +15,14 @@
 
     <string name="tea_white">White Tea</string>
     <string name="tea_green">Green Tea</string>
-    <string name="tea_oolong">Oolong</string>
-    <string name="tea_black">Black</string>
-    <string name="tea_puerh">Puerh</string>
-    <string name="tea_herbal">Herbal</string>
+    <string name="tea_oolong">Oolong Tea</string>
+    <string name="tea_black">Black Tea</string>
+    <string name="tea_puerh">Puerh Tea</string>
+    <string name="tea_herbal">Herbal Tea</string>
     <string name="tea_other">Other</string>
 
-    <string name="sweetener_white_sugar">White sugar</string>
-    <string name="sweetener_raw_sugar">Raw sugar</string>
+    <string name="sweetener_white_sugar">White Sugar</string>
+    <string name="sweetener_raw_sugar">Raw Sugar</string>
     <string name="sweetener_agave">Agave</string>
     <string name="sweetener_honey">Honey</string>
     <string name="sweetener_other">Other</string>
@@ -31,4 +31,17 @@
     <string name="action_delete">Delete brew</string>
     <string name="action_delete_all">Delete all</string>
     <string name="title_activity_entry">Enter brew</string>
+    <string name="action_select_tea">Select tea type</string>
+    <string name="completion_date">Completion Date</string>
+    <string name="second_fermentation">Second Fermentation</string>
+    <string name="first_fermentation">First Fermentation</string>
+    <string name="cancel">Cancel</string>
+    <string name="start">Start brewin\'</string>
+    <string name="notes">Notes</string>
+    <string name="new_ingredient">add ingredient</string>
+    <string name="timeline_marker">Timeline marker</string>
+    <string name="add_ingredient">Ingredient</string>
+    <string name="add">Add</string>
+    <string name="unit_grams">g</string>
+    <string name="default_amount_sweetener">50</string>
 </resources>

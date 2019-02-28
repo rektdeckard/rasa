@@ -18,7 +18,10 @@ public class DataTypeConverters {
      * @return IngredientType
      */
     @TypeConverter
-    public static IngredientType toIngredientType(int code) {
+    public static IngredientType toIngredientType(Integer code) {
+        if (code == null) {
+            return null;
+        }
         return IngredientType.get(code);
     }
 
@@ -40,7 +43,10 @@ public class DataTypeConverters {
      * @return TeaType
      */
     @TypeConverter
-    public static TeaType toTeaType(int code) {
+    public static TeaType toTeaType(Integer code) {
+        if (code == null) {
+            return null;
+        }
         return TeaType.get(code);
     }
 

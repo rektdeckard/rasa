@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.jakewharton.threetenabp.AndroidThreeTen;
 import com.tobiasfried.brewkeeper.data.AppDatabase;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,7 +23,6 @@ public class MainActivity extends AppCompatActivity implements CurrentFragment.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AndroidThreeTen.init(this);
         setContentView(R.layout.activity_main);
 
         // Get instance of AppDatabase

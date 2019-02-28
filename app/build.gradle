@@ -4,10 +4,10 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.tobiasfried.brewkeeper"
-        minSdkVersion 25
+        minSdkVersion 26
         targetSdkVersion 28
         versionCode 1
-        versionName "1.0"
+        versionName "1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -21,18 +21,18 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha02'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha02'
+    implementation 'com.google.android.material:material:1.1.0-alpha04'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.2-alpha01'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.2-alpha01'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha02'
-    implementation 'com.google.android.material:material:1.1.0-alpha03'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'androidx.viewpager:viewpager:1.0.0'
-    implementation 'com.shawnlin:number-picker:2.4.7'
-    //ThreeTen Android Backport for java.time.* backward android compat
-    implementation 'com.jakewharton.threetenabp:threetenabp:1.1.2'
+
+    // ViewModel and LiveData
+    def lifecycle_version = "2.1.0-alpha02"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+
     // Room dependencies
     def room_version = "2.1.0-alpha04"
     implementation "androidx.room:room-runtime:$room_version"

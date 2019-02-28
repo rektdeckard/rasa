@@ -4,6 +4,8 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
+
 import com.tobiasfried.brewkeeper.constants.*;
 import static com.tobiasfried.brewkeeper.data.Brew.TABLE_NAME;
 
@@ -64,7 +66,6 @@ public class Brew extends Recipe {
         this.isRunning = isRunning;
     }
 
-
     /**
      * Constructor for Room use only
      *
@@ -102,6 +103,14 @@ public class Brew extends Recipe {
         this.endDate = endDate;
         this.stage = stage;
         this.isRunning = isRunning;
+    }
+
+    /**
+     * Empty constructor for editor activity
+     */
+    @Ignore
+    public Brew() {
+        super();
     }
 
     // GETTERS
