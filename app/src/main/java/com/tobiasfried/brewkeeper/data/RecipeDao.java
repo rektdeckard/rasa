@@ -13,9 +13,12 @@ import androidx.room.Update;
 public interface RecipeDao {
 
     @Query("SELECT * FROM recipes ORDER BY id")
-    List<Recipe> loadAllRecipes();
+    List<Recipe> getAllRecipes();
 
-    @Insert
+    @Query("SELECT * FROM recipes WHERE id = :id")
+    Recipe getRecipe(long id);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insertRecipe(Recipe recipe);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)

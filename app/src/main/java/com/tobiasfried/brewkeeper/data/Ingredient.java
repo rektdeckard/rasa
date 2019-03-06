@@ -18,10 +18,10 @@ public class Ingredient {
 
     // ID Column
     @PrimaryKey (autoGenerate = true)
-    private int id;
+    private long id;
 
     // Ingredient ID Column
-    private int ingredientId;
+    private long ingredientId;
 
     // Name Column
     private String name;
@@ -72,11 +72,11 @@ public class Ingredient {
 
     // GETTERS
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public int getIngredientId() {
+    public long getIngredientId() {
         return ingredientId;
     }
 
@@ -95,11 +95,11 @@ public class Ingredient {
 
     // SETTERS
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public void setIngredientId(int ingredientId) {
+    public void setIngredientId(long ingredientId) {
         this.ingredientId = ingredientId;
     }
 

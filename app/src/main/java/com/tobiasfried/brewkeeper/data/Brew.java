@@ -1,6 +1,6 @@
 package com.tobiasfried.brewkeeper.data;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import androidx.room.Entity;
@@ -17,11 +17,11 @@ public class Brew extends Recipe {
 
     // MEMBER FIELDS
 
-    private ZonedDateTime primaryStartDate;
+    private LocalDate primaryStartDate;
 
-    private ZonedDateTime secondaryStartDate;
+    private LocalDate secondaryStartDate;
 
-    private ZonedDateTime endDate;
+    private LocalDate endDate;
 
     private Stage stage;
 
@@ -41,9 +41,9 @@ public class Brew extends Recipe {
      * @param secondarySweetener       Sweetener {@link Ingredient}
      * @param secondarySweetenerAmount in grams
      * @param ingredients              ArrayList<{@link Ingredient}>
-     * @param primaryStartDate         {@link ZonedDateTime}
-     * @param secondaryStartDate       {@link ZonedDateTime}
-     * @param endDate                  {@link ZonedDateTime}
+     * @param primaryStartDate         {@link LocalDate}
+     * @param secondaryStartDate       {@link LocalDate}
+     * @param endDate                  {@link LocalDate}
      * @param stage                    Stage {@link Stage}
      * @param isRunning                boolean
      */
@@ -51,9 +51,9 @@ public class Brew extends Recipe {
                 int primarySweetener, int primarySweetenerAmount,
                 int secondarySweetener, int secondarySweetenerAmount,
                 List<Ingredient> ingredients,
-                ZonedDateTime primaryStartDate,
-                ZonedDateTime secondaryStartDate,
-                ZonedDateTime endDate,
+                LocalDate primaryStartDate,
+                LocalDate secondaryStartDate,
+                LocalDate endDate,
                 Stage stage, boolean isRunning) {
         super(name, tea, teaAmount,
                 primarySweetener, primarySweetenerAmount,
@@ -86,13 +86,13 @@ public class Brew extends Recipe {
      * @param stage                    stored as an int via TypeConverter
      * @param isRunning                boolean
      */
-    public Brew(int id, String name, long teaId, int teaAmount, int primarySweetener,
+    public Brew(long id, String name, long teaId, int teaAmount, int primarySweetener,
                 int primarySweetenerAmount, int secondarySweetener,
                 int secondarySweetenerAmount, long ingredientOneId,
                 long ingredientTwoId, long ingredientThreeId,
-                ZonedDateTime primaryStartDate,
-                ZonedDateTime secondaryStartDate,
-                ZonedDateTime endDate,
+                LocalDate primaryStartDate,
+                LocalDate secondaryStartDate,
+                LocalDate endDate,
                 Stage stage, boolean isRunning) {
         super(id, name, teaId, teaAmount,
                 primarySweetener, primarySweetenerAmount,
@@ -115,15 +115,15 @@ public class Brew extends Recipe {
 
     // GETTERS
 
-    public ZonedDateTime getPrimaryStartDate() {
+    public LocalDate getPrimaryStartDate() {
         return primaryStartDate;
     }
 
-    public ZonedDateTime getSecondaryStartDate() {
+    public LocalDate getSecondaryStartDate() {
         return secondaryStartDate;
     }
 
-    public ZonedDateTime getEndDate() {
+    public LocalDate getEndDate() {
         return this.endDate;
     }
 
@@ -138,15 +138,15 @@ public class Brew extends Recipe {
 
     // SETTERS
 
-    public void setPrimaryStartDate(ZonedDateTime primaryStartDate) {
+    public void setPrimaryStartDate(LocalDate primaryStartDate) {
         this.primaryStartDate = primaryStartDate;
     }
 
-    public void setSecondaryStartDate(ZonedDateTime secondaryStartDate) {
+    public void setSecondaryStartDate(LocalDate secondaryStartDate) {
         this.secondaryStartDate = secondaryStartDate;
     }
 
-    public void setEndDate(ZonedDateTime endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 

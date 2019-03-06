@@ -4,6 +4,7 @@ import com.tobiasfried.brewkeeper.constants.*;
 
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
@@ -103,13 +104,13 @@ public class DataTypeConverters {
      * @return Date
      */
     @TypeConverter
-    public static ZonedDateTime toZonedDateTime(Long timestamp) {
-        return timestamp == null ? null : ZonedDateTime.ofInstant(Instant.ofEpochSecond(timestamp), ZoneId.systemDefault());
+    public static LocalDate toLocalDate(Long timestamp) {
+        return timestamp == null ? null : LocalDate.ofEpochDay(timestamp);
     }
 
     @TypeConverter
-    public static Long toTimestamp(ZonedDateTime zonedDateTime) {
-        return zonedDateTime == null ? null : zonedDateTime.toEpochSecond();
+    public static Long toTimestamp(LocalDate localDate) {
+        return localDate == null ? null : localDate.toEpochDay();
     }
 
 }

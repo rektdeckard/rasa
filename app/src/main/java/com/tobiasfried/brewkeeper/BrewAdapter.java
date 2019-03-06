@@ -6,12 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.mikhaellopez.circularprogressbar.CircularProgressBar;
 import com.tobiasfried.brewkeeper.data.Brew;
 import com.tobiasfried.brewkeeper.constants.*;
 import com.tobiasfried.brewkeeper.interfaces.OnRecyclerClickListener;
 
+import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -40,6 +43,7 @@ public class BrewAdapter extends RecyclerView.Adapter<BrewAdapter.ViewHolder> {
         TextView name;
         TextView remainingDays;
         ImageView stage;
+        CircularProgressBar progressBar;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -47,6 +51,7 @@ public class BrewAdapter extends RecyclerView.Adapter<BrewAdapter.ViewHolder> {
             name = itemView.findViewById(R.id.brew_name_text_view);
             remainingDays = itemView.findViewById(R.id.remaining_time_text_view);
             stage = itemView.findViewById(R.id.stage_image_view);
+            progressBar = itemView.findViewById(R.id.progress_circular);
 
             // Set click listener
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -74,20 +79,33 @@ public class BrewAdapter extends RecyclerView.Adapter<BrewAdapter.ViewHolder> {
         holder.name.setText(currentBrew.getName());
 
         // Calculate and bind remaining days
-        ZonedDateTime endDate;
+        LocalDate endDate;
         if (currentBrew.getStage() == Stage.PRIMARY) {
             endDate = currentBrew.getSecondaryStartDate();
         } else {
             endDate = currentBrew.getEndDate();
         }
-        String remainingDays = Period.between(ZonedDateTime.now().toLocalDate(), endDate.toLocalDate()).getDays() + " Days Remaining";
-        holder.remainingDays.setText(remainingDays);
+        double days = Period.between(LocalDate.now(), endDate).getDays();
+        String remaining;
+        if (days < 0) {
+            remaining = "Brew ended!";
+        } else if (days == 0) {
+            remaining = "Ending today";
+        } else {
+            remaining = (int)days + " days remaining";
+        }
+        holder.remainingDays.setText(remaining);
 
+        // Set progress indicators
+        double totalDays;
         if (currentBrew.getStage() == (Stage.PRIMARY)) {
             holder.stage.setImageResource(R.drawable.ic_one);
+            totalDays = currentBrew.getPrimaryStartDate().until(currentBrew.getSecondaryStartDate()).getDays();
         } else {
             holder.stage.setImageResource(R.drawable.ic_two);
+            totalDays = currentBrew.getSecondaryStartDate().until(currentBrew.getEndDate()).getDays();
         }
+        holder.progressBar.setProgress((int)(((totalDays - days)/totalDays) * 100));
     }
 
     @Override

@@ -13,15 +13,15 @@ import androidx.room.Update;
 public interface BrewDao {
 
     @Query("SELECT * FROM brews ORDER BY id")
-    List<Brew> loadAllBrews();
+    List<Brew> getAllBrews();
 
     @Query("SELECT * FROM brews WHERE id = :id")
-    Brew loadBrewById(int id);
+    Brew getBrew(long id);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insertBrew(Brew brew);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertBrewList(List<Brew> brews);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)

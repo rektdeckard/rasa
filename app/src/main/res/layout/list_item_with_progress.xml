@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/list_item_height">
+    android:layout_height="@dimen/list_item_height"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <RelativeLayout
         android:id="@+id/progress"
@@ -12,11 +13,28 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentBottom="true">
 
-        <ProgressBar
+        <!--<ProgressBar-->
+            <!--android:id="@+id/progress_circular"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:padding="8dp"-->
+            <!--android:indeterminate="false"-->
+            <!--android:max="100"-->
+            <!--android:progress="1"/>-->
+
+        <com.mikhaellopez.circularprogressbar.CircularProgressBar
             android:id="@+id/progress_circular"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:padding="8dp" />
+            android:scaleX=".7"
+            android:scaleY=".7"
+            app:cpb_progress="65"
+            app:cpb_progress_max="100"
+            app:cpb_indeterminate_mode="false"
+            app:cpb_background_progressbar_color="@color/colorLightGray"
+            app:cpb_background_progressbar_width="5dp"
+            app:cpb_progressbar_color="@color/colorAccent"
+            app:cpb_progressbar_width="5dp"/>
 
         <ImageView
             android:id="@+id/stage_image_view"

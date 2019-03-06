@@ -18,6 +18,7 @@ public enum SweetenerType {
     public int getCode() {
         return this.code;
     }
+
     public static SweetenerType get(int i) {
         for (SweetenerType type : SweetenerType.values()) {
             if (type.code == i) return type;

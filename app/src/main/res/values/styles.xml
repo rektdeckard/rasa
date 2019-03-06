@@ -7,7 +7,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-
+        <item name="android:colorBackground">@color/background</item>
+        <!--<item name="actionBarStyle">@style/ToolbarTheme</item>-->
 
         <!-- Additional colors -->
         <!--<item name="colorPrimaryVariant">@color/primaryVariant</item>-->
@@ -26,6 +27,8 @@
         <!--<item name="colorControlHighlight">@color/controlHighlight</item>-->
         <!--<item name="colorBackgroundFloating">@color/backgroundFloating</item>-->
 
+        <item name="android:fontFamily">@font/google_sans</item>
+
     </style>
 
     <!-- Chip colors -->
@@ -33,6 +36,33 @@
         <item name="chipBackgroundColor">@color/background_color_chip_state_list</item>
         <item name="android:textColor">@color/text_color_chip_state_list</item>
         <item name="closeIconTint">@color/text_color_chip_state_list</item>
+        <!--<item name="android:fontFamily">@font/google_sans</item>-->
+        <!--<item name="android:font">@font/google_sans_bold</item>-->
+    </style>
+
+    <style name="ToolbarTheme">
+        <item name="android:background">@color/backgroundWithAlpha</item>
+        <item name="android:actionBarDivider">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/white</item>
+        <!--<item name="android:windowActionBarOverlay">@android:color/white</item>-->
+    </style>
+
+    <style name="LabelTextStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingStart">@dimen/entry_left_margin</item>
+        <item name="android:paddingEnd">@dimen/entry_left_margin</item>
+        <item name="android:textColor">@color/colorMediumGray</item>
+        <item name="android:textSize">@dimen/text_size_label</item>
+    </style>
+
+    <style name="MainTextStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingStart">@dimen/entry_left_margin</item>
+        <item name="android:paddingEnd">@dimen/entry_left_margin</item>
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:textColor">@color/colorDarkGray</item>
     </style>
 
 </resources>

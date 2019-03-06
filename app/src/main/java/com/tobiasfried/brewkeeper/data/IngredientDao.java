@@ -13,13 +13,13 @@ import androidx.room.Update;
 public interface IngredientDao {
 
     @Query("SELECT * FROM ingredients ORDER BY id")
-    List<Ingredient> loadAllIngredients();
+    List<Ingredient> getAllIngredients();
 
     @Query("SELECT * FROM ingredients WHERE type = 2 ORDER BY name ASC")
-    List<Ingredient> loadAllFlavors();
+    List<Ingredient> getAllFlavors();
 
     @Query("SELECT * FROM ingredients WHERE id = :id")
-    Ingredient loadIngredientById(int id);
+    Ingredient getIngredient(long id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insertIngredient(Ingredient ingredient);

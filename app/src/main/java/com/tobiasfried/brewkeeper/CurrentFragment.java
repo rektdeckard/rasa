@@ -23,7 +23,6 @@ import com.tobiasfried.brewkeeper.data.Brew;
 import com.tobiasfried.brewkeeper.interfaces.OnRecyclerClickListener;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -71,7 +70,7 @@ public class CurrentFragment extends Fragment {
             public void onRecyclerViewItemClicked(int position, int id) {
                 Intent intent = new Intent(getActivity(), EntryActivity.class);
                 // TODO: prepopulate EntryActivity
-                // intent.putExtra("id", mBrewList.get(id).getId());
+                intent.putExtra("id", mBrewList.get(position).getId());
                 startActivity(intent);
             }
         });
@@ -108,7 +107,7 @@ public class CurrentFragment extends Fragment {
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                mBrewList = mDb.brewDao().loadAllBrews();
+                mBrewList = mDb.brewDao().getAllBrews();
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

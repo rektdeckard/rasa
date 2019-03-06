@@ -22,7 +22,7 @@ public class Recipe {
 
     // Recipe ID
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private long id;
 
     // Recipe Name
     private String name;
@@ -125,7 +125,7 @@ public class Recipe {
      * @param ingredientTwoId          references ingredient_id in ingredients table
      * @param ingredientThreeId        references ingredient_id in ingredients table
      */
-    public Recipe(int id, String name, long teaId, int teaAmount, int primarySweetener,
+    public Recipe(long id, String name, long teaId, int teaAmount, int primarySweetener,
                   int primarySweetenerAmount, int secondarySweetener,
                   int secondarySweetenerAmount, long ingredientOneId,
                   long ingredientTwoId, long ingredientThreeId) {
@@ -152,7 +152,7 @@ public class Recipe {
 
     // GETTERS
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -206,7 +206,7 @@ public class Recipe {
 
     // SETTERS
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
