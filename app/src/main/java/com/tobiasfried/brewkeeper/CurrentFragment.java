@@ -18,10 +18,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.tobiasfried.brewkeeper.data.AppDatabase;
 import com.tobiasfried.brewkeeper.data.Brew;
 import com.tobiasfried.brewkeeper.interfaces.OnRecyclerClickListener;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.List;
 
 /**
@@ -34,6 +37,7 @@ public class CurrentFragment extends Fragment {
 
     private AppDatabase mDb;
     private List<Brew> mBrewList;
+    private Deque<Brew> mDeletedList;
 
     private OnFragmentInteractionListener mListener;
     private RecyclerView mRecyclerView;
@@ -57,7 +61,7 @@ public class CurrentFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate and setup RecyclerView
-        View rootView = inflater.inflate(R.layout.brew_list, container, false);
+        final View rootView = inflater.inflate(R.layout.brew_list, container, false);
         mRecyclerView = rootView.findViewById(R.id.list);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -76,6 +80,8 @@ public class CurrentFragment extends Fragment {
         });
         mRecyclerView.setAdapter(mAdapter);
 
+        mDeletedList = new ArrayDeque<>();
+
         // Implement swipe actions
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(1, ItemTouchHelper.RIGHT) {
             @Override
@@ -86,15 +92,22 @@ public class CurrentFragment extends Fragment {
             @Override
             public void onSwiped(@NonNull final RecyclerView.ViewHolder viewHolder, int direction) {
                 if (direction == ItemTouchHelper.RIGHT) {
-                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            int position = viewHolder.getAdapterPosition();
-                            List<Brew> brews = mAdapter.getBrews();
-                            mDb.brewDao().deleteBrew(brews.get(position));
-                            refreshViews();
-                        }
-                    });
+                    int position = viewHolder.getAdapterPosition();
+                    final Brew brew = mAdapter.getBrews().get(position);
+                    mDeletedList.add(brew);
+                    mBrewList.remove(brew);
+                    mAdapter.setBrews(mBrewList);
+                    Snackbar.make(rootView, "Brew Deleted", Snackbar.LENGTH_LONG)
+                            .setAction("UNDO", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    mBrewList.add(brew);
+                                    mDeletedList.remove(brew);
+                                    mAdapter.setBrews(mBrewList);
+                                }
+                            })
+                            .show();
+                    //refreshViews();
                 }
             }
         }).attachToRecyclerView(mRecyclerView);
@@ -114,6 +127,15 @@ public class CurrentFragment extends Fragment {
                         mAdapter.setBrews(mBrewList);
                     }
                 });
+            }
+        });
+    }
+
+    private void purgeBrews() {
+        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                mDb.brewDao().deleteBrews(mDeletedList);
             }
         });
     }
@@ -146,7 +168,9 @@ public class CurrentFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+        purgeBrews();
         mListener = null;
+
     }
 
 

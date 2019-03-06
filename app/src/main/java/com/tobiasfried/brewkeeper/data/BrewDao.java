@@ -1,5 +1,6 @@
 package com.tobiasfried.brewkeeper.data;
 
+import java.util.Collection;
 import java.util.List;
 
 import androidx.room.Dao;
@@ -29,5 +30,8 @@ public interface BrewDao {
 
     @Delete
     int deleteBrew(Brew brew);
+
+    @Delete
+    int deleteBrews(Collection<Brew> brews);
 
 }
