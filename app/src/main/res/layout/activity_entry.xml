@@ -399,23 +399,61 @@
 
             </LinearLayout>
 
-            <View
-                android:id="@+id/bar_1f"
-                android:layout_width="20dp"
+            <RelativeLayout
+                android:id="@+id/timeline_one"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/field_1f"
-                android:layout_alignBottom="@+id/field_2f"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="27dp"
-                android:background="@drawable/tl_solid" />
+                android:layout_alignBottom="@+id/field_2f">
 
-            <View
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_below="@id/bar_1f"
-                android:layout_marginTop="-48dp"
-                android:background="@drawable/tl_milestone" />
+                <View
+                    android:id="@+id/bar_one"
+                    android:layout_width="2dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_above="@id/milestone_one"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/colorAccent" />
+
+                <View
+                    android:id="@+id/milestone_one"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="-20dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/tl_milestone" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/timeline_one"
+                android:layout_marginTop="-20dp"
+                android:layout_alignBottom="@+id/field_completion">
+
+                <View
+                    android:id="@+id/bar_two"
+                    android:layout_width="2dp"
+                    android:layout_height="0dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_above="@id/milestone_two"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/colorLightGray" />
+
+                <View
+                    android:id="@+id/milestone_two"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="-20dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/tl_milestone"
+                    android:backgroundTint="@color/colorLightGray"/>
+
+            </RelativeLayout>
+
+
 
         </RelativeLayout>
 

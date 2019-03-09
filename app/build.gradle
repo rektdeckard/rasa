@@ -20,8 +20,8 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha02'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha02'
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha04'
     implementation 'com.google.android.material:material:1.1.0-alpha04'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
@@ -32,12 +32,10 @@ dependencies {
     // Circular Progress Bar
     implementation 'com.mikhaellopez:circularprogressbar:2.0.0'
 
-    // MaterialEditText
-//    implementation 'com.rengwuxian.materialedittext:library:2.1.4'
-
     // ViewModel and LiveData
     def lifecycle_version = "2.1.0-alpha02"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
 
     // Room dependencies
     def room_version = "2.1.0-alpha04"

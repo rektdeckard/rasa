@@ -3,6 +3,7 @@ package com.tobiasfried.brewkeeper.data;
 import java.util.Collection;
 import java.util.List;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -14,10 +15,16 @@ import androidx.room.Update;
 public interface BrewDao {
 
     @Query("SELECT * FROM brews ORDER BY id")
-    List<Brew> getAllBrews();
+    LiveData<List<Brew>> getAllBrews();
 
     @Query("SELECT * FROM brews WHERE id = :id")
-    Brew getBrew(long id);
+    LiveData<Brew> getBrew(long id);
+
+    @Query("SELECT * FROM brews WHERE isRunning = 1")
+    LiveData<List<Brew>> getCurrentBrews();
+
+    @Query("SELECT * FROM brews WHERE isRunning = 0")
+    LiveData<List<Brew>> getCompletedBrews();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insertBrew(Brew brew);
@@ -33,5 +40,4 @@ public interface BrewDao {
 
     @Delete
     int deleteBrews(Collection<Brew> brews);
-
 }

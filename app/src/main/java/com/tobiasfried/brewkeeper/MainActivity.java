@@ -7,8 +7,10 @@ import androidx.annotation.NonNull;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.tobiasfried.brewkeeper.data.AppDatabase;
+import com.tobiasfried.brewkeeper.data.Brew;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,17 +18,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity implements CurrentFragment.OnFragmentInteractionListener {
+import java.util.List;
 
-    private AppDatabase mDb;
+public class MainActivity extends AppCompatActivity implements CurrentFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Get instance of AppDatabase
-        mDb = AppDatabase.getInstance(getApplicationContext());
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, new CurrentFragment()).commit();
 
@@ -62,7 +61,6 @@ public class MainActivity extends AppCompatActivity implements CurrentFragment.O
             }
         });
 
-        // TODO
     }
 
     @Override
