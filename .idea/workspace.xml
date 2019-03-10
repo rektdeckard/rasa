@@ -13,24 +13,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6bf64061-9e61-4ed4-a6d0-9cbfa261957a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_activity_activity_1_0_0_alpha02_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_annotation_annotation_1_0_1_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_appcompat_appcompat_1_1_0_alpha01_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_arch_core_core_runtime_2_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_collection_collection_1_1_0_alpha01_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_coordinatorlayout_coordinatorlayout_1_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_core_core_1_1_0_alpha03_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_fragment_fragment_1_1_0_alpha02_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_common_2_0_0_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_livedata_2_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_livedata_core_2_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_runtime_2_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_lifecycle_lifecycle_viewmodel_2_0_0_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_recyclerview_recyclerview_1_1_0_alpha01_aar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/EntryViewModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/EntryViewModelFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/MainViewModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/fileContent/fileContent.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/fileContent/fileContent.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_constraintlayout_constraintlayout_1_1_3_aar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__androidx_constraintlayout_constraintlayout_solver_1_1_3_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/background_gradient.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_entry_redesign.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10.1/taskHistory/taskHistory.bin" afterDir="false" />
@@ -41,14 +27,11 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/BrewAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/BrewAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/CurrentFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/CurrentFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/EntryActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/EntryActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/data/BrewDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/data/BrewDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/data/IngredientDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/data/IngredientDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/data/RecipeDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/data/RecipeDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_entry.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_entry.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/data/AppDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/data/AppDatabase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/styles.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -77,7 +60,7 @@
     <session id="1519886756">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="13" />
+          <entry key="project.closed" value="14" />
           <entry key="project.open.time.0" value="1" />
           <entry key="project.open.time.1" value="4" />
           <entry key="project.open.time.13" value="2" />
@@ -87,53 +70,54 @@
           <entry key="project.open.time.22" value="2" />
           <entry key="project.open.time.23" value="1" />
           <entry key="project.open.time.24" value="1" />
+          <entry key="project.open.time.27" value="1" />
           <entry key="project.open.time.29" value="1" />
           <entry key="project.open.time.3" value="1" />
           <entry key="project.open.time.32" value="2" />
-          <entry key="project.opened" value="18" />
+          <entry key="project.opened" value="19" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="class" value="3" />
-          <entry key="gradle" value="22" />
-          <entry key="java" value="266" />
+          <entry key="gradle" value="23" />
+          <entry key="java" value="271" />
           <entry key="properties" value="2" />
           <entry key="ttf" value="3" />
-          <entry key="xml" value="118" />
+          <entry key="xml" value="127" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="CLASS" value="3" />
           <entry key="Font" value="3" />
-          <entry key="Groovy" value="22" />
-          <entry key="JAVA" value="266" />
+          <entry key="Groovy" value="23" />
+          <entry key="JAVA" value="271" />
           <entry key="Properties" value="2" />
-          <entry key="XML" value="118" />
+          <entry key="XML" value="127" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="78" />
           <entry key="gradle" value="304" />
-          <entry key="java" value="49077" />
-          <entry key="txt" value="81" />
-          <entry key="xml" value="10307" />
+          <entry key="java" value="49140" />
+          <entry key="txt" value="113" />
+          <entry key="xml" value="12417" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Groovy" value="304" />
-          <entry key="JAVA" value="49077" />
-          <entry key="PLAIN_TEXT" value="159" />
-          <entry key="XML" value="10307" />
+          <entry key="JAVA" value="49140" />
+          <entry key="PLAIN_TEXT" value="191" />
+          <entry key="XML" value="12417" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.vcs.git.usages">
         <counts>
           <entry key="git.branch.checkout.local" value="2" />
-          <entry key="git.branch.checkout.remote" value="1" />
+          <entry key="git.branch.checkout.remote" value="3" />
           <entry key="git.branch.create.new" value="6" />
           <entry key="git.branch.delete.local" value="2" />
           <entry key="git.branch.rename" value="1" />
@@ -146,115 +130,79 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/AppExecutors.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="36">
+              <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_entry.xml">
+          <provider editor-type-id="android-designer2" />
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="6246">
+              <caret line="347" selection-start-line="339" selection-start-column="14" selection-end-line="347" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/MainActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="198">
+              <caret line="11" column="23" selection-start-line="11" selection-start-column="23" selection-end-line="11" selection-end-column="23" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/data/AppDatabase.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="738">
+              <caret line="58" column="38" selection-start-line="58" selection-start-column="38" selection-end-line="58" selection-end-column="38" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_entry_redesign.xml">
+          <provider selected="true" editor-type-id="android-designer2" />
+          <provider editor-type-id="text-editor">
+            <state relative-caret-position="295">
+              <caret line="259" column="50" selection-start-line="259" selection-start-column="46" selection-end-line="259" selection-end-column="50" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/EntryActivity.java">
+        <entry file="file://$PROJECT_DIR$/app/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="692">
-              <caret line="274" column="17" selection-start-line="274" selection-start-column="17" selection-end-line="274" selection-end-column="17" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#5097#5342#0" expanded="true" />
-                <element signature="e#5341#5342#0" expanded="true" />
-                <element signature="method#setupButtons#0;class#EntryActivity#0" />
-                <element signature="method#setupDialogs#0;class#EntryActivity#0" />
-                <element signature="e#6065#6227#0" expanded="true" />
-                <element signature="e#6226#6227#0" expanded="true" />
-                <element signature="e#9472#9710#0" expanded="true" />
-                <element signature="e#9709#9710#0" expanded="true" />
-                <element signature="e#9803#9980#0" expanded="true" />
-                <element signature="e#9979#9980#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="393">
+              <caret line="36" column="39" lean-forward="true" selection-start-line="36" selection-start-column="39" selection-end-line="36" selection-end-column="39" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/BrewAdapter.java">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/values/styles.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="54">
-              <caret line="3" selection-start-line="3" selection-end-line="3" />
-              <folding>
-                <element signature="e#3905#3906#0" expanded="true" />
-                <element signature="e#3968#3969#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="1206">
+              <caret line="67" column="48" selection-start-line="67" selection-start-column="48" selection-end-line="67" selection-end-column="48" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/data/BrewDao.java">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/values/dimens.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="528">
-              <caret line="41" column="44" selection-start-line="41" selection-start-column="44" selection-end-line="41" selection-end-column="44" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/MainViewModel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="630">
-              <caret line="35" column="30" selection-start-line="35" selection-start-column="30" selection-end-line="35" selection-end-column="30" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#869#870#0" expanded="true" />
-                <element signature="e#903#904#0" expanded="true" />
-                <element signature="e#959#960#0" expanded="true" />
-                <element signature="e#995#996#0" expanded="true" />
-                <element signature="e#1192#1193#0" expanded="true" />
-                <element signature="e#1221#1222#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/data/IngredientDao.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="378">
-              <caret line="29" selection-start-line="29" selection-end-line="29" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/data/RecipeDao.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="342">
-              <caret line="19" column="40" selection-start-line="19" selection-start-column="40" selection-end-line="19" selection-end-column="40" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/EntryViewModelFactory.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
-              <caret line="25" selection-start-line="25" selection-end-line="25" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/EntryViewModel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="366">
-              <caret line="29" column="21" selection-start-line="29" selection-start-column="21" selection-end-line="29" selection-end-column="21" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#805#806#0" expanded="true" />
-                <element signature="e#833#834#0" expanded="true" />
-                <element signature="e#884#885#0" expanded="true" />
-                <element signature="e#912#913#0" expanded="true" />
-                <element signature="e#966#967#0" expanded="true" />
-                <element signature="e#997#998#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="288">
+              <caret line="16" column="17" selection-start-line="16" selection-start-column="17" selection-end-line="16" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -262,34 +210,19 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/CurrentFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-486">
-              <caret line="57" column="11" selection-start-line="57" selection-start-column="8" selection-end-line="57" selection-end-column="11" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#2509#2902#0" expanded="true" />
-                <element signature="e#2901#2902#0" expanded="true" />
-                <element signature="e#4061#4232#0" expanded="true" />
-                <element signature="e#4231#4232#0" expanded="true" />
-                <element signature="e#3980#4362#0" expanded="true" />
-                <element signature="e#4680#4931#0" expanded="true" />
-                <element signature="e#4930#4931#0" expanded="true" />
-                <element signature="e#4361#4362#0" expanded="true" />
-                <element signature="e#5588#5758#0" expanded="true" />
-                <element signature="e#5757#5758#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="486">
+              <caret line="27" column="28" selection-start-line="27" selection-start-column="28" selection-end-line="27" selection-end-column="28" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/data/Brew.java">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/EntryViewModelFactory.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="198">
-              <caret line="14" column="52" selection-start-line="14" selection-start-column="52" selection-end-line="14" selection-end-column="52" />
+            <state relative-caret-position="378">
+              <caret line="25" selection-start-line="25" selection-end-line="25" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="method#setPrimaryStartDate#0;class#Brew#0" />
-                <element signature="method#setSecondaryStartDate#0;class#Brew#0" />
               </folding>
             </state>
           </provider>
@@ -303,17 +236,16 @@
         <option value="layoutResourceFile" />
         <option value="Enum" />
         <option value="Interface" />
-        <option value="layoutResourceFile_vertical" />
         <option value="valueResourceFile" />
         <option value="XML Properties File" />
-        <option value="resourceFile" />
         <option value="Class" />
+        <option value="layoutResourceFile_vertical" />
+        <option value="resourceFile" />
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>array_tea</find>
       <find>selectableItemBackgroundBorderless</find>
       <find>theme</find>
       <find>material</find>
@@ -343,6 +275,7 @@
       <find>add(</find>
       <find>color</find>
       <find>construct</find>
+      <find>ondatese</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -355,15 +288,13 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="entry-functionality" />
       </map>
     </option>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/res/drawable/tl_milestone_completed.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/drawable/tl_milestone_filled.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/tl_milestone.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/GenericPickerFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/ic_create_24dp.xml" />
@@ -372,7 +303,6 @@
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/DatePickerFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/list_item.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/data/AppDatabase.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/InputFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/dialog_input.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/text_color_chip_state_list.xml" />
@@ -382,9 +312,7 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/interfaces/OnRecyclerClickListener.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/font/google_sans.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/color/text_color_chip_state_list.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/values/colors.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/tl_milestone_started.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/tl_solid.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/tl_dotted.xml" />
@@ -393,7 +321,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/data/DataTypeConverters.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/constants/SweetenerType.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/DateSelectionDialog.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/values/styles.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/data/Recipe.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/data/Ingredient.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/list_item_with_progress.xml" />
@@ -407,12 +334,18 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/data/RecipeDao.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/data/IngredientDao.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/CurrentFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/MainActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/MainViewModel.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/BrewAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/EntryViewModelFactory.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/EntryViewModel.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/EntryActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/values/colors.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/values/styles.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/drawable/background_gradient.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/MainActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/data/AppDatabase.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_entry_redesign.xml" />
       </list>
     </option>
   </component>
@@ -453,69 +386,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="AndroidView">
-        <subPane>
-          <expand>
-            <path>
-              <item name="BrewKeeper" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-            </path>
-            <path>
-              <item name="BrewKeeper" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-            </path>
-            <path>
-              <item name="BrewKeeper" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="brewkeeper" type="cbb59c9e:AndroidPsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="BrewKeeper" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="brewkeeper" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="constants" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="BrewKeeper" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="brewkeeper" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="data" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="BrewKeeper" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="res" type="d4f16f75:AndroidResFolderNode" />
-            </path>
-            <path>
-              <item name="BrewKeeper" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="res" type="d4f16f75:AndroidResFolderNode" />
-              <item name="layout" type="ddeffd01:AndroidResFolderTypeNode" />
-            </path>
-            <path>
-              <item name="BrewKeeper" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="res" type="d4f16f75:AndroidResFolderNode" />
-              <item name="menu" type="ddeffd01:AndroidResFolderTypeNode" />
-            </path>
-            <path>
-              <item name="BrewKeeper" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="res" type="d4f16f75:AndroidResFolderNode" />
-              <item name="values" type="ddeffd01:AndroidResFolderTypeNode" />
-            </path>
-            <path>
-              <item name="BrewKeeper" type="1abcf292:AndroidViewProjectNode" />
-              <item name="Gradle Scripts" type="ae0cef3a:AndroidBuildScriptsGroupNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
       <pane id="Scope">
         <subPane subId="Scope 'Default Changelist'; set:Default Changelist; class com.intellij.packageDependencies.ChangeListScope">
           <expand>
@@ -874,6 +744,17 @@
           <select />
         </subPane>
       </pane>
+      <pane id="AndroidView">
+        <subPane>
+          <expand>
+            <path>
+              <item name="BrewKeeper" type="1abcf292:AndroidViewProjectNode" />
+              <item name="Gradle Scripts" type="ae0cef3a:AndroidBuildScriptsGroupNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
       <pane id="PackagesPane">
         <subPane>
           <expand>
@@ -910,7 +791,7 @@
     <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
     <property name="device.picker.selection" value="895X05USA" />
     <property name="extract.method.default.visibility" value="private" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
+    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/Lesson01-Favorite-Toys/T01.01-Exercise-CreateLayout" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
@@ -1103,7 +984,7 @@
     <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" sideWeight="0.26485398" side_tool="true" weight="0.2052947" />
-      <window_info content_ui="combo" id="Project" order="1" sideWeight="0.73514605" visible="true" weight="0.2052947" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" sideWeight="0.73514605" visible="true" weight="0.2052947" />
       <window_info id="Structure" order="2" sideWeight="0.26485398" side_tool="true" weight="0.2052947" />
       <window_info id="Favorites" order="3" sideWeight="0.26485398" side_tool="true" weight="0.2052947" />
       <window_info id="Build Variants" order="4" sideWeight="0.26485398" side_tool="true" weight="0.2052947" />
@@ -1118,8 +999,8 @@
       <window_info anchor="bottom" id="Event Log" order="5" sideWeight="0.5009428" side_tool="true" weight="0.32930514" />
       <window_info anchor="bottom" id="Debug" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32930514" />
-      <window_info anchor="bottom" id="Build" order="8" sideWeight="0.4990572" weight="0.32930514" />
-      <window_info anchor="bottom" id="Android Profiler" order="9" weight="0.32930514" />
+      <window_info anchor="bottom" id="Build" order="8" sideWeight="0.4990572" visible="true" weight="0.32930514" />
+      <window_info anchor="bottom" id="Android Profiler" order="9" show_stripe_button="false" weight="0.32930514" />
       <window_info anchor="bottom" id="Messages" order="10" weight="0.32930514" />
       <window_info anchor="right" id="Device File Explorer" order="0" sideWeight="0.50050354" side_tool="true" weight="0.32967034" />
       <window_info anchor="right" id="Capture Analysis" order="1" />
@@ -1194,69 +1075,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="Implement date pickers" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/AppData/Local/Android/Sdk/sources/android-28/android/app/AlertDialog.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="430">
-          <caret line="70" column="37" lean-forward="true" selection-start-line="70" selection-start-column="37" selection-end-line="70" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Android/Sdk/sources/android-28/java/time/ZonedDateTime.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="333" column="39" selection-start-line="329" selection-start-column="3" selection-end-line="333" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Android/Sdk/sources/android-28/android/app/DatePickerDialog.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-550">
-          <caret line="87" column="11" selection-start-line="87" selection-start-column="11" selection-end-line="87" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Android/Sdk/sources/android-28/java/text/DateFormat.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="64">
-          <caret line="579" column="19" selection-start-line="579" selection-start-column="11" selection-end-line="579" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Android/Sdk/sources/android-28/java/time/format/DateTimeFormatter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="20430">
-          <caret line="1229" column="24" selection-start-line="1229" selection-start-column="21" selection-end-line="1229" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="19" column="17" selection-start-line="19" selection-start-column="17" selection-end-line="19" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/tl_dotted.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="10" selection-start-line="10" selection-end-line="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Android/Sdk/sources/android-28/android/widget/DatePicker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="541" column="20" lean-forward="true" selection-start-line="541" selection-start-column="20" selection-end-line="541" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/data/AppDatabase.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="666">
-          <caret line="58" column="38" selection-start-line="58" selection-start-column="38" selection-end-line="58" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/data/DataTypeConverters.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="72">
@@ -1282,17 +1100,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="304">
           <caret line="1072" column="29" selection-start-line="1072" selection-start-column="29" selection-end-line="1072" selection-end-column="29" />
-          <folding>
-            <element signature="e#32660#32661#0" expanded="true" />
-            <element signature="e#32688#32689#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/styles.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="335">
-          <caret line="30" selection-start-line="30" selection-end-line="30" />
         </state>
       </provider>
     </entry>
@@ -1300,12 +1107,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
           <caret line="239" selection-start-line="239" selection-end-line="239" />
-          <folding>
-            <element signature="e#5378#5379#0" expanded="true" />
-            <element signature="e#5406#5407#0" expanded="true" />
-            <element signature="e#6388#6389#0" expanded="true" />
-            <element signature="e#6422#6423#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1327,27 +1128,24 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/list_item.xml">
-      <provider editor-type-id="text-editor" />
       <provider selected="true" editor-type-id="android-designer2" />
+      <provider editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/brew_list.xml">
+      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="18">
           <caret line="1" column="30" selection-start-line="1" selection-start-column="30" selection-end-line="1" selection-end-column="30" />
         </state>
       </provider>
-      <provider editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/list_item_with_progress.xml">
+      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="251">
           <caret line="41" column="40" selection-start-line="41" selection-start-column="40" selection-end-line="41" selection-end-column="40" />
-          <folding>
-            <element signature="e#1870#1885#0" expanded="true" />
-          </folding>
         </state>
       </provider>
-      <provider editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Android/Sdk/sources/android-28/java/util/Stack.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -1392,20 +1190,17 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/recycler_view_item.xml">
+      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="126">
           <caret line="7" column="3" selection-start-line="7" selection-start-column="3" selection-end-line="7" selection-end-column="3" />
         </state>
       </provider>
-      <provider editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/GenericPickerDialog.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="558">
           <caret line="31" column="29" selection-start-line="31" selection-start-column="29" selection-end-line="31" selection-end-column="29" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1413,27 +1208,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="612">
           <caret line="34" column="41" selection-start-line="34" selection-start-column="41" selection-end-line="34" selection-end-column="41" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/material-1.1.0-alpha03.aar/44d335c8cf5797a494c8021577a2e604/res/values/values.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="909">
-          <caret line="1817" column="25" selection-start-line="1817" selection-start-column="16" selection-end-line="1817" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_entry.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="319">
-          <caret line="455" selection-start-line="455" selection-end-line="455" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2" />
-    </entry>
+    <entry file="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/material-1.1.0-alpha03.aar/44d335c8cf5797a494c8021577a2e604/res/values/values.xml" />
     <entry file="file://$PROJECT_DIR$/app/src/test/java/com/tobiasfried/brewkeeper/ExampleUnitTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="162">
@@ -1447,38 +1225,26 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="438">
-          <caret line="35" column="42" selection-start-line="35" selection-start-column="42" selection-end-line="35" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/navigation.xml">
+      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
           <caret line="15" column="44" selection-start-line="15" selection-end-line="16" />
         </state>
       </provider>
-      <provider editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="283">
           <caret line="31" column="59" lean-forward="true" selection-start-line="31" selection-start-column="59" selection-end-line="31" selection-end-column="59" />
         </state>
       </provider>
-      <provider editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/data/Brew.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
+        <state relative-caret-position="126">
           <caret line="14" column="52" selection-start-line="14" selection-start-column="52" selection-end-line="14" selection-end-column="52" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#setPrimaryStartDate#0;class#Brew#0" />
-            <element signature="method#setSecondaryStartDate#0;class#Brew#0" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1491,7 +1257,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/data/BrewDao.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="528">
+        <state relative-caret-position="576">
           <caret line="41" column="44" selection-start-line="41" selection-start-column="44" selection-end-line="41" selection-end-column="44" />
         </state>
       </provider>
@@ -1510,30 +1276,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/MainActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-54">
-          <caret line="27" column="47" selection-start-line="27" selection-start-column="47" selection-end-line="27" selection-end-column="47" />
-          <folding>
-            <element signature="e#2465#2704#0" expanded="true" />
-            <element signature="e#2703#2704#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/MainViewModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="630">
+        <state relative-caret-position="414">
           <caret line="35" column="30" selection-start-line="35" selection-start-column="30" selection-end-line="35" selection-end-column="30" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#869#870#0" expanded="true" />
-            <element signature="e#903#904#0" expanded="true" />
-            <element signature="e#959#960#0" expanded="true" />
-            <element signature="e#995#996#0" expanded="true" />
-            <element signature="e#1192#1193#0" expanded="true" />
-            <element signature="e#1221#1222#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1541,40 +1287,13 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="54">
           <caret line="3" selection-start-line="3" selection-end-line="3" />
-          <folding>
-            <element signature="e#3905#3906#0" expanded="true" />
-            <element signature="e#3968#3969#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/CurrentFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-486">
-          <caret line="57" column="11" selection-start-line="57" selection-start-column="8" selection-end-line="57" selection-end-column="11" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2509#2902#0" expanded="true" />
-            <element signature="e#2901#2902#0" expanded="true" />
-            <element signature="e#4061#4232#0" expanded="true" />
-            <element signature="e#4231#4232#0" expanded="true" />
-            <element signature="e#3980#4362#0" expanded="true" />
-            <element signature="e#4680#4931#0" expanded="true" />
-            <element signature="e#4930#4931#0" expanded="true" />
-            <element signature="e#4361#4362#0" expanded="true" />
-            <element signature="e#5588#5758#0" expanded="true" />
-            <element signature="e#5757#5758#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/data/RecipeDao.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
+        <state relative-caret-position="198">
           <caret line="19" column="40" selection-start-line="19" selection-start-column="40" selection-end-line="19" selection-end-column="40" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1587,23 +1306,112 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/EntryViewModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="366">
+        <state relative-caret-position="378">
           <caret line="29" column="21" selection-start-line="29" selection-start-column="21" selection-end-line="29" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/colors.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/material-1.1.0-alpha04.aar/77c80cac018ea56e2ac120c1d8312550/res/values/values.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="2702" column="46" lean-forward="true" selection-start-line="2702" selection-start-column="46" selection-end-line="2702" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.cardview/cardview/1.0.0/c9f3ce7ca74ad2c978230f4094ba6804c5166f9c/cardview-1.0.0-sources.jar!/androidx/cardview/widget/CardView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="322">
+          <caret line="78" column="13" selection-start-line="78" selection-start-column="13" selection-end-line="78" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/background_gradient.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="9" column="40" selection-start-line="9" selection-start-column="40" selection-end-line="9" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="716">
+          <caret line="45" column="18" selection-start-line="45" selection-start-column="18" selection-end-line="45" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/EntryActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4716">
+          <caret line="300" column="46" selection-start-line="300" selection-start-column="46" selection-end-line="300" selection-end-column="46" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#805#806#0" expanded="true" />
-            <element signature="e#833#834#0" expanded="true" />
-            <element signature="e#884#885#0" expanded="true" />
-            <element signature="e#912#913#0" expanded="true" />
-            <element signature="e#966#967#0" expanded="true" />
-            <element signature="e#997#998#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/AppExecutors.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="36">
+          <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_entry.xml">
+      <provider editor-type-id="android-designer2" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6246">
+          <caret line="347" selection-start-line="339" selection-start-column="14" selection-end-line="347" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="11" column="23" selection-start-line="11" selection-start-column="23" selection-end-line="11" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/data/AppDatabase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="738">
+          <caret line="58" column="38" selection-start-line="58" selection-start-column="38" selection-end-line="58" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/styles.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1206">
+          <caret line="67" column="48" selection-start-line="67" selection-start-column="48" selection-end-line="67" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/dimens.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="16" column="17" selection-start-line="16" selection-start-column="17" selection-end-line="16" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/CurrentFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="486">
+          <caret line="27" column="28" selection-start-line="27" selection-start-column="28" selection-end-line="27" selection-end-column="28" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/EntryViewModelFactory.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
+        <state relative-caret-position="378">
           <caret line="25" selection-start-line="25" selection-end-line="25" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -1611,23 +1419,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/tobiasfried/brewkeeper/EntryActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_entry_redesign.xml">
+      <provider selected="true" editor-type-id="android-designer2" />
+      <provider editor-type-id="text-editor">
+        <state relative-caret-position="295">
+          <caret line="259" column="50" selection-start-line="259" selection-start-column="46" selection-end-line="259" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="692">
-          <caret line="274" column="17" selection-start-line="274" selection-start-column="17" selection-end-line="274" selection-end-column="17" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#5097#5342#0" expanded="true" />
-            <element signature="e#5341#5342#0" expanded="true" />
-            <element signature="method#setupButtons#0;class#EntryActivity#0" />
-            <element signature="method#setupDialogs#0;class#EntryActivity#0" />
-            <element signature="e#6065#6227#0" expanded="true" />
-            <element signature="e#6226#6227#0" expanded="true" />
-            <element signature="e#9472#9710#0" expanded="true" />
-            <element signature="e#9709#9710#0" expanded="true" />
-            <element signature="e#9803#9980#0" expanded="true" />
-            <element signature="e#9979#9980#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="393">
+          <caret line="36" column="39" lean-forward="true" selection-start-line="36" selection-start-column="39" selection-end-line="36" selection-end-column="39" />
         </state>
       </provider>
     </entry>

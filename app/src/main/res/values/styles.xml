@@ -65,4 +65,8 @@
         <item name="android:textColor">@color/colorDarkGray</item>
     </style>
 
+    <style name="CardStyle" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">@android:color/white</item>
+    </style>
+
 </resources>

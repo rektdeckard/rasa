@@ -6,19 +6,14 @@ import androidx.annotation.NonNull;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.tobiasfried.brewkeeper.data.AppDatabase;
-import com.tobiasfried.brewkeeper.data.Brew;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LiveData;
 
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements CurrentFragment.OnFragmentInteractionListener {
 
@@ -37,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements CurrentFragment.O
                 int selected = menuItem.getItemId();
                 if (!(selected == bottomNavigationView.getSelectedItemId())) {
                     switch (selected) {
+                        // TODO add Recipes and Completed Brews fragments
                         case R.id.navigation_completed:
                             //getSupportFragmentManager().beginTransaction().replace(R.id.container, new CompletedFragment());
                             break;

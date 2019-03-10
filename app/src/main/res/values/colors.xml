@@ -10,5 +10,8 @@
 
     <color name="background">#FAFAFA</color>
     <color name="backgroundWithAlpha">#CCFAFAFA</color>
+    <color name="backgroundStart">#F3F8FF</color>
+    <color name="backgroundCenter">#F8F3FF</color>
+    <color name="backgroundEnd">#FFD0C0</color>
 
 </resources>

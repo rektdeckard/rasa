@@ -80,21 +80,6 @@ public abstract class AppDatabase extends RoomDatabase {
         sInstance.ingredientDao().insertIngredientList(baseIngredients);
         Log.d(LOG_TAG, "Base ingredients inserted");
 
-//        List<Brew> testBrews = new ArrayList<>();
-//        testBrews.add(new Brew("Blue Meanie Yerba Mate", new Ingredient("Yerba Mate",
-//                IngredientType.TEA, TeaType.OTHER), 40, 0, 20,
-//                0, 20, null, ZonedDateTime.now().minusDays(13),
-//                ZonedDateTime.now().minusDays(1), ZonedDateTime.now().plusDays(2), Stage.SECONDARY, true));
-//        testBrews.add(new Brew("Peach Fuzz", new Ingredient("Bai Liu Dan",
-//                IngredientType.TEA, TeaType.WHITE), 40, 0, 20,
-//                0, 20, null, ZonedDateTime.now().minusDays(9),
-//                ZonedDateTime.now().plusDays(2), ZonedDateTime.now().plusDays(4), Stage.PRIMARY, true));
-//        testBrews.add(new Brew("Tricolore", new Ingredient("Gunpowder Pearl",
-//                IngredientType.TEA, TeaType.GREEN), 40, 0, 20,
-//                0, 20, null, ZonedDateTime.now().minusDays(8),
-//                ZonedDateTime.now().plusDays(5), ZonedDateTime.now().plusDays(7), Stage.PRIMARY, true));
-//        sInstance.brewDao().insertBrewList(testBrews);
-
     }
 
 }
