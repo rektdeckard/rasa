@@ -5,13 +5,10 @@
     tools:context=".EditorActivity">
 
     <item
-        android:id="@+id/action_save"
+        android:id="@+id/action_cancel"
         android:title="@string/action_save"
-        android:icon="@drawable/ic_check_white_24dp"
+        android:icon="@drawable/ic_close_black_24dp"
+        android:iconTint="@android:color/white"
         app:showAsAction="ifRoom" />
 
-    <item
-        android:id="@+id/action_delete"
-        android:title="@string/action_delete"
-        app:showAsAction="never" />
 </menu>

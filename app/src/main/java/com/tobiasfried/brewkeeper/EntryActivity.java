@@ -9,6 +9,9 @@ import androidx.lifecycle.ViewModelProviders;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.CompoundButton;
@@ -72,7 +75,7 @@ public class EntryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_entry);
+        setContentView(R.layout.activity_entry_redesign);
 
         // Get AppDatabase instance
         mDb = AppDatabase.getInstance(getApplicationContext());
@@ -82,19 +85,32 @@ public class EntryActivity extends AppCompatActivity {
         formatter = DateTimeFormatter.ofPattern("LLLL d, yyyy");
 
         // Bind Views
-        mBrewName = findViewById(R.id.brew_name_autocomplete);
+//        mBrewName = findViewById(R.id.brew_name_autocomplete);
+//        mPrimaryDateTextView = findViewById(R.id.primary_date_calendar);
+//        mTeaName = findViewById(R.id.tea_name_autocomplete);
+//        mTeaAmountPicker = findViewById(R.id.tea_amount_picker);
+//        mTeaPicker = findViewById(R.id.tea_picker);
+//        mSugarPicker = findViewById(R.id.sugar_picker);
+//        mSugarAmountPicker = findViewById(R.id.sugar_amount_picker);
+//        mSecondaryDateTextView = findViewById(R.id.secondary_date_calendar);
+//        mSugarPickerTwo = findViewById(R.id.sugar_picker_2);
+//        mSugarAmountPickerTwo = findViewById(R.id.sugar_amount_picker_2);
+//        mIngredientChipGroup = findViewById(R.id.ingredient_chip_group);
+//        mEndDateTextView = findViewById(R.id.end_date_calendar);
+//        mCancelButton = findViewById(R.id.button_cancel);
+//        mSubmitButton = findViewById(R.id.button_start);
+        mBrewName = findViewById(R.id.create_edit_text);
         mPrimaryDateTextView = findViewById(R.id.primary_date_calendar);
         mTeaName = findViewById(R.id.tea_name_autocomplete);
         mTeaAmountPicker = findViewById(R.id.tea_amount_picker);
         mTeaPicker = findViewById(R.id.tea_picker);
-        mSugarPicker = findViewById(R.id.sugar_picker);
+        mSugarPicker = findViewById(R.id.primary_sugar_picker);
         mSugarAmountPicker = findViewById(R.id.sugar_amount_picker);
         mSecondaryDateTextView = findViewById(R.id.secondary_date_calendar);
-        mSugarPickerTwo = findViewById(R.id.sugar_picker_2);
-        mSugarAmountPickerTwo = findViewById(R.id.sugar_amount_picker_2);
+        mSugarPickerTwo = findViewById(R.id.secondary_sugar_picker);
+        mSugarAmountPickerTwo = findViewById(R.id.secondary_sugar_amount_picker);
         mIngredientChipGroup = findViewById(R.id.ingredient_chip_group);
         mEndDateTextView = findViewById(R.id.end_date_calendar);
-        mCancelButton = findViewById(R.id.button_cancel);
         mSubmitButton = findViewById(R.id.button_start);
 
         // Get ViewModel instance
@@ -134,6 +150,22 @@ public class EntryActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_entry, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_cancel:
+                finish();
+        }
+        return true;
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
 
@@ -156,12 +188,12 @@ public class EntryActivity extends AppCompatActivity {
     }
 
     private void setupButtons() {
-        mCancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+//        mCancelButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                finish();
+//            }
+//        });
 
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
