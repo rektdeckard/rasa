@@ -2,10 +2,16 @@ package com.tobiasfried.brewkeeper;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.CompoundButton;
@@ -32,6 +38,7 @@ import java.util.List;
 
 public class EntryActivity extends AppCompatActivity {
 
+    public static String EXTRA_BREW_ID = "brewID";
 
     private AppDatabase mDb;
     private LocalDate primaryStartDate;
@@ -61,10 +68,14 @@ public class EntryActivity extends AppCompatActivity {
     private MaterialButton mCancelButton;
     private MaterialButton mSubmitButton;
 
+    // ViewModel
+    private EntryViewModelFactory factory;
+    private EntryViewModel viewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_entry);
+        setContentView(R.layout.activity_entry_redesign);
 
         // Get AppDatabase instance
         mDb = AppDatabase.getInstance(getApplicationContext());
@@ -74,33 +85,53 @@ public class EntryActivity extends AppCompatActivity {
         formatter = DateTimeFormatter.ofPattern("LLLL d, yyyy");
 
         // Bind Views
-        mBrewName = findViewById(R.id.brew_name_autocomplete);
+//        mBrewName = findViewById(R.id.brew_name_autocomplete);
+//        mPrimaryDateTextView = findViewById(R.id.primary_date_calendar);
+//        mTeaName = findViewById(R.id.tea_name_autocomplete);
+//        mTeaAmountPicker = findViewById(R.id.tea_amount_picker);
+//        mTeaPicker = findViewById(R.id.tea_picker);
+//        mSugarPicker = findViewById(R.id.sugar_picker);
+//        mSugarAmountPicker = findViewById(R.id.sugar_amount_picker);
+//        mSecondaryDateTextView = findViewById(R.id.secondary_date_calendar);
+//        mSugarPickerTwo = findViewById(R.id.sugar_picker_2);
+//        mSugarAmountPickerTwo = findViewById(R.id.sugar_amount_picker_2);
+//        mIngredientChipGroup = findViewById(R.id.ingredient_chip_group);
+//        mEndDateTextView = findViewById(R.id.end_date_calendar);
+//        mCancelButton = findViewById(R.id.button_cancel);
+//        mSubmitButton = findViewById(R.id.button_start);
+        mBrewName = findViewById(R.id.create_edit_text);
         mPrimaryDateTextView = findViewById(R.id.primary_date_calendar);
         mTeaName = findViewById(R.id.tea_name_autocomplete);
         mTeaAmountPicker = findViewById(R.id.tea_amount_picker);
         mTeaPicker = findViewById(R.id.tea_picker);
-        mSugarPicker = findViewById(R.id.sugar_picker);
+        mSugarPicker = findViewById(R.id.primary_sugar_picker);
         mSugarAmountPicker = findViewById(R.id.sugar_amount_picker);
         mSecondaryDateTextView = findViewById(R.id.secondary_date_calendar);
-        mSugarPickerTwo = findViewById(R.id.sugar_picker_2);
-        mSugarAmountPickerTwo = findViewById(R.id.sugar_amount_picker_2);
+        mSugarPickerTwo = findViewById(R.id.secondary_sugar_picker);
+        mSugarAmountPickerTwo = findViewById(R.id.secondary_sugar_amount_picker);
         mIngredientChipGroup = findViewById(R.id.ingredient_chip_group);
         mEndDateTextView = findViewById(R.id.end_date_calendar);
-        mCancelButton = findViewById(R.id.button_cancel);
         mSubmitButton = findViewById(R.id.button_start);
 
+        // Get ViewModel instance
+
+
         // Populate fields if in edit mode
+        long brewId = -1;
         if (getIntent().getExtras() != null) {
-            long id = getIntent().getExtras().getLong("id");
-            fetchBrew(id);
+            brewId = getIntent().getExtras().getLong(EXTRA_BREW_ID);
+            factory = new EntryViewModelFactory(mDb, brewId);
+            viewModel = ViewModelProviders.of(this, factory).get(EntryViewModel.class);
+            fetchBrew();
         } else {
             // Create mode
             currentBrew = new Brew();
             currentBrew.setPrimarySweetener(0);
             currentBrew.setSecondarySweetener(0);
             currentBrew.setStage(Stage.PRIMARY);
-
             currentTea = new Ingredient(null, IngredientType.TEA, TeaType.OTHER);
+            factory = new EntryViewModelFactory(mDb, brewId);
+            viewModel = ViewModelProviders.of(this, factory).get(EntryViewModel.class);
         }
 
         if (addedIngredients == null) {
@@ -116,6 +147,22 @@ public class EntryActivity extends AppCompatActivity {
         setupButtons();
         setupDialogs();
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_entry, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_cancel:
+                finish();
+        }
+        return true;
     }
 
     @Override
@@ -141,12 +188,12 @@ public class EntryActivity extends AppCompatActivity {
     }
 
     private void setupButtons() {
-        mCancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+//        mCancelButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                finish();
+//            }
+//        });
 
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -235,35 +282,24 @@ public class EntryActivity extends AppCompatActivity {
         });
     }
 
-    private void fetchBrew(final long id) {
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+    private void fetchBrew() {
+
+        viewModel.getBrew().observe(this, new Observer<Brew>() {
             @Override
-            public void run() {
-                currentBrew = mDb.brewDao().getBrew(id);
-                if (currentBrew != null) {
-                    currentTea = mDb.ingredientDao().getIngredient(currentBrew.getTeaId());
-                }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        setupBrew();
-                    }
-                });
+            public void onChanged(Brew brew) {
+                //viewModel.getBrew().removeObserver(this);
+                currentBrew = brew;
+                setupBrew();
             }
         });
     }
 
     private void fetchIngredients() {
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+        viewModel.getFlavors().observe(this, new Observer<List<Ingredient>>() {
             @Override
-            public void run() {
-                ingredients = new ArrayList<>(mDb.ingredientDao().getAllFlavors());
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        setupChips();
-                    }
-                });
+            public void onChanged(List<Ingredient> allIngredients) {
+                ingredients = allIngredients;
+                setupChips();
             }
         });
     }
@@ -418,6 +454,11 @@ public class EntryActivity extends AppCompatActivity {
         currentBrew.setPrimaryStartDate(primaryStartDate);
         currentBrew.setSecondaryStartDate(secondaryStartDate);
         currentBrew.setEndDate(endDate);
+        if(LocalDate.now().isAfter(primaryStartDate) && LocalDate.now().isBefore(secondaryStartDate)) {
+            currentBrew.setStage(Stage.PRIMARY);
+        } else if (LocalDate.now().isAfter(secondaryStartDate) && LocalDate.now().isBefore(endDate)) {
+            currentBrew.setStage(Stage.SECONDARY);
+        }
         currentBrew.setRunning(true);
 
         AppExecutors.getInstance().diskIO().execute(new Runnable() {

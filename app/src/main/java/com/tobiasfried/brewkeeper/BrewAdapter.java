@@ -1,12 +1,10 @@
 package com.tobiasfried.brewkeeper;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
@@ -15,8 +13,7 @@ import com.tobiasfried.brewkeeper.constants.*;
 import com.tobiasfried.brewkeeper.interfaces.OnRecyclerClickListener;
 
 import java.time.LocalDate;
-import java.time.Period;
-import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -85,7 +82,7 @@ public class BrewAdapter extends RecyclerView.Adapter<BrewAdapter.ViewHolder> {
         } else {
             endDate = currentBrew.getEndDate();
         }
-        double days = Period.between(LocalDate.now(), endDate).getDays();
+        double days = ChronoUnit.DAYS.between(LocalDate.now(), endDate);
         String remaining;
         if (days < 0) {
             remaining = "Brew ended!";
@@ -100,10 +97,10 @@ public class BrewAdapter extends RecyclerView.Adapter<BrewAdapter.ViewHolder> {
         double totalDays;
         if (currentBrew.getStage() == (Stage.PRIMARY)) {
             holder.stage.setImageResource(R.drawable.ic_one);
-            totalDays = currentBrew.getPrimaryStartDate().until(currentBrew.getSecondaryStartDate()).getDays();
+            totalDays = ChronoUnit.DAYS.between(currentBrew.getPrimaryStartDate(), currentBrew.getSecondaryStartDate());
         } else {
             holder.stage.setImageResource(R.drawable.ic_two);
-            totalDays = currentBrew.getSecondaryStartDate().until(currentBrew.getEndDate()).getDays();
+            totalDays = ChronoUnit.DAYS.between(currentBrew.getSecondaryStartDate(), currentBrew.getEndDate());
         }
         holder.progressBar.setProgress((int)(((totalDays - days)/totalDays) * 100));
     }

@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.tobiasfried.brewkeeper.data.AppDatabase;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,15 +17,10 @@ import android.view.View;
 
 public class MainActivity extends AppCompatActivity implements CurrentFragment.OnFragmentInteractionListener {
 
-    private AppDatabase mDb;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // Get instance of AppDatabase
-        mDb = AppDatabase.getInstance(getApplicationContext());
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, new CurrentFragment()).commit();
 
@@ -38,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements CurrentFragment.O
                 int selected = menuItem.getItemId();
                 if (!(selected == bottomNavigationView.getSelectedItemId())) {
                     switch (selected) {
+                        // TODO add Recipes and Completed Brews fragments
                         case R.id.navigation_completed:
                             //getSupportFragmentManager().beginTransaction().replace(R.id.container, new CompletedFragment());
                             break;
@@ -62,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements CurrentFragment.O
             }
         });
 
-        // TODO
     }
 
     @Override

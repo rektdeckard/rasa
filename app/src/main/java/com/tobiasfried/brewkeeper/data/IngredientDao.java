@@ -2,6 +2,7 @@ package com.tobiasfried.brewkeeper.data;
 
 import java.util.List;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -13,10 +14,13 @@ import androidx.room.Update;
 public interface IngredientDao {
 
     @Query("SELECT * FROM ingredients ORDER BY id")
-    List<Ingredient> getAllIngredients();
+    LiveData<List<Ingredient>> getAllIngredients();
 
     @Query("SELECT * FROM ingredients WHERE type = 2 ORDER BY name ASC")
-    List<Ingredient> getAllFlavors();
+    LiveData<List<Ingredient>> getAllFlavors();
+
+    @Query("SELECT * FROM ingredients WHERE type = 0 ORDER BY name ASC")
+    LiveData<List<Ingredient>> getAllTeas();
 
     @Query("SELECT * FROM ingredients WHERE id = :id")
     Ingredient getIngredient(long id);
@@ -35,5 +39,4 @@ public interface IngredientDao {
 
     @Delete
     int deleteIngredients(List<Ingredient> ingredients);
-
 }

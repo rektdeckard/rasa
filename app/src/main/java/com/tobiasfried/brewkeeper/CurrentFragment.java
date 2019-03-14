@@ -8,6 +8,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -18,10 +20,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.tobiasfried.brewkeeper.data.AppDatabase;
 import com.tobiasfried.brewkeeper.data.Brew;
 import com.tobiasfried.brewkeeper.interfaces.OnRecyclerClickListener;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.List;
 
 /**
@@ -33,7 +38,8 @@ import java.util.List;
 public class CurrentFragment extends Fragment {
 
     private AppDatabase mDb;
-    private List<Brew> mBrewList;
+    private MainViewModel viewModel;
+    private Deque<Brew> mDeletedList;
 
     private OnFragmentInteractionListener mListener;
     private RecyclerView mRecyclerView;
@@ -48,8 +54,9 @@ public class CurrentFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Get Database instance
+        // Get Database instance and retrieve brews
         mDb = AppDatabase.getInstance(getContext());
+        getViewModel();
     }
 
     @Override
@@ -57,7 +64,7 @@ public class CurrentFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate and setup RecyclerView
-        View rootView = inflater.inflate(R.layout.brew_list, container, false);
+        final View rootView = inflater.inflate(R.layout.brew_list, container, false);
         mRecyclerView = rootView.findViewById(R.id.list);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -70,11 +77,14 @@ public class CurrentFragment extends Fragment {
             public void onRecyclerViewItemClicked(int position, int id) {
                 Intent intent = new Intent(getActivity(), EntryActivity.class);
                 // TODO: prepopulate EntryActivity
-                intent.putExtra("id", mBrewList.get(position).getId());
+                intent.putExtra(EntryActivity.EXTRA_BREW_ID, mAdapter.getBrews().get(position).getId());
                 startActivity(intent);
             }
         });
         mRecyclerView.setAdapter(mAdapter);
+
+        // Initialize temporary deleted deque
+        mDeletedList = new ArrayDeque<>();
 
         // Implement swipe actions
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(1, ItemTouchHelper.RIGHT) {
@@ -86,15 +96,31 @@ public class CurrentFragment extends Fragment {
             @Override
             public void onSwiped(@NonNull final RecyclerView.ViewHolder viewHolder, int direction) {
                 if (direction == ItemTouchHelper.RIGHT) {
+                    // Move brew to recently deleted and delete it from database
                     AppExecutors.getInstance().diskIO().execute(new Runnable() {
                         @Override
                         public void run() {
                             int position = viewHolder.getAdapterPosition();
-                            List<Brew> brews = mAdapter.getBrews();
-                            mDb.brewDao().deleteBrew(brews.get(position));
-                            refreshViews();
+                            Brew deletedBrew = mAdapter.getBrews().get(position);
+                            mDeletedList.addLast(deletedBrew);
+                            mDb.brewDao().deleteBrew(deletedBrew);
                         }
                     });
+                    // Show Snackbar with undo action
+                    Snackbar.make(rootView, "Brew Deleted", Snackbar.LENGTH_LONG)
+                            .setAction("UNDO", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            mDb.brewDao().insertBrew(mDeletedList.poll());
+                                        }
+                                    });
+                                }
+                            })
+                            .setActionTextColor(getResources().getColor(R.color.colorAccent, getActivity().getTheme()))
+                            .show();
                 }
             }
         }).attachToRecyclerView(mRecyclerView);
@@ -103,17 +129,13 @@ public class CurrentFragment extends Fragment {
 
     }
 
-    private void refreshViews() {
-        AppExecutors.getInstance().diskIO().execute(new Runnable() {
+    private void getViewModel() {
+        // Get ViewModel and subscribe Observer
+        viewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
+        viewModel.getCurrentBrews().observe(this, new Observer<List<Brew>>() {
             @Override
-            public void run() {
-                mBrewList = mDb.brewDao().getAllBrews();
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mAdapter.setBrews(mBrewList);
-                    }
-                });
+            public void onChanged(List<Brew> brews) {
+                mAdapter.setBrews(brews);
             }
         });
     }
@@ -138,12 +160,6 @@ public class CurrentFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        refreshViews();
-    }
-
-    @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
@@ -164,4 +180,6 @@ public class CurrentFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+
 }

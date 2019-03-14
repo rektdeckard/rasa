@@ -2,6 +2,7 @@ package com.tobiasfried.brewkeeper.data;
 
 import java.util.List;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -13,10 +14,10 @@ import androidx.room.Update;
 public interface RecipeDao {
 
     @Query("SELECT * FROM recipes ORDER BY id")
-    List<Recipe> getAllRecipes();
+    LiveData<List<Recipe>> getAllRecipes();
 
     @Query("SELECT * FROM recipes WHERE id = :id")
-    Recipe getRecipe(long id);
+    LiveData<Recipe> getRecipe(long id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insertRecipe(Recipe recipe);

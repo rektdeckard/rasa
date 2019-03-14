@@ -33,8 +33,8 @@
     <string name="title_activity_entry">New brew</string>
     <string name="action_select_tea">Select tea type</string>
     <string name="completion_date">Completion Date</string>
-    <string name="second_fermentation">Second Fermentation</string>
-    <string name="first_fermentation">First Fermentation</string>
+    <string name="second_fermentation">Secondary Fermentation</string>
+    <string name="first_fermentation">Primary Fermentation</string>
     <string name="cancel">Cancel</string>
     <string name="start">Start brewin\'</string>
     <string name="notes">Notes</string>
@@ -48,4 +48,6 @@
     <string name="tea_label">Tea</string>
     <string name="notes_hint">Enter your notes here</string>
     <string name="flavors">Flavors</string>
+    <string name="stage">Brew Stage</string>
+    <string name="create_brew">Create brew</string>
 </resources>
