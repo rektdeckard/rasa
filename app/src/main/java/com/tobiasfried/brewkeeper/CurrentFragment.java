@@ -8,26 +8,28 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
-import com.tobiasfried.brewkeeper.data.AppDatabase;
-import com.tobiasfried.brewkeeper.data.Brew;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.tobiasfried.brewkeeper.model.Brew;
 import com.tobiasfried.brewkeeper.interfaces.OnRecyclerClickListener;
-
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,14 +39,14 @@ import java.util.List;
  */
 public class CurrentFragment extends Fragment {
 
-    private AppDatabase mDb;
-    private MainViewModel viewModel;
-    private Deque<Brew> mDeletedList;
+    private static final String LOG_TAG = CurrentFragment.class.getSimpleName();
+
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference brewRef = db.collection(Brew.COLLECTION);
+    private Brew deleted;
 
     private OnFragmentInteractionListener mListener;
-    private RecyclerView mRecyclerView;
     private BrewAdapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
 
     public CurrentFragment() {
         // Required empty public constructor
@@ -55,91 +57,98 @@ public class CurrentFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         // Get Database instance and retrieve brews
-        mDb = AppDatabase.getInstance(getContext());
-        getViewModel();
+//        db = FirebaseFirestore.getInstance();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // Inflate and setup RecyclerView
-        final View rootView = inflater.inflate(R.layout.brew_list, container, false);
-        mRecyclerView = rootView.findViewById(R.id.list);
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        mLayoutManager = new LinearLayoutManager(getContext());
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        Query query = brewRef.orderBy("name", Query.Direction.ASCENDING);
+        FirestoreRecyclerOptions<Brew> options = new FirestoreRecyclerOptions.Builder<Brew>()
+                .setQuery(query, Brew.class)
+                .build();
+        mAdapter = new BrewAdapter(options);
+        View rootView = inflater.inflate(R.layout.brew_list, container, false);
+        RecyclerView recyclerView = rootView.findViewById(R.id.list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(mAdapter);
+        return recyclerView;
 
-        mAdapter = new BrewAdapter(getContext(), new OnRecyclerClickListener() {
-            @Override
-            public void onRecyclerViewItemClicked(int position, int id) {
-                Intent intent = new Intent(getActivity(), EntryActivity.class);
-                // TODO: prepopulate EntryActivity
-                intent.putExtra(EntryActivity.EXTRA_BREW_ID, mAdapter.getBrews().get(position).getId());
-                startActivity(intent);
-            }
-        });
-        mRecyclerView.setAdapter(mAdapter);
-
-        // Initialize temporary deleted deque
-        mDeletedList = new ArrayDeque<>();
-
-        // Implement swipe actions
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(1, ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(@NonNull final RecyclerView.ViewHolder viewHolder, int direction) {
-                if (direction == ItemTouchHelper.RIGHT) {
-                    // Move brew to recently deleted and delete it from database
-                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            int position = viewHolder.getAdapterPosition();
-                            Brew deletedBrew = mAdapter.getBrews().get(position);
-                            mDeletedList.addLast(deletedBrew);
-                            mDb.brewDao().deleteBrew(deletedBrew);
-                        }
-                    });
-                    // Show Snackbar with undo action
-                    Snackbar.make(rootView, "Brew Deleted", Snackbar.LENGTH_LONG)
-                            .setAction("UNDO", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    AppExecutors.getInstance().diskIO().execute(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            mDb.brewDao().insertBrew(mDeletedList.poll());
-                                        }
-                                    });
-                                }
-                            })
-                            .setActionTextColor(getResources().getColor(R.color.colorAccent, getActivity().getTheme()))
-                            .show();
-                }
-            }
-        }).attachToRecyclerView(mRecyclerView);
-
-        return mRecyclerView;
-
+//        // Inflate and setup RecyclerView
+//        final View rootView = inflater.inflate(R.layout.brew_list, container, false);
+//        RecyclerView mRecyclerView = rootView.findViewById(R.id.list);
+//        mRecyclerView.setHasFixedSize(true);
+//        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+//        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+//        mRecyclerView.setLayoutManager(mLayoutManager);
+//        FirestoreRecyclerOptions<Brew> options = new FirestoreRecyclerOptions.Builder<Brew>()
+//                .setLifecycleOwner(this)
+//                .setQuery(db.collection(Brew.COLLECTION), Brew.class).build();
+//        Log.i(LOG_TAG, db.collection(Brew.COLLECTION).get().toString());
+//        mAdapter = new BrewAdapter(options);
+//        mAdapter.setOnRecyclerClickListener(new OnRecyclerClickListener() {
+//            @Override
+//            public void onRecyclerViewItemClicked(int position, int id) {
+//                String brewId = mAdapter.getSnapshots().getSnapshot(position).getId();
+//                Intent intent = new Intent(getActivity(), EntryActivity.class);
+//                intent.putExtra(EntryActivity.EXTRA_BREW_ID, brewId);
+//                startActivity(intent);
+//            }
+//        });
+//        mRecyclerView.setAdapter(mAdapter);
+//
+//        // Implement swipe actions
+//        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(1, ItemTouchHelper.RIGHT) {
+//            @Override
+//            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+//                return false;
+//            }
+//
+//            @Override
+//            public void onSwiped(@NonNull final RecyclerView.ViewHolder viewHolder, int direction) {
+//                if (direction == ItemTouchHelper.RIGHT) {
+//                    // Move brew to recently deleted and delete it from database
+//                    String brewId = mAdapter.getSnapshots().getSnapshot(viewHolder.getAdapterPosition()).getId();
+//                    deleted = db.collection(Brew.COLLECTION).document(brewId).get().getResult().toObject(Brew.class);
+//                    db.collection(Brew.COLLECTION).document(brewId).delete();
+//                    // Show Snackbar with undo action
+//                    Snackbar.make(rootView, "Brew Deleted", Snackbar.LENGTH_LONG)
+//                            .setAction("UNDO", new View.OnClickListener() {
+//                                @Override
+//                                public void onClick(View v) {
+//                                   db.collection(Brew.COLLECTION).add(deleted).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+//                                       @Override
+//                                       public void onComplete(@NonNull Task<DocumentReference> task) {
+//                                           if (task.isSuccessful()) {
+//                                               deleted = null;
+//                                           } else {
+//                                               Log.i(LOG_TAG, "Failed to reinsert to the database");
+//                                           }
+//                                       }
+//                                   });
+//                                }
+//                            })
+//                            .setActionTextColor(getResources().getColor(R.color.colorAccent, getActivity().getTheme()))
+//                            .show();
+//                }
+//            }
+//        }).attachToRecyclerView(mRecyclerView);
+//
+//        return mRecyclerView;
     }
 
-    private void getViewModel() {
-        // Get ViewModel and subscribe Observer
-        viewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
-        viewModel.getCurrentBrews().observe(this, new Observer<List<Brew>>() {
-            @Override
-            public void onChanged(List<Brew> brews) {
-                mAdapter.setBrews(brews);
-            }
-        });
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAdapter.startListening();
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        mAdapter.stopListening();
+    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

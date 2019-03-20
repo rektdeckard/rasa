@@ -1,40 +1,38 @@
 package com.tobiasfried.brewkeeper;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.mikhaellopez.circularprogressbar.CircularProgressBar;
-import com.tobiasfried.brewkeeper.data.Brew;
+import com.tobiasfried.brewkeeper.model.Brew;
 import com.tobiasfried.brewkeeper.constants.*;
 import com.tobiasfried.brewkeeper.interfaces.OnRecyclerClickListener;
 
-import java.time.LocalDate;
+import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class BrewAdapter extends RecyclerView.Adapter<BrewAdapter.ViewHolder> {
+public class BrewAdapter extends FirestoreRecyclerAdapter<Brew, BrewAdapter.BrewHolder> {
 
     // Global variables
 
     private List<Brew> mBrewList;
     private OnRecyclerClickListener mListener;
-    private Context mContext;
 
-    // Constructor
-    public BrewAdapter(Context context, OnRecyclerClickListener listener) {
-        this.mContext = context;
-        this.mListener = listener;
+    public BrewAdapter(@NonNull FirestoreRecyclerOptions<Brew> options) {
+        super(options);
     }
 
     // ViewHolder Class provides reference to each contained view
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class BrewHolder extends RecyclerView.ViewHolder {
 
         // Member views
         TextView name;
@@ -42,7 +40,7 @@ public class BrewAdapter extends RecyclerView.Adapter<BrewAdapter.ViewHolder> {
         ImageView stage;
         CircularProgressBar progressBar;
 
-        public ViewHolder(@NonNull View itemView) {
+        public BrewHolder(@NonNull View itemView) {
             super(itemView);
             // Bind views
             name = itemView.findViewById(R.id.brew_name_text_view);
@@ -62,27 +60,24 @@ public class BrewAdapter extends RecyclerView.Adapter<BrewAdapter.ViewHolder> {
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(mContext).inflate(R.layout.list_item_with_progress, parent, false);
-        return new ViewHolder(itemView);
+    public BrewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_with_progress, parent, false);
+        return new BrewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        // Get next Brew
-        Brew currentBrew = mBrewList.get(position);
-
+    public void onBindViewHolder(@NonNull BrewHolder holder, int position, @NonNull Brew currentBrew) {
         // Bind name
-        holder.name.setText(currentBrew.getName());
+        holder.name.setText(currentBrew.getRecipe().getName());
 
         // Calculate and bind remaining days
-        LocalDate endDate;
+        long endDate;
         if (currentBrew.getStage() == Stage.PRIMARY) {
             endDate = currentBrew.getSecondaryStartDate();
         } else {
             endDate = currentBrew.getEndDate();
         }
-        double days = ChronoUnit.DAYS.between(LocalDate.now(), endDate);
+        double days = ChronoUnit.DAYS.between(Instant.now(), Instant.ofEpochMilli(endDate));
         String remaining;
         if (days < 0) {
             remaining = "Brew ended!";
@@ -97,10 +92,10 @@ public class BrewAdapter extends RecyclerView.Adapter<BrewAdapter.ViewHolder> {
         double totalDays;
         if (currentBrew.getStage() == (Stage.PRIMARY)) {
             holder.stage.setImageResource(R.drawable.ic_one);
-            totalDays = ChronoUnit.DAYS.between(currentBrew.getPrimaryStartDate(), currentBrew.getSecondaryStartDate());
+            totalDays = ChronoUnit.DAYS.between(Instant.ofEpochMilli(currentBrew.getPrimaryStartDate()), Instant.ofEpochMilli(currentBrew.getSecondaryStartDate()));
         } else {
             holder.stage.setImageResource(R.drawable.ic_two);
-            totalDays = ChronoUnit.DAYS.between(currentBrew.getSecondaryStartDate(), currentBrew.getEndDate());
+            totalDays = ChronoUnit.DAYS.between(Instant.ofEpochMilli(currentBrew.getSecondaryStartDate()), Instant.ofEpochMilli(currentBrew.getEndDate()));
         }
         holder.progressBar.setProgress((int)(((totalDays - days)/totalDays) * 100));
     }
@@ -119,5 +114,8 @@ public class BrewAdapter extends RecyclerView.Adapter<BrewAdapter.ViewHolder> {
         return this.mBrewList;
     }
 
+    public void setOnRecyclerClickListener(OnRecyclerClickListener listener) {
+        this.mListener = listener;
+    }
 
 }

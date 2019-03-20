@@ -39,15 +39,33 @@
                 android:paddingStart="32dp"
                 android:paddingEnd="32dp"
                 android:textColor="@android:color/black"
+                android:textColorHint="@android:color/black"
                 android:textSize="32sp"
                 tools:text="Wisteria Blue" />
+
+            <View
+                android:id="@+id/pip1"
+                android:layout_width="4dp"
+                android:layout_height="4dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/tl_pips"
+                android:layout_below="@+id/create_edit_text"/>
+
+            <View
+                android:id="@+id/pip2"
+                android:layout_width="4dp"
+                android:layout_height="4dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/tl_pips"
+                android:layout_below="@+id/pip1"/>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/primary_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/create_edit_text"
-                android:layout_marginTop="24dp"
+                android:layout_below="@+id/pip2"
+                android:layout_marginTop="8dp"
                 android:elevation="28dp"
                 app:cardBackgroundColor="@android:color/white"
                 app:cardCornerRadius="8dp">
@@ -80,7 +98,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/primary_date_calendar"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="24dp"
                         android:text="@string/tea_label" />
 
                     <LinearLayout
@@ -146,10 +164,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/tea_picker"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="24dp"
                         android:textColor="@color/colorMediumGray"
                         android:textSize="12sp"
-                        tools:text="Sugar" />
+                        android:text="@string/sugar" />
 
                     <LinearLayout
                         android:id="@+id/primary_sugar"
@@ -198,12 +216,30 @@
 
             </androidx.cardview.widget.CardView>
 
+            <View
+                android:id="@+id/pip3"
+                android:layout_width="4dp"
+                android:layout_height="4dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/tl_pips"
+                android:layout_below="@+id/primary_card"/>
+
+            <View
+                android:id="@+id/pip4"
+                android:layout_width="4dp"
+                android:layout_height="4dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/tl_pips"
+                android:layout_below="@+id/pip3"/>
+
             <androidx.cardview.widget.CardView
                 android:id="@+id/secondary_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/primary_card"
-                android:layout_marginTop="24dp"
+                android:layout_below="@+id/pip4"
+                android:layout_marginTop="8dp"
                 android:layout_marginBottom="200dp"
                 android:elevation="28dp"
                 app:cardBackgroundColor="@android:color/white"
@@ -216,7 +252,7 @@
                     android:paddingStart="20dp"
                     android:paddingTop="30dp"
                     android:paddingEnd="20dp"
-                    android:paddingBottom="24dp">
+                    android:paddingBottom="36dp">
 
                     <TextView
                         android:id="@+id/secondary_label"
@@ -239,10 +275,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/secondary_date_calendar"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="24dp"
                         android:textColor="@color/colorMediumGray"
                         android:textSize="12sp"
-                        tools:text="Sugar" />
+                        android:text="@string/sugar" />
 
                     <LinearLayout
                         android:id="@+id/secondary_sugar"
@@ -290,7 +326,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/secondary_sugar"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="24dp"
                         android:text="@string/flavors" />
 
                     <com.google.android.material.chip.ChipGroup
@@ -308,6 +344,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/ingredient_chip_group"
+                        android:layout_marginTop="24dp"
                         android:text="@string/completion_date" />
 
                     <TextView
@@ -337,7 +374,7 @@
         android:layout_margin="8dp"
         android:text="@string/start"
         android:textAllCaps="false"
-        app:backgroundTint="@color/colorAccent"
+        app:backgroundTint="@color/colorDarkGray"
         app:cornerRadius="4dp" />
 
 </RelativeLayout>

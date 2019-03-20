@@ -10,8 +10,8 @@
 
     <color name="background">#FAFAFA</color>
     <color name="backgroundWithAlpha">#CCFAFAFA</color>
-    <color name="backgroundStart">#FFF6F3</color>
+    <color name="backgroundStart">#F7D175</color>
     <color name="backgroundCenter">#FFF6F3</color>
-    <color name="backgroundEnd">#FFD0C0</color>
+    <color name="backgroundEnd">#E89722</color>
 
 </resources>
