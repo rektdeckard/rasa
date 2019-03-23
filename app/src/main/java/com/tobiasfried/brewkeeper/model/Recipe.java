@@ -13,8 +13,7 @@ public class Recipe {
     // MEMBER FIELDS
     private String name;
 
-    private Ingredient tea;
-    private int teaAmount;
+    private List<Ingredient> teas = new ArrayList<>();
 
     private int primarySweetener;
     private int primarySweetenerAmount;
@@ -22,7 +21,11 @@ public class Recipe {
     private int secondarySweetener;
     private int secondarySweetenerAmount;
 
-    private List<Ingredient> ingredients;
+    private double water;
+
+    private List<Ingredient> ingredients = new ArrayList<>();
+
+    private String notes;
 
     // CONSTRUCTORS
 
@@ -30,24 +33,23 @@ public class Recipe {
      * Constructor for programmatic use
      *
      * @param name                     Recipe name
-     * @param tea                      Tea {@link Ingredient}
-     * @param teaAmount                in grams
+     * @param teas                      Tea {@link Ingredient}
      * @param primarySweetener         {@link Ingredient}
      * @param primarySweetenerAmount   in grams
      * @param secondarySweetener       {@link Ingredient}
      * @param secondarySweetenerAmount in grams
      * @param ingredients              ArrayList<{@link Ingredient}>
      */
-    public Recipe(String name, Ingredient tea, int teaAmount, int primarySweetener,
+    public Recipe(String name, List<Ingredient> teas, int primarySweetener,
                   int primarySweetenerAmount, int secondarySweetener,
-                  int secondarySweetenerAmount, List<Ingredient> ingredients) {
+                  int secondarySweetenerAmount, double water, List<Ingredient> ingredients, String notes) {
         this.name = name;
 
-        if (tea.getType() == IngredientType.TEA) {
-            this.tea = tea;
-        } else throw new IllegalArgumentException("Invalid tea ingredient");
-
-        this.teaAmount = teaAmount;
+        for(Ingredient i : teas) {
+            if (i.getType() == IngredientType.TEA) {
+                this.teas.add(i);
+            } else throw new IllegalArgumentException("Invalid tea ingredient");
+        }
 
         if (primarySweetener >= 0 && primarySweetener <= 5) {
             this.primarySweetener = primarySweetener;
@@ -61,24 +63,26 @@ public class Recipe {
 
         this.secondarySweetenerAmount = secondarySweetenerAmount;
 
-        this.ingredients = new ArrayList<>();
-        for (Ingredient ingredient : ingredients) {
-            if (ingredient.getType() == IngredientType.FLAVOR) {
-                this.ingredients.add(ingredient);
+        this.water = water;
+
+        for (Ingredient i : ingredients) {
+            if (i.getType() == IngredientType.FLAVOR) {
+                this.ingredients.add(i);
             } else throw new IllegalArgumentException("Invalid flavor ingredient");
         }
+
+        this.notes = notes;
     }
 
     /**
      * Required empty constructor for Firestore & Entry activity
      */
     public Recipe() {
-        teaAmount = 50;
         primarySweetener = 0;
-        primarySweetenerAmount = 100;
+        primarySweetenerAmount = 75;
         secondarySweetener = 0;
-        secondarySweetenerAmount = 50;
-        ingredients = new ArrayList<>();
+        secondarySweetenerAmount = 0;
+        water = 1.0;
     }
 
     // GETTERS
@@ -87,12 +91,8 @@ public class Recipe {
         return name;
     }
 
-    public Ingredient getTea() {
-        return tea;
-    }
-
-    public int getTeaAmount() {
-        return teaAmount;
+    public List<Ingredient> getTeas() {
+        return teas;
     }
 
     public int getPrimarySweetener() {
@@ -111,8 +111,16 @@ public class Recipe {
         return secondarySweetenerAmount;
     }
 
+    public double getWater() {
+        return water;
+    }
+
     public List<Ingredient> getIngredients() {
         return ingredients;
+    }
+
+    public String getNotes() {
+        return notes;
     }
 
     // SETTERS
@@ -121,12 +129,16 @@ public class Recipe {
         this.name = name;
     }
 
-    public void setTea(Ingredient tea) {
-        this.tea = tea;
+    public void setTeas(List<Ingredient> teas) {
+        this.teas = teas;
     }
 
-    public void setTeaAmount(int teaAmount) {
-        this.teaAmount = teaAmount;
+    public void addTea(Ingredient tea) {
+        this.teas.add(tea);
+    }
+
+    public void removeTea(Ingredient tea) {
+        this.teas.remove(tea);
     }
 
     public void setPrimarySweetener(int primarySweetener) {
@@ -145,7 +157,15 @@ public class Recipe {
         this.secondarySweetenerAmount = secondarySweetenerAmount;
     }
 
+    public void setWater(double water) {
+        this.water = water;
+    }
+
     public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 }

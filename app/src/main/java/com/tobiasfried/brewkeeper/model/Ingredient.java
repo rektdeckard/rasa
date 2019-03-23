@@ -11,6 +11,7 @@ public class Ingredient {
     private String name;
     private IngredientType type;
     private TeaType teaType;
+    private int amount = 10;
 
 
     // CONSTRUCTORS
@@ -20,10 +21,11 @@ public class Ingredient {
      * @param type {@link IngredientType}
      * @param teaType {@link TeaType}
      */
-    public Ingredient(String name, IngredientType type, TeaType teaType) {
+    public Ingredient(String name, IngredientType type, TeaType teaType, int amount) {
         this.name = name;
         this.type = type;
         this.teaType = teaType;
+        this.amount = amount;
     }
 
     /**
@@ -46,6 +48,10 @@ public class Ingredient {
         return this.type == IngredientType.TEA ? teaType : null;
     }
 
+    public int getAmount() {
+        return this.amount;
+    }
+
 
     // SETTERS
 
@@ -59,6 +65,10 @@ public class Ingredient {
 
     public void setTeaType(TeaType teaType) {
         this.teaType = teaType;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
 }

@@ -4,12 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,8 +15,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -28,20 +25,15 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
+
+import com.tobiasfried.brewkeeper.constants.Stage;
+import com.tobiasfried.brewkeeper.messaging.MessageService;
 import com.tobiasfried.brewkeeper.model.Brew;
 import com.tobiasfried.brewkeeper.interfaces.OnRecyclerClickListener;
 
-import static android.content.ContentValues.TAG;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link CurrentFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- */
 public class CurrentFragment extends Fragment {
 
     private static final String LOG_TAG = CurrentFragment.class.getSimpleName();
@@ -51,7 +43,7 @@ public class CurrentFragment extends Fragment {
     private Brew deleted;
 
     private OnFragmentInteractionListener mListener;
-    private BrewAdapter mAdapter;
+    private FirestoreRecyclerAdapter mAdapter;
 
     public CurrentFragment() {
         // Required empty public constructor
@@ -66,64 +58,90 @@ public class CurrentFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        final View rootView = inflater.inflate(R.layout.brew_list, container, false);
+        RecyclerView recyclerView = rootView.findViewById(R.id.list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+
         // Get token
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w(LOG_TAG, "getInstanceId failed", task.getException());
-                            return;
-                        }
+        // MessageService.getInstanceId();
 
-                        // Get new Instance ID token
-                        String token = task.getResult().getToken();
-
-                        // Log and toast
-                        Log.d(TAG, token);
-                        Toast.makeText(getActivity(), token, Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-
-        Query query = brewRef.orderBy("name", Query.Direction.ASCENDING);
+        // Inflate and setup RecyclerView
+        Query query = brewRef.orderBy("name").limit(10);
         FirestoreRecyclerOptions<Brew> options = new FirestoreRecyclerOptions.Builder<Brew>()
                 .setQuery(query, Brew.class)
+                .setLifecycleOwner(this)
                 .build();
-        mAdapter = new BrewAdapter(options);
-        View rootView = inflater.inflate(R.layout.brew_list, container, false);
-        RecyclerView recyclerView = rootView.findViewById(R.id.list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(mAdapter);
-        return recyclerView;
+        mAdapter = new FirestoreRecyclerAdapter<Brew, BrewViewHolder>(options) {
+            @NonNull
+            @Override
+            public BrewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_card, parent, false);
+                Log.i(LOG_TAG, "onCreateViewHolder has run.");
+                return new BrewViewHolder(itemView);
+            }
 
-//        // Inflate and setup RecyclerView
-//        final View rootView = inflater.inflate(R.layout.brew_list, container, false);
-//        RecyclerView mRecyclerView = rootView.findViewById(R.id.list);
-//        mRecyclerView.setHasFixedSize(true);
-//        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-//        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-//        mRecyclerView.setLayoutManager(mLayoutManager);
-//        FirestoreRecyclerOptions<Brew> options = new FirestoreRecyclerOptions.Builder<Brew>()
-//                .setLifecycleOwner(this)
-//                .setQuery(db.collection(Brew.COLLECTION), Brew.class).build();
-//        Log.i(LOG_TAG, db.collection(Brew.COLLECTION).get().toString());
-//        mAdapter = new BrewAdapter(options);
+            @Override
+            public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+                super.onAttachedToRecyclerView(recyclerView);
+                Log.i(LOG_TAG, "Adapter attached to RecyclerView");
+            }
+
+            @Override
+            protected void onBindViewHolder(@NonNull BrewViewHolder holder, int i, @NonNull Brew brew) {
+                // Bind name and ColorStateList
+                holder.name.setText(brew.getRecipe().getName());
+                holder.progressBar.setProgressTintList(getContext().getColorStateList(R.color.color_states_progress));
+
+                // Calculate and bind remaining days
+                long endDate;
+                if (brew.getStage() == Stage.PRIMARY) {
+                    endDate = brew.getSecondaryStartDate();
+                } else {
+                    endDate = brew.getEndDate();
+                }
+                double days = ChronoUnit.DAYS.between(Instant.now(), Instant.ofEpochMilli(endDate));
+                String remaining;
+                if (days < 0) {
+                    remaining = "Brew ended!";
+                    holder.card.getLayoutParams().height = 50;
+                } else if (days == 0) {
+                    remaining = "Ending today";
+                } else {
+                    remaining = (int) days + " days remaining";
+                }
+                holder.remainingDays.setText(remaining);
+
+                // Set progress indicators
+                double totalDays;
+                if (brew.getStage() == (Stage.PRIMARY)) {
+                    holder.stage.setText(R.string.stage_primary);
+                    totalDays = ChronoUnit.DAYS.between(Instant.ofEpochMilli(brew.getPrimaryStartDate()), Instant.ofEpochMilli(brew.getSecondaryStartDate()));
+                } else {
+                    holder.stage.setText(R.string.stage_secondary);
+                    totalDays = ChronoUnit.DAYS.between(Instant.ofEpochMilli(brew.getSecondaryStartDate()), Instant.ofEpochMilli(brew.getEndDate()));
+                }
+                holder.progressBar.setProgress((int) (((totalDays - days) / totalDays) * 100));
+
+                Log.i(LOG_TAG, "onBindViewHolder has run.");
+            }
+
+        };
+
+        // Attach Click Listener
 //        mAdapter.setOnRecyclerClickListener(new OnRecyclerClickListener() {
 //            @Override
-//            public void onRecyclerViewItemClicked(int position, int id) {
+//            public void onItemClicked(int position, int id) {
 //                String brewId = mAdapter.getSnapshots().getSnapshot(position).getId();
 //                Intent intent = new Intent(getActivity(), EntryActivity.class);
 //                intent.putExtra(EntryActivity.EXTRA_BREW_ID, brewId);
 //                startActivity(intent);
 //            }
 //        });
-//        mRecyclerView.setAdapter(mAdapter);
-//
-//        // Implement swipe actions
+
+                // Attach Touch Listener
 //        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(1, ItemTouchHelper.RIGHT) {
 //            @Override
 //            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -134,7 +152,7 @@ public class CurrentFragment extends Fragment {
 //            public void onSwiped(@NonNull final RecyclerView.ViewHolder viewHolder, int direction) {
 //                if (direction == ItemTouchHelper.RIGHT) {
 //                    // Move brew to recently deleted and delete it from database
-//                    String brewId = mAdapter.getSnapshots().getSnapshot(viewHolder.getAdapterPosition()).getId();
+//                    String brewId = mAdapter.getSnapshots().getSnapshot(viewHolder.getAdapterPosition());
 //                    deleted = db.collection(Brew.COLLECTION).document(brewId).get().getResult().toObject(Brew.class);
 //                    db.collection(Brew.COLLECTION).document(brewId).delete();
 //                    // Show Snackbar with undo action
@@ -142,37 +160,26 @@ public class CurrentFragment extends Fragment {
 //                            .setAction("UNDO", new View.OnClickListener() {
 //                                @Override
 //                                public void onClick(View v) {
-//                                   db.collection(Brew.COLLECTION).add(deleted).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-//                                       @Override
-//                                       public void onComplete(@NonNull Task<DocumentReference> task) {
-//                                           if (task.isSuccessful()) {
-//                                               deleted = null;
-//                                           } else {
-//                                               Log.i(LOG_TAG, "Failed to reinsert to the database");
-//                                           }
-//                                       }
-//                                   });
+//                                    db.collection(Brew.COLLECTION).add(deleted).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+//                                        @Override
+//                                        public void onComplete(@NonNull Task<DocumentReference> task) {
+//                                            if (task.isSuccessful()) {
+//                                                deleted = null;
+//                                            } else {
+//                                                Log.i(LOG_TAG, "Failed to reinsert to the database");
+//                                            }
+//                                        }
+//                                    });
 //                                }
 //                            })
 //                            .setActionTextColor(getResources().getColor(R.color.colorAccent, getActivity().getTheme()))
 //                            .show();
 //                }
 //            }
-//        }).attachToRecyclerView(mRecyclerView);
-//
-//        return mRecyclerView;
-    }
+//        }).attachToRecyclerView(recyclerView);
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        mAdapter.startListening();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        mAdapter.stopListening();
+                recyclerView.setAdapter(mAdapter);
+        return recyclerView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

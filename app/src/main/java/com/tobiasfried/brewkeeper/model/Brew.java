@@ -27,12 +27,12 @@ public class Brew {
      * Constructor for programmatic use
      *
      * @param name                     Brew name
-     * @param tea                      Tea {@link Ingredient}
-     * @param teaAmount                in grams
+     * @param teas                      Tea {@link Ingredient}
      * @param primarySweetener         Sweetener {@link Ingredient}
      * @param primarySweetenerAmount   in grams
      * @param secondarySweetener       Sweetener {@link Ingredient}
      * @param secondarySweetenerAmount in grams
+     * @param water                    in Liters
      * @param ingredients              ArrayList<{@link Ingredient}>
      * @param primaryStartDate         UNIX Timestamp
      * @param secondaryStartDate       UNIX Timestamp
@@ -40,14 +40,14 @@ public class Brew {
      * @param stage                    Stage {@link Stage}
      * @param isRunning                boolean
      */
-    public Brew(String name, Ingredient tea, int teaAmount,
+    public Brew(String name, List<Ingredient> teas,
                 int primarySweetener, int primarySweetenerAmount,
                 int secondarySweetener, int secondarySweetenerAmount,
-                List<Ingredient> ingredients,
+                double water, List<Ingredient> ingredients, String notes,
                 long primaryStartDate, long secondaryStartDate, long endDate,
                 Stage stage, boolean isRunning) {
-        this.recipe = new Recipe(name, tea, teaAmount, primarySweetener, primarySweetenerAmount,
-                secondarySweetener, secondarySweetenerAmount, ingredients);
+        this.recipe = new Recipe(name, teas, primarySweetener, primarySweetenerAmount,
+                secondarySweetener, secondarySweetenerAmount, water, ingredients, notes);
         this.primaryStartDate = primaryStartDate;
         this.secondaryStartDate = secondaryStartDate;
         this.endDate = endDate;

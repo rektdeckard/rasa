@@ -7,16 +7,18 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.app.DatePickerDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,14 +38,10 @@ import com.tobiasfried.brewkeeper.viewmodel.EntryViewModel;
 import com.tobiasfried.brewkeeper.viewmodel.EntryViewModelFactory;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoField;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -55,26 +53,26 @@ public class EntryActivity extends AppCompatActivity {
     private DateTimeFormatter formatter;
 
     private Brew currentBrew;
-    private Ingredient currentTea;
+    private List<Ingredient> teas;
     private List<Ingredient> ingredients;
-    private List<Ingredient> addedIngredients;
     private List<Ingredient> selectedIngredients;
-    private List<Ingredient> deletedIngredients;
 
     // Views
-    private AutoCompleteTextView mBrewName;
-    private TextView mPrimaryDateTextView;
-    private AutoCompleteTextView mTeaName;
-    private EditText mTeaAmountPicker;
-    private TextView mTeaPicker;
-    private TextView mSugarPicker;
-    private EditText mSugarAmountPicker;
-    private TextView mSecondaryDateTextView;
-    private TextView mSugarPickerTwo;
-    private EditText mSugarAmountPickerTwo;
-    private ChipGroup mIngredientChipGroup;
-    private TextView mEndDateTextView;
-    private MaterialButton mSubmitButton;
+    private EditText brewNameEditText;
+    private TextView primaryDateTextView;
+    private AutoCompleteTextView teaNameEditText;
+    private EditText teaAmountEditText;
+    private Spinner teaSpinner;
+    private Spinner primarySugarSpinner;
+    private EditText primarySugarAmountEditText;
+    private TextView secondaryDateTextView;
+    private Spinner secondarySugarSpinner;
+    private EditText secondarySugarAmountEditText;
+    private ChipGroup flavorChipGroup;
+    private TextView flavorAddTextView;
+    private TextView endDateTextView;
+    private EditText notesEditText;
+    private MaterialButton submitButton;
 
     // ViewModel
     private EntryViewModel viewModel;
@@ -85,30 +83,32 @@ public class EntryActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_entry_redesign);
+        setContentView(R.layout.activity_entry);
 
         // Get Date
         formatter = DateTimeFormatter.ofPattern("LLL d");
 
         // Bind Views
-        mBrewName = findViewById(R.id.create_edit_text);
-        mPrimaryDateTextView = findViewById(R.id.primary_date_calendar);
-        mTeaName = findViewById(R.id.tea_name_autocomplete);
-        mTeaAmountPicker = findViewById(R.id.tea_amount_picker);
-        mTeaPicker = findViewById(R.id.tea_picker);
-        mSugarPicker = findViewById(R.id.primary_sugar_picker);
-        mSugarAmountPicker = findViewById(R.id.sugar_amount_picker);
-        mSecondaryDateTextView = findViewById(R.id.secondary_date_calendar);
-        mSugarPickerTwo = findViewById(R.id.secondary_sugar_picker);
-        mSugarAmountPickerTwo = findViewById(R.id.secondary_sugar_amount_picker);
-        mIngredientChipGroup = findViewById(R.id.ingredient_chip_group);
-        mEndDateTextView = findViewById(R.id.end_date_calendar);
-        mSubmitButton = findViewById(R.id.button_start);
+        brewNameEditText = findViewById(R.id.create_edit_text);
+        primaryDateTextView = findViewById(R.id.primary_date_calendar);
+        teaNameEditText = findViewById(R.id.tea_name_autocomplete);
+        teaAmountEditText = findViewById(R.id.tea_amount_picker);
+        teaSpinner = findViewById(R.id.tea_picker);
+        primarySugarSpinner = findViewById(R.id.primary_sugar_picker);
+        primarySugarAmountEditText = findViewById(R.id.sugar_amount_picker);
+        secondaryDateTextView = findViewById(R.id.secondary_date_calendar);
+        secondarySugarSpinner = findViewById(R.id.secondary_sugar_picker);
+        secondarySugarAmountEditText = findViewById(R.id.secondary_sugar_amount_picker);
+        flavorChipGroup = findViewById(R.id.ingredient_chip_group);
+        flavorAddTextView = findViewById(R.id.add_ingredient_edit_text);
+        endDateTextView = findViewById(R.id.end_date_calendar);
+        notesEditText = findViewById(R.id.notes);
+        submitButton = findViewById(R.id.button_start);
 
         // Get Database instance
         db = FirebaseFirestore.getInstance();
 
-        String brewId = getIntent().getExtras() == null ? null : getIntent().getExtras().getString(EXTRA_BREW_ID);
+        String brewId = getIntent().hasExtra(EXTRA_BREW_ID) ? getIntent().getExtras().getString(EXTRA_BREW_ID) : null;
         if (brewId != null) {
             // Edit mode
             EntryViewModelFactory factory = new EntryViewModelFactory(FirebaseFirestore.getInstance(), brewId);
@@ -117,29 +117,16 @@ public class EntryActivity extends AppCompatActivity {
         } else {
             // Create mode
             currentBrew = new Brew();
-            currentBrew.getRecipe().setPrimarySweetener(0);
-            currentBrew.getRecipe().setPrimarySweetenerAmount(100);
-            currentBrew.getRecipe().setSecondarySweetener(0);
-            currentBrew.getRecipe().setPrimarySweetenerAmount(100);
-            currentBrew.setStage(Stage.PRIMARY);
             currentBrew.setPrimaryStartDate(Instant.now().toEpochMilli());
-            currentTea = new Ingredient(null, IngredientType.TEA, TeaType.OTHER);
+            teas = new ArrayList<>();
+            teas.add(new Ingredient(null, IngredientType.TEA, TeaType.OTHER, 0));
             EntryViewModelFactory factory = new EntryViewModelFactory(db, null);
             viewModel = ViewModelProviders.of(this, factory).get(EntryViewModel.class);
         }
 
-        if (addedIngredients == null) {
-            addedIngredients = new ArrayList<>();
-        }
-        if (selectedIngredients == null) {
-            selectedIngredients = new ArrayList<>();
-        }
-        if (deletedIngredients == null) {
-            deletedIngredients = new ArrayList<>();
-        }
-
-        setupButtons();
+        setupSpinners();
         setupDialogs();
+        setupButtons();
 
     }
 
@@ -167,38 +154,31 @@ public class EntryActivity extends AppCompatActivity {
         fetchIngredients();
     }
 
-    private void setupButtons() {
-        mSubmitButton.setOnClickListener(new View.OnClickListener() {
+    private void setupSpinners() {
+        ArrayAdapter<CharSequence> teaTypes = ArrayAdapter.createFromResource(this, R.array.array_tea_types, R.layout.spinner_item_small);
+        teaTypes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        teaSpinner.setAdapter(teaTypes);
+        teaSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                saveBrew();
-                finish();
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                //currentTeas.getRecipe().getTeas().get(0).setTeaType(TeaType.get(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
+
+        ArrayAdapter<CharSequence> sweetenerTypes = ArrayAdapter.createFromResource(this, R.array.array_sugar_types, R.layout.spinner_item);
+        sweetenerTypes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        primarySugarSpinner.setAdapter(sweetenerTypes);
+        secondarySugarSpinner.setAdapter(sweetenerTypes);
     }
 
     private void setupDialogs() {
-        mTeaPicker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showTeaPickerDialog(v);
-            }
-        });
-        mSugarPicker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showSweetenerPickerDialog(v);
-            }
-        });
-        mSugarPickerTwo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showSweetenerPickerDialog(v);
-            }
-        });
-
-        mPrimaryDateTextView.setText(formatter.format(LocalDateTime.now()));
-        mPrimaryDateTextView.setOnClickListener(new View.OnClickListener() {
+        primaryDateTextView.setText(formatter.format(LocalDateTime.now()));
+        primaryDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DateSelectionDialog fragment = DateSelectionDialog.getInstance();
@@ -208,9 +188,6 @@ public class EntryActivity extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         currentBrew.setPrimaryStartDate(new GregorianCalendar(year, month, dayOfMonth).getTimeInMillis());
-//                        currentBrew.setPrimaryStartDate(Instant.now().with(ChronoField.YEAR, year)
-//                                .with(ChronoField.MONTH_OF_YEAR, month + 1)
-//                                .with(ChronoField.DAY_OF_MONTH, dayOfMonth).toEpochMilli());
                         refreshDates();
                     }
                 });
@@ -218,8 +195,8 @@ public class EntryActivity extends AppCompatActivity {
             }
         });
 
-        mSecondaryDateTextView.setText(formatter.format(LocalDateTime.now().plusDays(10)));
-        mSecondaryDateTextView.setOnClickListener(new View.OnClickListener() {
+        secondaryDateTextView.setText(formatter.format(LocalDateTime.now().plusDays(10)));
+        secondaryDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DateSelectionDialog fragment = DateSelectionDialog.getInstance();
@@ -237,8 +214,8 @@ public class EntryActivity extends AppCompatActivity {
             }
         });
 
-        mEndDateTextView.setText(formatter.format(LocalDateTime.now().plusDays(12)));
-        mEndDateTextView.setOnClickListener(new View.OnClickListener() {
+        endDateTextView.setText(formatter.format(LocalDateTime.now().plusDays(12)));
+        endDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DateSelectionDialog fragment = DateSelectionDialog.getInstance();
@@ -256,8 +233,17 @@ public class EntryActivity extends AppCompatActivity {
         });
     }
 
-    private void fetchBrew() {
+    private void setupButtons() {
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveBrew();
+                finish();
+            }
+        });
+    }
 
+    private void fetchBrew() {
         viewModel.getBrew().observe(this, new Observer<Brew>() {
             @Override
             public void onChanged(Brew brew) {
@@ -275,31 +261,39 @@ public class EntryActivity extends AppCompatActivity {
                 setupChips();
             }
         });
+
+        viewModel.getTeas().observe(this, new Observer<List<Ingredient>>() {
+            @Override
+            public void onChanged(List<Ingredient> allTeas) {
+                teas = allTeas;
+            }
+        });
     }
 
     private void setupBrew() {
-        mBrewName.setText(currentBrew.getRecipe().getName());
+        brewNameEditText.setText(currentBrew.getRecipe().getName());
         refreshDates();
-        currentTea = currentBrew.getRecipe().getTea();
-        mTeaName.setText(currentTea.getName());
-        mTeaAmountPicker.setText(String.valueOf(currentBrew.getRecipe().getTeaAmount()));
-        mTeaPicker.setText(currentTea.getTeaType().getCode());
-        mSugarPicker.setText(currentBrew.getRecipe().getPrimarySweetener());
-        mSugarAmountPicker.setText(currentBrew.getRecipe().getPrimarySweetenerAmount());
-        mSugarPickerTwo.setText(currentBrew.getRecipe().getSecondarySweetener());
-        mSugarAmountPickerTwo.setText(currentBrew.getRecipe().getSecondarySweetenerAmount());
+        teaNameEditText.setText(currentBrew.getRecipe().getTeas().get(0).getName());
+        teaAmountEditText.setText(String.valueOf(currentBrew.getRecipe().getTeas().get(0).getAmount()));
+        teaSpinner.setSelection(currentBrew.getRecipe().getTeas().get(0).getTeaType().getCode());
+        primarySugarSpinner.setSelection(currentBrew.getRecipe().getPrimarySweetener());
+        primarySugarAmountEditText.setText(currentBrew.getRecipe().getPrimarySweetenerAmount());
+        secondarySugarSpinner.setSelection(currentBrew.getRecipe().getSecondarySweetener());
+        secondarySugarAmountEditText.setText(currentBrew.getRecipe().getSecondarySweetenerAmount());
         selectedIngredients = currentBrew.getRecipe().getIngredients();
-        // TODO notes
+
     }
 
     private void setupChips() {
-        mIngredientChipGroup.removeAllViews();
+        flavorChipGroup.removeAllViews();
         for (final Ingredient i : ingredients) {
             final Chip chip = new Chip(this, null, R.style.CustomChipColors);
             chip.setText(i.getName().toLowerCase());
-            chip.setChipBackgroundColorResource(R.color.background_color_chip_state_list);
-            chip.setCloseIconTint(getColorStateList(R.color.text_color_chip_state_list));
-            chip.setTextColor(getColorStateList(R.color.text_color_chip_state_list));
+            chip.setTextColor(getColorStateList(R.color.color_states_chips));
+            chip.setTypeface(getResources().getFont(R.font.google_sans_medium));
+            chip.setChipBackgroundColorResource(android.R.color.transparent);
+            chip.setChipStrokeColorResource(R.color.color_states_chips);
+            chip.setChipStrokeWidth(4.0f);
             chip.setCheckable(true);
             chip.setCheckedIconVisible(false);
             if (currentBrew.getRecipe().getIngredients().contains(i)) {
@@ -345,19 +339,10 @@ public class EntryActivity extends AppCompatActivity {
                     return true;
                 }
             });
-            mIngredientChipGroup.addView(chip);
+            flavorChipGroup.addView(chip);
         }
 
-        Chip addChip = new Chip(getThemedContext());
-        addChip.setText(R.string.new_ingredient);
-        addChip.setChipIconResource(R.drawable.ic_add_black_24dp);
-        addChip.setChipBackgroundColorResource(R.color.background_color_chip_state_list);
-        addChip.setTextColor(getColorStateList(R.color.text_color_chip_state_list));
-//        addChip.setChipIconTintResource(R.color.colorAccent);
-//        addChip.setChipBackgroundColorResource(R.color.background);
-//        addChip.setChipStrokeColorResource(R.color.colorAccent);
-//        addChip.setTextColor(getColor(R.color.colorAccent));
-        addChip.setOnClickListener(new View.OnClickListener() {
+        flavorAddTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 InputDialog newFragment = InputDialog.getInstance();
@@ -365,7 +350,7 @@ public class EntryActivity extends AppCompatActivity {
                     @Override
                     public void onSubmitInput(DialogFragment dialog, final String input) {
                         if (!input.equals("")) {
-                            Ingredient newIngredient = new Ingredient(input, IngredientType.FLAVOR, null);
+                            Ingredient newIngredient = new Ingredient(input, IngredientType.FLAVOR, null, 0);
                             db.collection(Ingredient.COLLECTION).add(newIngredient);
                             setupChips();
                         }
@@ -375,56 +360,54 @@ public class EntryActivity extends AppCompatActivity {
                 newFragment.show(getSupportFragmentManager(), "ingredientInput");
             }
         });
-        mIngredientChipGroup.addView(addChip, -1);
     }
 
-    private void showSweetenerPickerDialog(final View v) {
-        GenericPickerDialog newFragment = GenericPickerDialog.newInstance(R.array.array_sugar_types);
-        newFragment.setOnClickListener(new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (v == mSugarPicker) {
-                    currentBrew.getRecipe().setPrimarySweetener(which);
-                    mSugarPicker.setText(getResources().getStringArray(R.array.array_sugar_types)[which]);
-                } else {
-                    currentBrew.getRecipe().setSecondarySweetener(which);
-                    mSugarPickerTwo.setText(getResources().getStringArray(R.array.array_sugar_types)[which]);
-                }
-            }
-        });
-        newFragment.show(getSupportFragmentManager(), "sweetenerPicker");
-    }
-
-    private void showTeaPickerDialog(View v) {
-        GenericPickerDialog newFragment = GenericPickerDialog.newInstance(R.array.array_tea_types);
-        newFragment.setOnClickListener(new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                currentTea.setTeaType(TeaType.get(which));
-                mTeaPicker.setText(getResources().getStringArray(R.array.array_tea_types)[which]);
-            }
-        });
-        newFragment.show(getSupportFragmentManager(), "teaPicker");
-    }
+//    private void showSweetenerPickerDialog(final View v) {
+//        GenericPickerDialog newFragment = GenericPickerDialog.newInstance(R.array.array_sugar_types);
+//        newFragment.setOnClickListener(new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                if (v == primarySugarSpinner) {
+//                    currentBrew.getRecipe().setPrimarySweetener(which);
+//                    primarySugarSpinner.setText(getResources().getStringArray(R.array.array_sugar_types)[which]);
+//                } else {
+//                    currentBrew.getRecipe().setSecondarySweetener(which);
+//                    secondarySugarSpinner.setText(getResources().getStringArray(R.array.array_sugar_types)[which]);
+//                }
+//            }
+//        });
+//        newFragment.show(getSupportFragmentManager(), "sweetenerPicker");
+//    }
+//
+//    private void showTeaPickerDialog(View v) {
+//        GenericPickerDialog newFragment = GenericPickerDialog.newInstance(R.array.array_tea_types);
+//        newFragment.setOnClickListener(new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                teas.setTeaType(TeaType.get(which));
+//                teaSpinner.setText(getResources().getStringArray(R.array.array_tea_types)[which]);
+//            }
+//        });
+//        newFragment.show(getSupportFragmentManager(), "teaPicker");
+//    }
 
     private void refreshDates() {
-        mPrimaryDateTextView.setText(formatter.format(LocalDateTime.ofInstant(Instant.ofEpochMilli(currentBrew.getPrimaryStartDate()),
+        primaryDateTextView.setText(formatter.format(LocalDateTime.ofInstant(Instant.ofEpochMilli(currentBrew.getPrimaryStartDate()),
                 ZoneId.systemDefault())));
-        mSecondaryDateTextView.setText(formatter.format(LocalDateTime.ofInstant(Instant.ofEpochMilli(currentBrew.getSecondaryStartDate()),
+        secondaryDateTextView.setText(formatter.format(LocalDateTime.ofInstant(Instant.ofEpochMilli(currentBrew.getSecondaryStartDate()),
                 ZoneId.systemDefault())));
-        mEndDateTextView.setText(formatter.format(LocalDateTime.ofInstant(Instant.ofEpochMilli(currentBrew.getEndDate()),
+        endDateTextView.setText(formatter.format(LocalDateTime.ofInstant(Instant.ofEpochMilli(currentBrew.getEndDate()),
                 ZoneId.systemDefault())));
     }
 
     private void saveBrew() {
 
         // Read Fields
-        currentBrew.getRecipe().setName(mBrewName.getText().toString().trim());
-        currentTea.setName(mTeaName.getText().toString().trim());
-        currentBrew.getRecipe().setTea(currentTea);
-        currentBrew.getRecipe().setTeaAmount(Integer.parseInt(mTeaAmountPicker.getText().toString()));
-        currentBrew.getRecipe().setPrimarySweetenerAmount(Integer.parseInt(mSugarAmountPicker.getText().toString()));
-        currentBrew.getRecipe().setSecondarySweetenerAmount(Integer.parseInt(mSugarAmountPickerTwo.getText().toString()));
+        currentBrew.getRecipe().setName(brewNameEditText.getText().toString().trim());
+        currentBrew.getRecipe().setTeas(teas);
+        currentBrew.getRecipe().setTeas(teas);
+        currentBrew.getRecipe().setPrimarySweetenerAmount(Integer.parseInt(primarySugarAmountEditText.getText().toString()));
+        currentBrew.getRecipe().setSecondarySweetenerAmount(Integer.parseInt(secondarySugarAmountEditText.getText().toString()));
         currentBrew.getRecipe().setIngredients(selectedIngredients);
 
         if (Instant.now().isAfter(Instant.ofEpochMilli(currentBrew.getPrimaryStartDate())) &&
@@ -441,7 +424,6 @@ public class EntryActivity extends AppCompatActivity {
         }
 
         db.collection(Brew.COLLECTION).add(currentBrew);
-        db.collection(Ingredient.COLLECTION).add(currentBrew.getRecipe().getTea());
 
         finish();
     }

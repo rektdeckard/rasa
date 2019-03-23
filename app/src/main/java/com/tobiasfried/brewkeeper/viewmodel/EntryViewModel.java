@@ -77,4 +77,5 @@ public class EntryViewModel extends ViewModel {
     public LiveData<List<Ingredient>> getFlavors() {
         return mFlavors;
     }
+
 }

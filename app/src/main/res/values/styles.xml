@@ -33,11 +33,8 @@
 
     <!-- Chip colors -->
     <style name="CustomChipColors" parent="@style/Widget.MaterialComponents.Chip.Filter">
-        <item name="chipBackgroundColor">@color/background_color_chip_state_list</item>
-        <item name="android:textColor">@color/text_color_chip_state_list</item>
-        <item name="closeIconTint">@color/text_color_chip_state_list</item>
-        <!--<item name="android:fontFamily">@font/google_sans</item>-->
-        <!--<item name="android:font">@font/google_sans_bold</item>-->
+        <item name="android:fontFamily">@font/google_sans</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="ToolbarTheme">
@@ -48,21 +45,17 @@
     </style>
 
     <style name="LabelTextStyle">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingStart">@dimen/entry_left_margin</item>
-        <item name="android:paddingEnd">@dimen/entry_left_margin</item>
-        <item name="android:textColor">@color/colorMediumGray</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/colorDarkGray</item>
         <item name="android:textSize">@dimen/text_size_label</item>
+        <item name="android:textColorHint">@color/colorGray</item>
     </style>
 
     <style name="MainTextStyle">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingStart">@dimen/entry_left_margin</item>
-        <item name="android:paddingEnd">@dimen/entry_left_margin</item>
+        <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">@dimen/text_size</item>
         <item name="android:textColor">@color/colorDarkGray</item>
+        <item name="android:textColorHint">@color/colorGray</item>
     </style>
 
     <style name="CardStyle" parent="@style/Widget.MaterialComponents.CardView">

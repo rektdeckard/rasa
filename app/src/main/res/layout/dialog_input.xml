@@ -9,7 +9,7 @@
         android:id="@+id/add_ingredient_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/add_ingredient"
+        android:hint="@string/add_flavor"
         android:importantForAutofill="no"
         android:inputType="textCapWords" />
 

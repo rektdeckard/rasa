@@ -7,6 +7,6 @@ public interface OnRecyclerClickListener {
      * @param position within the RecyclerView
      * @param id returns id of the item within the ViewHolder, or -1 if the ViewHolder itself
      */
-    void onRecyclerViewItemClicked(int position, int id);
+    void onItemClicked(int position, int id);
 
 }
