@@ -57,4 +57,9 @@
     <string name="water">Water</string>
     <string name="add_flavor">Flavor</string>
     <string name="default_amount_tea">10</string>
+
+    <plurals name="pluralDays">
+        <item quantity="one">%d day</item>
+        <item quantity="other">%d days</item>
+    </plurals>
 </resources>

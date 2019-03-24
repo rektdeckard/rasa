@@ -23,6 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:progress="70"
+            android:max="100"
             android:progressTint="@color/colorAccent"
             android:scaleY="20" />
 

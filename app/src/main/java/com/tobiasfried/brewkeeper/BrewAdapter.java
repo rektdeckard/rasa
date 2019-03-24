@@ -1,6 +1,7 @@
 package com.tobiasfried.brewkeeper;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +19,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
 
-public class BrewAdapter extends FirestoreRecyclerAdapter<Brew, BrewAdapter.BrewHolder> {
+public class BrewAdapter extends FirestoreRecyclerAdapter<Brew, BrewViewHolder> {
 
     // Global variables
 
@@ -34,54 +33,31 @@ public class BrewAdapter extends FirestoreRecyclerAdapter<Brew, BrewAdapter.Brew
         this.context = context;
     }
 
-    // ViewHolder Class provides reference to each contained view
-    class BrewHolder extends RecyclerView.ViewHolder {
-
-        // Member views
-        CardView card;
-        TextView name;
-        TextView remainingDays;
-        TextView stage;
-        ProgressBar progressBar;
-
-        public BrewHolder(@NonNull View itemView) {
-            super(itemView);
-            // Bind views
-
-            card = itemView.findViewById(R.id.progress_card);
-            name = itemView.findViewById(R.id.text_view_name);
-            remainingDays = itemView.findViewById(R.id.text_view_status);
-            stage = itemView.findViewById(R.id.text_view_stage);
-            progressBar = itemView.findViewById(R.id.progress_horizontal);
-
-        }
-    }
-
     @NonNull
     @Override
-    public BrewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public BrewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_card, parent, false);
-        return new BrewHolder(itemView);
+        return new BrewViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BrewHolder holder, int position, @NonNull Brew currentBrew) {
+    protected void onBindViewHolder(@NonNull BrewViewHolder holder, int i, @NonNull Brew brew) {
         // Bind name and ColorStateList
-        holder.name.setText(currentBrew.getRecipe().getName());
+        holder.name.setText(brew.getRecipe().getName());
         holder.progressBar.setProgressTintList(context.getColorStateList(R.color.color_states_progress));
 
         // Calculate and bind remaining days
         long endDate;
-        if (currentBrew.getStage() == Stage.PRIMARY) {
-            endDate = currentBrew.getSecondaryStartDate();
+        if (brew.getStage() == Stage.PRIMARY) {
+            endDate = brew.getSecondaryStartDate();
         } else {
-            endDate = currentBrew.getEndDate();
+            endDate = brew.getEndDate();
         }
         double days = ChronoUnit.DAYS.between(Instant.now(), Instant.ofEpochMilli(endDate));
         String remaining;
         if (days < 0) {
             remaining = "Brew ended!";
-            holder.card.getLayoutParams().height = 50;
+            holder.card.getLayoutParams().height = 100;
         } else if (days == 0) {
             remaining = "Ending today";
         } else {
@@ -91,14 +67,17 @@ public class BrewAdapter extends FirestoreRecyclerAdapter<Brew, BrewAdapter.Brew
 
         // Set progress indicators
         double totalDays;
-        if (currentBrew.getStage() == (Stage.PRIMARY)) {
+        if (brew.getStage() == (Stage.PRIMARY)) {
             holder.stage.setText(R.string.stage_primary);
-            totalDays = ChronoUnit.DAYS.between(Instant.ofEpochMilli(currentBrew.getPrimaryStartDate()), Instant.ofEpochMilli(currentBrew.getSecondaryStartDate()));
+            totalDays = ChronoUnit.DAYS.between(Instant.ofEpochMilli(brew.getPrimaryStartDate()), Instant.ofEpochMilli(brew.getSecondaryStartDate()));
         } else {
             holder.stage.setText(R.string.stage_secondary);
-            totalDays = ChronoUnit.DAYS.between(Instant.ofEpochMilli(currentBrew.getSecondaryStartDate()), Instant.ofEpochMilli(currentBrew.getEndDate()));
+            totalDays = ChronoUnit.DAYS.between(Instant.ofEpochMilli(brew.getSecondaryStartDate()), Instant.ofEpochMilli(brew.getEndDate()));
         }
         holder.progressBar.setProgress((int) (((totalDays - days) / totalDays) * 100));
+
+        String brewId = getSnapshots().getSnapshot(i).getId();
+        // TODO Add click listener
     }
 
 

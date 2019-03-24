@@ -19,7 +19,7 @@ public class BrewViewHolder extends RecyclerView.ViewHolder {
     TextView stage;
     ProgressBar progressBar;
 
-    public BrewViewHolder(@NonNull View itemView) {
+    public BrewViewHolder(@NonNull final View itemView) {
         super(itemView);
         // Bind views
         card = itemView.findViewById(R.id.progress_card);

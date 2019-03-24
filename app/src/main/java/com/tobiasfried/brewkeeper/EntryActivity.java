@@ -41,6 +41,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -60,12 +61,14 @@ public class EntryActivity extends AppCompatActivity {
     // Views
     private EditText brewNameEditText;
     private TextView primaryDateTextView;
+    private TextView primaryRemainingDaysTextView;
     private AutoCompleteTextView teaNameEditText;
     private EditText teaAmountEditText;
     private Spinner teaSpinner;
     private Spinner primarySugarSpinner;
     private EditText primarySugarAmountEditText;
     private TextView secondaryDateTextView;
+    private TextView secondaryRemainingDaysTextView;
     private Spinner secondarySugarSpinner;
     private EditText secondarySugarAmountEditText;
     private ChipGroup flavorChipGroup;
@@ -91,12 +94,14 @@ public class EntryActivity extends AppCompatActivity {
         // Bind Views
         brewNameEditText = findViewById(R.id.create_edit_text);
         primaryDateTextView = findViewById(R.id.primary_date_calendar);
+        primaryRemainingDaysTextView = findViewById(R.id.primary_remaining_days);
         teaNameEditText = findViewById(R.id.tea_name_autocomplete);
         teaAmountEditText = findViewById(R.id.tea_amount_picker);
         teaSpinner = findViewById(R.id.tea_picker);
         primarySugarSpinner = findViewById(R.id.primary_sugar_picker);
         primarySugarAmountEditText = findViewById(R.id.sugar_amount_picker);
         secondaryDateTextView = findViewById(R.id.secondary_date_calendar);
+        secondaryRemainingDaysTextView = findViewById(R.id.secondary_remaining_days);
         secondarySugarSpinner = findViewById(R.id.secondary_sugar_picker);
         secondarySugarAmountEditText = findViewById(R.id.secondary_sugar_amount_picker);
         flavorChipGroup = findViewById(R.id.ingredient_chip_group);
@@ -161,6 +166,7 @@ public class EntryActivity extends AppCompatActivity {
         teaSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // TODO set values on current brew (also in other pickers)
                 //currentTeas.getRecipe().getTeas().get(0).setTeaType(TeaType.get(position));
             }
 
@@ -362,40 +368,19 @@ public class EntryActivity extends AppCompatActivity {
         });
     }
 
-//    private void showSweetenerPickerDialog(final View v) {
-//        GenericPickerDialog newFragment = GenericPickerDialog.newInstance(R.array.array_sugar_types);
-//        newFragment.setOnClickListener(new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                if (v == primarySugarSpinner) {
-//                    currentBrew.getRecipe().setPrimarySweetener(which);
-//                    primarySugarSpinner.setText(getResources().getStringArray(R.array.array_sugar_types)[which]);
-//                } else {
-//                    currentBrew.getRecipe().setSecondarySweetener(which);
-//                    secondarySugarSpinner.setText(getResources().getStringArray(R.array.array_sugar_types)[which]);
-//                }
-//            }
-//        });
-//        newFragment.show(getSupportFragmentManager(), "sweetenerPicker");
-//    }
-//
-//    private void showTeaPickerDialog(View v) {
-//        GenericPickerDialog newFragment = GenericPickerDialog.newInstance(R.array.array_tea_types);
-//        newFragment.setOnClickListener(new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                teas.setTeaType(TeaType.get(which));
-//                teaSpinner.setText(getResources().getStringArray(R.array.array_tea_types)[which]);
-//            }
-//        });
-//        newFragment.show(getSupportFragmentManager(), "teaPicker");
-//    }
-
     private void refreshDates() {
         primaryDateTextView.setText(formatter.format(LocalDateTime.ofInstant(Instant.ofEpochMilli(currentBrew.getPrimaryStartDate()),
                 ZoneId.systemDefault())));
+        int primaryDays = (int) ChronoUnit.DAYS.between(Instant.ofEpochMilli(currentBrew.getPrimaryStartDate()),
+                Instant.ofEpochMilli(currentBrew.getSecondaryStartDate()));
+        String primaryString = getResources().getQuantityString(R.plurals.pluralDays, primaryDays, primaryDays);
+        primaryRemainingDaysTextView.setText(primaryString);
         secondaryDateTextView.setText(formatter.format(LocalDateTime.ofInstant(Instant.ofEpochMilli(currentBrew.getSecondaryStartDate()),
                 ZoneId.systemDefault())));
+        int secondaryDays = (int) ChronoUnit.DAYS.between(Instant.ofEpochMilli(currentBrew.getSecondaryStartDate()),
+                Instant.ofEpochMilli(currentBrew.getEndDate()));
+        String secondaryString = getResources().getQuantityString(R.plurals.pluralDays, secondaryDays, secondaryDays);
+        secondaryRemainingDaysTextView.setText(secondaryString);
         endDateTextView.setText(formatter.format(LocalDateTime.ofInstant(Instant.ofEpochMilli(currentBrew.getEndDate()),
                 ZoneId.systemDefault())));
     }
@@ -409,6 +394,7 @@ public class EntryActivity extends AppCompatActivity {
         currentBrew.getRecipe().setPrimarySweetenerAmount(Integer.parseInt(primarySugarAmountEditText.getText().toString()));
         currentBrew.getRecipe().setSecondarySweetenerAmount(Integer.parseInt(secondarySugarAmountEditText.getText().toString()));
         currentBrew.getRecipe().setIngredients(selectedIngredients);
+        currentBrew.getRecipe().setNotes(notesEditText.getText().toString().trim());
 
         if (Instant.now().isAfter(Instant.ofEpochMilli(currentBrew.getPrimaryStartDate())) &&
                 Instant.now().isBefore(Instant.ofEpochMilli(currentBrew.getSecondaryStartDate()))) {
