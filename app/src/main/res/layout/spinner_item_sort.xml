@@ -2,12 +2,12 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@android:id/text1"
-    style="@style/LabelTextStyle"
     android:singleLine="true"
+    android:gravity="center_horizontal"
+    android:textColor="@color/colorAccent"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="8dp"
     android:ellipsize="marquee"
     android:textAlignment="inherit"
-    android:hint="@string/tea_type"
-    tools:text="Oolong"/>
+    tools:text="@string/brew_name_label"/>

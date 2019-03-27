@@ -1,12 +1,9 @@
 package com.tobiasfried.brewkeeper;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -41,7 +38,7 @@ public class BrewAdapter extends FirestoreRecyclerAdapter<Brew, BrewViewHolder> 
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull BrewViewHolder holder, int i, @NonNull Brew brew) {
+    protected void onBindViewHolder(@NonNull BrewViewHolder holder, final int position, @NonNull final Brew brew) {
         // Bind name and ColorStateList
         holder.name.setText(brew.getRecipe().getName());
         holder.progressBar.setProgressTintList(context.getColorStateList(R.color.color_states_progress));
@@ -76,8 +73,13 @@ public class BrewAdapter extends FirestoreRecyclerAdapter<Brew, BrewViewHolder> 
         }
         holder.progressBar.setProgress((int) (((totalDays - days) / totalDays) * 100));
 
-        String brewId = getSnapshots().getSnapshot(i).getId();
-        // TODO Add click listener
+        final String brewId = getSnapshots().getSnapshot(position).getId();
+        holder.card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onItemClicked(position, brewId);
+            }
+        });
     }
 
 

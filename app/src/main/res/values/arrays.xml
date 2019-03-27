@@ -19,4 +19,16 @@
         <item>@string/sweetener_other</item>
     </string-array>
 
+    <string-array name="array_sort_options">
+        <item>@string/sort_name</item>
+        <item>@string/sort_secondary_date</item>
+        <item>@string/sort_stage</item>
+    </string-array>
+
+    <string-array name="array_sort_names">
+        <item>@string/brew_name_label</item>
+        <item>@string/completion_date</item>
+        <item>@string/stage</item>
+    </string-array>
+
 </resources>

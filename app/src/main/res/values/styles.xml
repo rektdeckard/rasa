@@ -1,19 +1,26 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="@style/Theme.MaterialComponents.Light.DarkActionBar">
+    <!-- BASE THEME -->
+    <style name="AppTheme" parent="@style/Theme.MaterialComponents.Light.NoActionBar">
 
-        <!-- Main colors -->
+        <!-- DEFAULT TEXT -->
+        <item name="android:fontFamily">@font/google_sans</item>
+
+        <!-- MAIN COLORS -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:colorBackground">@color/background</item>
-        <!--<item name="actionBarStyle">@style/ToolbarTheme</item>-->
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:statusBarColor">@color/background</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:navigationBarColor">@color/background</item>
+        <item name="actionBarStyle">@style/ToolbarTheme</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
 
         <!-- Additional colors -->
         <!--<item name="colorPrimaryVariant">@color/primaryVariant</item>-->
         <!--<item name="colorOnPrimary">@color/onPrimary</item>-->
-        <!-- (responsible for FAB and button text/icons -->
+         <!--(responsible for FAB and button text/icons -->
         <!--<item name="colorSecondary">@color/colorSecondary</item>-->
         <!--<item name="colorSecondaryVariant">@color/secondaryVariant</item>-->
         <!--<item name="colorOnSecondary">@color/onSecondary</item>-->
@@ -27,23 +34,34 @@
         <!--<item name="colorControlHighlight">@color/controlHighlight</item>-->
         <!--<item name="colorBackgroundFloating">@color/backgroundFloating</item>-->
 
-        <item name="android:fontFamily">@font/google_sans</item>
-
     </style>
 
-    <!-- Chip colors -->
-    <style name="CustomChipColors" parent="@style/Widget.MaterialComponents.Chip.Filter">
+    <!-- BUTTONS -->
+    <style name="MaterialButtonTheme" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="backgroundTint">@color/color_states_buttons</item>
+        <item name="android:textColor">@color/color_states_button_text</item>
+    </style>
+
+    <!-- CARDS -->
+    <style name="CardTheme" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="cardElevation">0dp</item>
+        <item name="android:clipChildren">true</item>
+        <item name="cardCornerRadius">6dp</item>
+    </style>
+
+    <!-- CHIPS -->
+    <style name="ChipTheme" parent="@style/Widget.MaterialComponents.Chip.Filter">
         <item name="android:fontFamily">@font/google_sans</item>
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="ToolbarTheme">
-        <item name="android:background">@color/backgroundWithAlpha</item>
-        <item name="android:actionBarDivider">@android:color/transparent</item>
-        <item name="android:statusBarColor">@android:color/white</item>
-        <!--<item name="android:windowActionBarOverlay">@android:color/white</item>-->
+    <!-- TEXT STYLES -->
+    <style name="MainTextStyle">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:textColor">@color/colorDarkGray</item>
+        <item name="android:textColorHint">@color/colorGray</item>
     </style>
-
     <style name="LabelTextStyle">
         <item name="android:gravity">center_vertical</item>
         <item name="android:textColor">@color/colorDarkGray</item>
@@ -51,15 +69,89 @@
         <item name="android:textColorHint">@color/colorGray</item>
     </style>
 
-    <style name="MainTextStyle">
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:textSize">@dimen/text_size</item>
-        <item name="android:textColor">@color/colorDarkGray</item>
-        <item name="android:textColorHint">@color/colorGray</item>
+    <!-- PROGRESS BAR -->
+    <style name="ProgressBarTheme" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="android:progressTint">@color/color_states_progress</item>
+        <item name="android:secondaryProgressTint">@color/colorPrimary</item>
+        <item name="android:progressBackgroundTint">@android:color/white</item>
+        <item name="android:background">@android:color/white</item>
     </style>
 
-    <style name="CardStyle" parent="@style/Widget.MaterialComponents.CardView">
-        <item name="cardBackgroundColor">@android:color/white</item>
+    <!-- TOOLBAR -->
+    <style name="ToolbarTheme">
+        <item name="android:background">@color/backgroundWithAlpha</item>
+        <item name="android:actionBarDivider">@android:color/transparent</item>
     </style>
+
+
+    <!-- COLOR DEBUGGING -->
+    <style name="DebugColors" parent="@style/Theme.MaterialComponents.Light.NoActionBar">
+
+        <!-- System colors -->
+        <item name="android:windowBackground">@color/__debugWindowBackground</item>
+
+        <item name="android:colorPressedHighlight">#FF4400</item>
+        <item name="android:colorLongPressedHighlight">#FF0044</item>
+        <item name="android:colorFocusedHighlight">#44FF00</item>
+        <item name="android:colorActivatedHighlight">#00FF44</item>
+        <item name="android:colorMultiSelectHighlight">#4400FF</item>
+
+        <item name="android:statusBarColor">#FFF000</item>
+        <item name="android:navigationBarColor">#000FFF</item>
+
+        <item name="android:colorForeground">#440000</item>
+        <item name="android:colorForegroundInverse">#004400</item>
+        <item name="android:colorBackground">#444400</item>
+        <item name="android:colorBackgroundCacheHint">#440044</item>
+
+        <item name="android:textColorPrimary">#FFFF00</item>
+        <item name="android:textColorSecondary">#FF00FF</item>
+        <item name="android:textColorTertiary">#00FFFF</item>
+
+        <item name="android:textColorPrimaryInverse">#CCCC00</item>
+        <item name="android:textColorSecondaryInverse">#CC00CC</item>
+        <item name="android:textColorTertiaryInverse">#00CCCC</item>
+
+        <item name="android:textColorPrimaryDisableOnly">#FFCC00</item>
+        <item name="android:textColorPrimaryInverseDisableOnly">#FF00CC</item>
+
+        <item name="android:textColorPrimaryNoDisable">#CCFF00</item>
+        <item name="android:textColorSecondaryNoDisable">#00FFCC</item>
+
+        <item name="android:textColorPrimaryInverseNoDisable">#CC00FF</item>
+        <item name="android:textColorSecondaryInverseNoDisable">#00CCFF</item>
+
+        <item name="android:textColorHint">#FF8800</item>
+        <item name="android:textColorHintInverse">#FF0088</item>
+
+        <item name="android:textColorHighlight">#88FF00</item>
+        <item name="android:textColorHighlightInverse">#00FF88</item>
+
+        <item name="android:textColorLink">#8800FF</item>
+        <item name="android:textColorLinkInverse">#0088FF</item>
+
+        <item name="android:textColorAlertDialogListItem">#444444</item>
+
+        <!-- Color palette (via app-compat) -->
+        <item name="colorPrimary">#FF0000</item>
+        <item name="colorPrimaryDark">#00FF00</item>
+        <item name="colorAccent">#0000FF</item>
+
+        <item name="colorControlNormal">#CC0000</item>
+        <item name="colorControlActivated">#00CC00</item>
+        <item name="colorControlHighlight">#0000CC</item>
+
+        <item name="colorButtonNormal">#880000</item>
+        <item name="colorSwitchThumbNormal">#008800</item>
+
+        <!-- Random other things found in app-compat -->
+        <item name="actionMenuTextColor">#440000</item>
+        <item name="editTextColor">#004400</item>
+        <item name="textColorSearchUrl">#000044</item>
+
+        <item name="android:fontFamily">@font/google_sans</item>
+
+    </style>
+    <color name="__debugWindowBackground">#888888</color>
 
 </resources>

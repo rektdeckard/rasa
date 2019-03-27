@@ -53,13 +53,23 @@
     <string name="stage_primary">1F</string>
     <string name="stage_secondary">2F</string>
     <string name="unit_liters">L</string>
-    <string name="default_amount_water">1.0</string>
     <string name="water">Water</string>
     <string name="add_flavor">Flavor</string>
+    <string name="default_amount">0</string>
     <string name="default_amount_tea">10</string>
+    <string name="default_amount_water">1.0</string>
 
     <plurals name="pluralDays">
         <item quantity="one">%d day</item>
         <item quantity="other">%d days</item>
     </plurals>
+
+    <string name="sort_name">recipe.name</string>
+    <string name="sort_secondary_date">secondaryStartDate</string>
+    <string name="sort_end_date">endDate</string>
+    <string name="sort_stage">stage</string>
+
+    <string name="add_tea">+ Add tea</string>
+    <string name="action_cancel">Cancel brew</string>
+    <string name="sort_by">Sort by\:</string>
 </resources>

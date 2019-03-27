@@ -1,73 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/background_gradient">
+    android:layout_height="match_parent">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="67dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="16dp">
-
-            <TextView
-                android:id="@+id/create_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:text="@string/create_brew"
-                android:textColor="#de000000"
-                android:textSize="16sp" />
-
-            <EditText
-                android:id="@+id/create_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/create_text_view"
-                android:layout_centerHorizontal="true"
-                android:backgroundTint="@android:color/transparent"
-                android:gravity="center_horizontal"
-                android:hint="@string/brew_name"
-                android:inputType="textCapWords"
-                android:paddingStart="32dp"
-                android:paddingEnd="32dp"
-                android:textColor="@android:color/black"
-                android:textColorHint="@android:color/black"
-                android:textSize="32sp"
-                tools:text="Wisteria Blue" />
 
             <View
                 android:id="@+id/pip1"
-                android:layout_width="4dp"
-                android:layout_height="4dp"
-                android:layout_below="@+id/create_edit_text"
+                android:layout_width="3dp"
+                android:layout_height="3dp"
+                android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/tl_pips" />
 
             <View
                 android:id="@+id/pip2"
-                android:layout_width="4dp"
-                android:layout_height="4dp"
+                android:layout_width="3dp"
+                android:layout_height="3dp"
                 android:layout_below="@+id/pip1"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="6dp"
                 android:background="@drawable/tl_pips" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/primary_card"
+                style="@style/CardTheme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/pip2"
-                android:layout_marginTop="8dp"
-                app:cardBackgroundColor="@android:color/white"
-                app:cardCornerRadius="6dp">
+                android:layout_marginTop="12dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -100,10 +74,10 @@
 
                             <TextView
                                 android:id="@+id/primary_date_calendar"
+                                style="@style/MainTextStyle"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                style="@style/MainTextStyle"
                                 tools:text="Mar 1 – Mar 12" />
 
                             <TextView
@@ -123,8 +97,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/primary_date"
-                        android:layout_marginTop="16dp"
                         android:layout_marginHorizontal="@dimen/card_margin_horizontal"
+                        android:layout_marginTop="16dp"
                         android:orientation="horizontal">
 
                         <AutoCompleteTextView
@@ -138,6 +112,7 @@
                             android:inputType="textCapWords"
                             android:paddingStart="0dp"
                             android:paddingEnd="0dp"
+                            android:completionThreshold="1"
                             tools:text="Blue Mountain" />
 
                         <Spinner
@@ -145,9 +120,9 @@
                             style="@style/LabelTextStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
+                            android:background="@null"
                             android:paddingHorizontal="16dp"
                             android:spinnerMode="dialog"
-                            android:background="@null"
                             tools:listitem="@layout/spinner_item_small" />
 
                         <EditText
@@ -156,12 +131,13 @@
                             android:layout_width="40dp"
                             android:layout_height="match_parent"
                             android:backgroundTint="@android:color/transparent"
-                            android:hint="@string/default_amount_tea"
+                            android:hint="@string/default_amount"
                             android:inputType="number"
                             android:maxLength="3"
                             android:selectAllOnFocus="true"
+                            android:text="@string/default_amount_tea"
                             android:textAlignment="textEnd"
-                            android:textColorHint="@color/colorDarkGray" />
+                            android:importantForAutofill="no" />
 
                         <TextView
                             android:id="@+id/unit_suffix1"
@@ -172,13 +148,42 @@
 
                     </LinearLayout>
 
+                    <TextView
+                        android:id="@+id/add_tea_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tea"
+                        android:layout_marginHorizontal="@dimen/card_margin_horizontal"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/add_tea"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/text_size_label"
+                        android:textStyle="bold" />
+
+                    <!--<com.google.android.material.button.MaterialButton-->
+                        <!--android:id="@+id/add_tea_edit_text"-->
+                        <!--style="@style/Widget.MaterialComponents.Button.TextButton"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginHorizontal="@dimen/card_margin_horizontal"-->
+                        <!--android:layout_below="@id/tea"-->
+                        <!--android:paddingStart="0dp"-->
+                        <!--android:paddingEnd="0dp"-->
+                        <!--android:textAlignment="viewStart"-->
+                        <!--android:minWidth="96dp"-->
+                        <!--android:text="Add tea"-->
+                        <!--android:textStyle="bold"-->
+                        <!--android:textSize="@dimen/text_size_label"-->
+                        <!--android:textColor="@color/colorAccent"/>-->
+
                     <LinearLayout
                         android:id="@+id/primary_sugar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/tea"
-                        android:layout_marginTop="16dp"
+                        android:layout_below="@id/add_tea_edit_text"
                         android:layout_marginHorizontal="@dimen/card_margin_horizontal"
+                        android:layout_marginTop="12dp"
                         android:orientation="horizontal">
 
                         <Spinner
@@ -186,8 +191,8 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:spinnerMode="dialog"
                             android:background="@null"
+                            android:spinnerMode="dialog"
                             tools:listitem="@layout/spinner_item" />
 
                         <EditText
@@ -196,12 +201,13 @@
                             android:layout_width="40dp"
                             android:layout_height="wrap_content"
                             android:backgroundTint="@android:color/transparent"
-                            android:hint="@string/default_amount_sweetener"
+                            android:hint="@string/default_amount"
                             android:inputType="number"
                             android:maxLength="3"
                             android:selectAllOnFocus="true"
+                            android:text="@string/default_amount_sweetener"
                             android:textAlignment="textEnd"
-                            android:textColorHint="@color/colorDarkGray" />
+                            android:importantForAutofill="no" />
 
                         <TextView
                             android:id="@+id/unit_suffix2"
@@ -217,8 +223,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/primary_sugar"
-                        android:layout_marginTop="16dp"
                         android:layout_marginHorizontal="@dimen/card_margin_horizontal"
+                        android:layout_marginTop="16dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -235,12 +241,13 @@
                             android:layout_width="40dp"
                             android:layout_height="wrap_content"
                             android:backgroundTint="@android:color/transparent"
-                            android:hint="@string/default_amount_water"
+                            android:hint="@string/default_amount"
                             android:inputType="numberDecimal"
                             android:maxLength="4"
                             android:selectAllOnFocus="true"
+                            android:text="@string/default_amount_water"
                             android:textAlignment="textEnd"
-                            android:textColorHint="@color/colorDarkGray" />
+                            android:importantForAutofill="no" />
 
                         <TextView
                             android:id="@+id/unit_suffix4"
@@ -258,31 +265,29 @@
 
             <View
                 android:id="@+id/pip3"
-                android:layout_width="4dp"
-                android:layout_height="4dp"
+                android:layout_width="3dp"
+                android:layout_height="3dp"
                 android:layout_below="@+id/primary_card"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="12dp"
                 android:background="@drawable/tl_pips" />
 
             <View
                 android:id="@+id/pip4"
-                android:layout_width="4dp"
-                android:layout_height="4dp"
+                android:layout_width="3dp"
+                android:layout_height="3dp"
                 android:layout_below="@+id/pip3"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="6dp"
                 android:background="@drawable/tl_pips" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/secondary_card"
+                style="@style/CardTheme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/pip4"
-                android:layout_marginTop="8dp"
-                android:elevation="28dp"
-                app:cardBackgroundColor="@android:color/white"
-                app:cardCornerRadius="6dp">
+                android:layout_marginTop="12dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -315,10 +320,10 @@
 
                             <TextView
                                 android:id="@+id/secondary_date_calendar"
+                                style="@style/MainTextStyle"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                style="@style/MainTextStyle"
                                 tools:text="Mar 12 – Mar 15" />
 
                             <TextView
@@ -338,8 +343,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/secondary_date"
-                        android:layout_marginTop="16dp"
                         android:layout_marginHorizontal="@dimen/card_margin_horizontal"
+                        android:layout_marginTop="16dp"
                         android:orientation="horizontal">
 
                         <Spinner
@@ -347,9 +352,9 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:spinnerMode="dialog"
                             android:background="@null"
-                            tools:listitem="@layout/spinner_item"/>
+                            android:spinnerMode="dialog"
+                            tools:listitem="@layout/spinner_item" />
 
                         <EditText
                             android:id="@+id/secondary_sugar_amount_picker"
@@ -357,71 +362,72 @@
                             android:layout_width="40dp"
                             android:layout_height="wrap_content"
                             android:backgroundTint="@android:color/transparent"
-                            android:hint="0"
+                            android:hint="@string/default_amount"
                             android:inputType="number"
                             android:maxLength="3"
                             android:selectAllOnFocus="true"
+                            android:text="@string/default_amount"
                             android:textAlignment="textEnd"
-                            android:textColorHint="@color/colorDarkGray" />
+                            android:importantForAutofill="no" />
 
                         <TextView
                             android:id="@+id/unit_suffix3"
+                            style="@style/LabelTextStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
-                            android:text="@string/unit_grams"
-                            style="@style/LabelTextStyle" />
+                            android:text="@string/unit_grams" />
 
                     </LinearLayout>
 
                     <!--<TextView-->
-                        <!--android:id="@+id/ingredient_label"-->
-                        <!--style="@style/MainTextStyle"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_below="@+id/secondary_sugar"-->
-                        <!--android:layout_marginHorizontal="@dimen/card_margin_horizontal"-->
-                        <!--android:layout_marginTop="7dp"-->
-                        <!--android:text="@string/flavors" />-->
+                    <!--android:id="@+id/ingredient_label"-->
+                    <!--style="@style/MainTextStyle"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_below="@+id/secondary_sugar"-->
+                    <!--android:layout_marginHorizontal="@dimen/card_margin_horizontal"-->
+                    <!--android:layout_marginTop="7dp"-->
+                    <!--android:text="@string/flavors" />-->
 
                     <com.google.android.material.chip.ChipGroup
                         android:id="@+id/ingredient_chip_group"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/secondary_sugar"
-                        android:layout_marginTop="16dp"
                         android:layout_marginHorizontal="@dimen/card_margin_horizontal"
+                        android:layout_marginTop="16dp"
                         app:chipSpacing="8dp" />
 
                     <TextView
                         android:id="@+id/add_ingredient_edit_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_below="@id/ingredient_chip_group"
                         android:layout_marginHorizontal="@dimen/card_margin_horizontal"
                         android:layout_marginTop="12dp"
                         android:layout_marginBottom="8dp"
-                        android:layout_below="@id/ingredient_chip_group"
                         android:text="@string/add_ingredient"
-                        android:textStyle="bold"
+                        android:textColor="@color/colorAccent"
                         android:textSize="@dimen/text_size_label"
-                        android:textColor="@color/colorAccent"/>
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/end_label"
+                        style="@style/LabelTextStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/add_ingredient_edit_text"
-                        android:layout_marginTop="16dp"
                         android:layout_marginHorizontal="@dimen/card_margin_horizontal"
-                        style="@style/LabelTextStyle"
+                        android:layout_marginTop="16dp"
                         android:text="@string/completion_date" />
 
                     <TextView
                         android:id="@+id/end_date_calendar"
+                        style="@style/MainTextStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/end_label"
                         android:layout_marginHorizontal="@dimen/card_margin_horizontal"
-                        style="@style/MainTextStyle"
                         tools:text="Mar 15" />
 
                 </RelativeLayout>
@@ -430,36 +436,97 @@
 
             <EditText
                 android:id="@+id/notes"
+                style="@style/MainTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/secondary_card"
                 android:layout_marginHorizontal="@dimen/card_margin_horizontal"
+                android:backgroundTint="@android:color/transparent"
+                android:hint="@string/notes"
+                android:inputType="textCapSentences"
+                android:minLines="2"
+                android:scrollHorizontally="false"
                 android:paddingStart="0dp"
                 android:paddingEnd="0dp"
-                android:backgroundTint="@android:color/transparent"
-                android:minLines="2"
-                style="@style/MainTextStyle"
                 android:textColorHint="@color/colorDarkGray"
-                android:hint="@string/notes"/>
+                android:importantForAutofill="no" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_start"
+                style="@style/MaterialButtonTheme"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="80dp"
                 android:layout_below="@+id/notes"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/google_sans_medium"
                 android:text="@string/start"
                 android:textAllCaps="false"
                 android:textSize="16sp"
-                android:fontFamily="@font/google_sans_medium"
-                app:backgroundTint="@color/colorDarkGray"
+                android:enabled="false"
                 app:cornerRadius="8dp" />
 
         </RelativeLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background">
 
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:expandedTitleGravity="top"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snapMargins">
 
-</RelativeLayout>
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="60dp">
+
+                <TextView
+                    android:id="@+id/create_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/create_brew"
+                    android:textColor="#de000000"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/create_edit_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/create_text_view"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:backgroundTint="@android:color/transparent"
+                    android:gravity="center_horizontal"
+                    android:hint="@string/brew_name"
+                    android:imeOptions="actionDone"
+                    android:inputType="textCapWords"
+                    android:nextFocusDown="@id/tea_amount_picker"
+                    android:selectAllOnFocus="true"
+                    android:scrollHorizontally="false"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="@android:color/black"
+                    android:textSize="32sp"
+                    tools:text="Wisteria Blue"
+                    android:importantForAutofill="no" />
+
+            </RelativeLayout>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

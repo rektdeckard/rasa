@@ -1,8 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/list"
-    android:scrollbars="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:listitem="@layout/list_item_card" />
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/sort_by"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginVertical="24dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/text_view_sort_by"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sort_by"/>
+
+        <Spinner
+            android:id="@+id/spinner_sort_by"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:pointerIcon="vertical_double_arrow"
+            android:spinnerMode="dropdown"
+            tools:listitem="@layout/spinner_item_sort"/>
+
+    </LinearLayout>
+
+
+
+    <androidx.recyclerview.widget.RecyclerView xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/sort_by"
+        android:overScrollMode="never"
+        android:scrollbars="vertical"
+        tools:listitem="@layout/list_item_card" />
+
+</RelativeLayout>

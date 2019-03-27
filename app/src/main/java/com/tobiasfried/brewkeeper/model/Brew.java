@@ -1,13 +1,19 @@
 package com.tobiasfried.brewkeeper.model;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.TemporalAmount;
 import java.util.List;
 
 import com.tobiasfried.brewkeeper.constants.*;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 public class Brew {
 
-    private static final String LOG_TAG = Brew.class.getSimpleName();
     public static final String COLLECTION = "brews";
 
     // MEMBER FIELDS
@@ -40,12 +46,12 @@ public class Brew {
      * @param stage                    Stage {@link Stage}
      * @param isRunning                boolean
      */
-    public Brew(String name, List<Ingredient> teas,
+    public Brew(@NonNull String name, @NonNull List<Ingredient> teas,
                 int primarySweetener, int primarySweetenerAmount,
                 int secondarySweetener, int secondarySweetenerAmount,
-                double water, List<Ingredient> ingredients, String notes,
+                double water, @Nullable List<Ingredient> ingredients, @Nullable String notes,
                 long primaryStartDate, long secondaryStartDate, long endDate,
-                Stage stage, boolean isRunning) {
+                @Nullable Stage stage, boolean isRunning) {
         this.recipe = new Recipe(name, teas, primarySweetener, primarySweetenerAmount,
                 secondarySweetener, secondarySweetenerAmount, water, ingredients, notes);
         this.primaryStartDate = primaryStartDate;
@@ -65,9 +71,9 @@ public class Brew {
      * @param stage                    Stage {@link Stage}
      * @param isRunning                boolean
      */
-    public Brew(Recipe recipe,
+    public Brew(@NonNull Recipe recipe,
                 long primaryStartDate, long secondaryStartDate, long endDate,
-                Stage stage, boolean isRunning) {
+                @Nullable Stage stage, boolean isRunning) {
         this.recipe = recipe;
         this.primaryStartDate = primaryStartDate;
         this.secondaryStartDate = secondaryStartDate;
@@ -80,14 +86,17 @@ public class Brew {
      * Empty constructor for editor activity
      */
     public Brew() {
-        this.recipe = new Recipe();
-        this.stage = Stage.PRIMARY;
-        this.isRunning = false;
+        recipe = new Recipe();
+        primaryStartDate = Instant.now().toEpochMilli();
+        secondaryStartDate = ZonedDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()).plusDays(10).toEpochSecond() * 1000;
+        endDate = ZonedDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()).plusDays(12).toEpochSecond() * 1000;
+        stage = Stage.PRIMARY;
+        isRunning = false;
     }
 
     // GETTERS
 
-    public Recipe getRecipe() {
+    public @NonNull Recipe getRecipe() {
         return recipe;
     }
 
@@ -103,7 +112,7 @@ public class Brew {
         return this.endDate;
     }
 
-    public Stage getStage() {
+    public @Nullable Stage getStage() {
         return stage;
     }
 
@@ -114,7 +123,7 @@ public class Brew {
 
     // SETTERS
 
-    public void setRecipe(Recipe recipe) {
+    public void setRecipe(@NonNull Recipe recipe) {
         this.recipe = recipe;
     }
 
@@ -130,7 +139,7 @@ public class Brew {
         this.endDate = endDate;
     }
 
-    public void setStage(Stage stage) {
+    public void setStage(@Nullable Stage stage) {
         this.stage = stage;
     }
 

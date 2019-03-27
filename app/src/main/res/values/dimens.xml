@@ -16,4 +16,5 @@
     <dimen name="text_size">17sp</dimen>
     <dimen name="text_size_label">13sp</dimen>
     <dimen name="card_margin_horizontal">20dp</dimen>
+    <dimen name="tall_toolbar_height">180dp</dimen>
 </resources>

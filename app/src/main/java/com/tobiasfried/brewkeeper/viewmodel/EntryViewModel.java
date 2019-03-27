@@ -1,7 +1,10 @@
 package com.tobiasfried.brewkeeper.viewmodel;
 
+import android.util.Log;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -23,6 +26,10 @@ import androidx.lifecycle.ViewModel;
 
 public class EntryViewModel extends ViewModel {
 
+    private static final String LOG_TAG = EntryViewModel.class.getSimpleName();
+
+    private DocumentReference mDocRef;
+
     private MutableLiveData<Brew> mBrew = new MutableLiveData<>();
     private MutableLiveData<List<Ingredient>> mTeas = new MutableLiveData<>();
     private MutableLiveData<List<Ingredient>> mFlavors = new MutableLiveData<>();
@@ -35,9 +42,11 @@ public class EntryViewModel extends ViewModel {
     public EntryViewModel(FirebaseFirestore database, String brewId) {
         // Get Brew
         if (brewId == null) {
+            mDocRef = database.collection(Brew.COLLECTION).document();
             mBrew.setValue(new Brew());
         } else {
-            database.collection(Brew.COLLECTION).document(brewId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            mDocRef = database.collection(Brew.COLLECTION).document(brewId);
+            mDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful() && task.getResult() != null) {
@@ -64,6 +73,10 @@ public class EntryViewModel extends ViewModel {
                 }
             }
         });
+    }
+
+    public DocumentReference getDocumentReference() {
+        return mDocRef;
     }
 
     public LiveData<Brew> getBrew() {

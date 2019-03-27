@@ -1,6 +1,7 @@
 package com.tobiasfried.brewkeeper;
 
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -18,6 +19,7 @@ public class BrewViewHolder extends RecyclerView.ViewHolder {
     TextView remainingDays;
     TextView stage;
     ProgressBar progressBar;
+    ImageView check;
 
     public BrewViewHolder(@NonNull final View itemView) {
         super(itemView);
@@ -27,6 +29,7 @@ public class BrewViewHolder extends RecyclerView.ViewHolder {
         remainingDays = itemView.findViewById(R.id.text_view_status);
         stage = itemView.findViewById(R.id.text_view_stage);
         progressBar = itemView.findViewById(R.id.progress_horizontal);
+        check = itemView.findViewById(R.id.image_view_check);
 
     }
 }

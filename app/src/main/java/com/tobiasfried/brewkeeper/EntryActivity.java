@@ -1,17 +1,26 @@
 package com.tobiasfried.brewkeeper;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.util.TimeUtils;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -20,12 +29,15 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -34,6 +46,7 @@ import com.tobiasfried.brewkeeper.constants.Stage;
 import com.tobiasfried.brewkeeper.constants.TeaType;
 import com.tobiasfried.brewkeeper.model.Brew;
 import com.tobiasfried.brewkeeper.model.Ingredient;
+import com.tobiasfried.brewkeeper.utils.TimeUtility;
 import com.tobiasfried.brewkeeper.viewmodel.EntryViewModel;
 import com.tobiasfried.brewkeeper.viewmodel.EntryViewModelFactory;
 
@@ -45,14 +58,23 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Objects;
 
 
 public class EntryActivity extends AppCompatActivity {
 
+    private static final String LOG_TAG = EntryActivity.class.getSimpleName();
     public static String EXTRA_BREW_ID = "brewID";
 
     private DateTimeFormatter formatter;
 
+    // Database
+    private FirebaseFirestore db;
+    private EntryViewModel viewModel;
+    private String brewId;
+    private DocumentReference docRef;
+
+    // Model
     private Brew currentBrew;
     private List<Ingredient> teas;
     private List<Ingredient> ingredients;
@@ -67,6 +89,7 @@ public class EntryActivity extends AppCompatActivity {
     private Spinner teaSpinner;
     private Spinner primarySugarSpinner;
     private EditText primarySugarAmountEditText;
+    private EditText waterAmountEditText;
     private TextView secondaryDateTextView;
     private TextView secondaryRemainingDaysTextView;
     private Spinner secondarySugarSpinner;
@@ -76,12 +99,6 @@ public class EntryActivity extends AppCompatActivity {
     private TextView endDateTextView;
     private EditText notesEditText;
     private MaterialButton submitButton;
-
-    // ViewModel
-    private EntryViewModel viewModel;
-
-    // Database
-    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +117,7 @@ public class EntryActivity extends AppCompatActivity {
         teaSpinner = findViewById(R.id.tea_picker);
         primarySugarSpinner = findViewById(R.id.primary_sugar_picker);
         primarySugarAmountEditText = findViewById(R.id.sugar_amount_picker);
+        waterAmountEditText = findViewById(R.id.water_amount_picker);
         secondaryDateTextView = findViewById(R.id.secondary_date_calendar);
         secondaryRemainingDaysTextView = findViewById(R.id.secondary_remaining_days);
         secondarySugarSpinner = findViewById(R.id.secondary_sugar_picker);
@@ -110,27 +128,31 @@ public class EntryActivity extends AppCompatActivity {
         notesEditText = findViewById(R.id.notes);
         submitButton = findViewById(R.id.button_start);
 
+        // TODO fetch from loaded brew
+        selectedIngredients = new ArrayList<>();
+
         // Get Database instance
         db = FirebaseFirestore.getInstance();
 
-        String brewId = getIntent().hasExtra(EXTRA_BREW_ID) ? getIntent().getExtras().getString(EXTRA_BREW_ID) : null;
-        if (brewId != null) {
-            // Edit mode
-            EntryViewModelFactory factory = new EntryViewModelFactory(FirebaseFirestore.getInstance(), brewId);
-            viewModel = ViewModelProviders.of(this, factory).get(EntryViewModel.class);
-            fetchBrew();
-        } else {
-            // Create mode
-            currentBrew = new Brew();
-            currentBrew.setPrimaryStartDate(Instant.now().toEpochMilli());
-            teas = new ArrayList<>();
-            teas.add(new Ingredient(null, IngredientType.TEA, TeaType.OTHER, 0));
-            EntryViewModelFactory factory = new EntryViewModelFactory(db, null);
-            viewModel = ViewModelProviders.of(this, factory).get(EntryViewModel.class);
-        }
+        // Get Toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        //toolbar.setTitle("");
+        toolbar.inflateMenu(R.menu.menu_entry);
+
+
+
+        brewId = getIntent().hasExtra(EXTRA_BREW_ID) ? Objects.requireNonNull(getIntent().getExtras()).getString(EXTRA_BREW_ID) : null;
+        EntryViewModelFactory factory = new EntryViewModelFactory(db, brewId);
+        viewModel = ViewModelProviders.of(this, factory).get(EntryViewModel.class);
+        fetchBrew();
+
+        docRef = viewModel.getDocumentReference();
+        Log.i(LOG_TAG, docRef.toString());
 
         setupSpinners();
         setupDialogs();
+        setupEntryFields();
         setupButtons();
 
     }
@@ -180,6 +202,39 @@ public class EntryActivity extends AppCompatActivity {
         sweetenerTypes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         primarySugarSpinner.setAdapter(sweetenerTypes);
         secondarySugarSpinner.setAdapter(sweetenerTypes);
+    }
+
+    private void setupEntryFields() {
+        TextWatcher requiredWatcher = new TextWatcher(){
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String name = brewNameEditText.getText().toString().trim();
+                String teaName = teaNameEditText.getText().toString().trim();
+                String teaAmount = teaAmountEditText.getText().toString().trim();
+                String primarySugarAmount = primarySugarAmountEditText.getText().toString().trim();
+                String waterAmount = waterAmountEditText.getText().toString().trim();
+
+                submitButton.setEnabled(!name.isEmpty() && !teaName.isEmpty() && !teaAmount.isEmpty() &&
+                        !primarySugarAmount.isEmpty() && !waterAmount.isEmpty());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        };
+
+        brewNameEditText.addTextChangedListener(requiredWatcher);
+        teaNameEditText.addTextChangedListener(requiredWatcher);
+        teaAmountEditText.addTextChangedListener(requiredWatcher);
+        primarySugarAmountEditText.addTextChangedListener(requiredWatcher);
+        waterAmountEditText.addTextChangedListener(requiredWatcher);
+
     }
 
     private void setupDialogs() {
@@ -254,7 +309,11 @@ public class EntryActivity extends AppCompatActivity {
             @Override
             public void onChanged(Brew brew) {
                 currentBrew = brew;
-                setupBrew();
+                if (brewId != null) {
+                    setupBrew();
+                } else {
+                    refreshDates();
+                }
             }
         });
     }
@@ -279,21 +338,23 @@ public class EntryActivity extends AppCompatActivity {
     private void setupBrew() {
         brewNameEditText.setText(currentBrew.getRecipe().getName());
         refreshDates();
-        teaNameEditText.setText(currentBrew.getRecipe().getTeas().get(0).getName());
-        teaAmountEditText.setText(String.valueOf(currentBrew.getRecipe().getTeas().get(0).getAmount()));
+        teaNameEditText.setText(currentBrew.getRecipe().getTeas().get(0).getName(), TextView.BufferType.EDITABLE);
+        teaAmountEditText.setText(String.valueOf(currentBrew.getRecipe().getTeas().get(0).getAmount()), TextView.BufferType.EDITABLE);
         teaSpinner.setSelection(currentBrew.getRecipe().getTeas().get(0).getTeaType().getCode());
         primarySugarSpinner.setSelection(currentBrew.getRecipe().getPrimarySweetener());
-        primarySugarAmountEditText.setText(currentBrew.getRecipe().getPrimarySweetenerAmount());
+        primarySugarAmountEditText.setText(String.valueOf(currentBrew.getRecipe().getPrimarySweetenerAmount()), TextView.BufferType.EDITABLE);
+        waterAmountEditText.setText(String.valueOf(currentBrew.getRecipe().getWater()));
         secondarySugarSpinner.setSelection(currentBrew.getRecipe().getSecondarySweetener());
-        secondarySugarAmountEditText.setText(currentBrew.getRecipe().getSecondarySweetenerAmount());
-        selectedIngredients = currentBrew.getRecipe().getIngredients();
+        secondarySugarAmountEditText.setText(String.valueOf(currentBrew.getRecipe().getSecondarySweetenerAmount()), TextView.BufferType.EDITABLE);
+        selectedIngredients.addAll(currentBrew.getRecipe().getIngredients());
+        notesEditText.setText(currentBrew.getRecipe().getNotes());
 
     }
 
     private void setupChips() {
         flavorChipGroup.removeAllViews();
         for (final Ingredient i : ingredients) {
-            final Chip chip = new Chip(this, null, R.style.CustomChipColors);
+            final Chip chip = new Chip(this, null, R.style.ChipTheme);
             chip.setText(i.getName().toLowerCase());
             chip.setTextColor(getColorStateList(R.color.color_states_chips));
             chip.setTypeface(getResources().getFont(R.font.google_sans_medium));
@@ -302,16 +363,16 @@ public class EntryActivity extends AppCompatActivity {
             chip.setChipStrokeWidth(4.0f);
             chip.setCheckable(true);
             chip.setCheckedIconVisible(false);
-            if (currentBrew.getRecipe().getIngredients().contains(i)) {
+            if (currentBrew != null && currentBrew.getRecipe().getIngredients().contains(i)) {
                 chip.setChecked(true);
             }
             chip.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if (isChecked) {
-                        currentBrew.getRecipe().getIngredients().add(i);
+                        selectedIngredients.add(i);
                     } else {
-                        currentBrew.getRecipe().getIngredients().remove(i);
+                        selectedIngredients.remove(i);
                     }
                 }
             });
@@ -371,14 +432,12 @@ public class EntryActivity extends AppCompatActivity {
     private void refreshDates() {
         primaryDateTextView.setText(formatter.format(LocalDateTime.ofInstant(Instant.ofEpochMilli(currentBrew.getPrimaryStartDate()),
                 ZoneId.systemDefault())));
-        int primaryDays = (int) ChronoUnit.DAYS.between(Instant.ofEpochMilli(currentBrew.getPrimaryStartDate()),
-                Instant.ofEpochMilli(currentBrew.getSecondaryStartDate()));
+        int primaryDays = TimeUtility.daysBetween(currentBrew.getPrimaryStartDate(), currentBrew.getSecondaryStartDate());
         String primaryString = getResources().getQuantityString(R.plurals.pluralDays, primaryDays, primaryDays);
         primaryRemainingDaysTextView.setText(primaryString);
         secondaryDateTextView.setText(formatter.format(LocalDateTime.ofInstant(Instant.ofEpochMilli(currentBrew.getSecondaryStartDate()),
                 ZoneId.systemDefault())));
-        int secondaryDays = (int) ChronoUnit.DAYS.between(Instant.ofEpochMilli(currentBrew.getSecondaryStartDate()),
-                Instant.ofEpochMilli(currentBrew.getEndDate()));
+        int secondaryDays = TimeUtility.daysBetween(currentBrew.getSecondaryStartDate(), currentBrew.getEndDate());
         String secondaryString = getResources().getQuantityString(R.plurals.pluralDays, secondaryDays, secondaryDays);
         secondaryRemainingDaysTextView.setText(secondaryString);
         endDateTextView.setText(formatter.format(LocalDateTime.ofInstant(Instant.ofEpochMilli(currentBrew.getEndDate()),
@@ -389,12 +448,18 @@ public class EntryActivity extends AppCompatActivity {
 
         // Read Fields
         currentBrew.getRecipe().setName(brewNameEditText.getText().toString().trim());
-        currentBrew.getRecipe().setTeas(teas);
-        currentBrew.getRecipe().setTeas(teas);
         currentBrew.getRecipe().setPrimarySweetenerAmount(Integer.parseInt(primarySugarAmountEditText.getText().toString()));
+        currentBrew.getRecipe().setWater(Double.parseDouble(waterAmountEditText.getText().toString()));
         currentBrew.getRecipe().setSecondarySweetenerAmount(Integer.parseInt(secondarySugarAmountEditText.getText().toString()));
         currentBrew.getRecipe().setIngredients(selectedIngredients);
         currentBrew.getRecipe().setNotes(notesEditText.getText().toString().trim());
+
+        Ingredient tea = new Ingredient();
+        tea.setName(teaNameEditText.getText().toString().trim());
+        tea.setType(IngredientType.TEA);
+        tea.setTeaType(TeaType.get(teaSpinner.getSelectedItemPosition()));
+        tea.setAmount(Integer.parseInt(teaAmountEditText.getText().toString()));
+        currentBrew.getRecipe().addTea(tea);
 
         if (Instant.now().isAfter(Instant.ofEpochMilli(currentBrew.getPrimaryStartDate())) &&
                 Instant.now().isBefore(Instant.ofEpochMilli(currentBrew.getSecondaryStartDate()))) {
@@ -409,8 +474,24 @@ public class EntryActivity extends AppCompatActivity {
             currentBrew.setStage(null);
         }
 
-        db.collection(Brew.COLLECTION).add(currentBrew);
+        docRef.set(currentBrew).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    finish();
+//                } else {
+//                    Snackbar.make(XX, "Error making database changes", Snackbar.LENGTH_INDEFINITE)
+//                            .setAction("Retry", new View.OnClickListener() {
+//                                @Override
+//                                public void onClick(View v) {
+//                                    saveBrew();
+//                                }
+//                            })
+//                            .show();
+                }
+            }
+        });
 
-        finish();
+
     }
 }

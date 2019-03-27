@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#333333</color>
-    <color name="colorPrimaryDark">#333333</color>
-    <color name="colorAccent">#FFBD59</color>
-    <color name="colorLightGray">#EEEEEE</color>
+    <color name="colorPrimary">#96C2E7</color>
+    <color name="colorPrimaryDark">#6FB3E4</color>
+    <color name="colorAccent">#9E79E2</color>
+
+    <color name="colorLightGray">#DDDDDD</color>
     <color name="colorGray">#999999</color>
     <color name="colorMediumGray">#666666</color>
     <color name="colorDarkGray">#333333</color>
 
-    <color name="background">#FAFAFA</color>
-    <color name="backgroundWithAlpha">#CCFAFAFA</color>
-    <color name="backgroundStart">#F7D175</color>
-    <color name="backgroundCenter">#FFF6F3</color>
-    <color name="backgroundEnd">#E89722</color>
-    <color name="colorCompleted">#19AD6E</color>
-    <color name="cardHeader">#FFEDD2</color>
+    <color name="background">#F3EFEF</color>
+    <color name="backgroundWithAlpha">#CCD1CBCB</color>
+    <color name="backgroundStart">#FFD18E</color>
+    <color name="backgroundEnd">#FFB342</color>
+    <color name="cardHeader">#BFABE4</color>
+    <color name="colorCompleted">#31C285</color>
 
 </resources>

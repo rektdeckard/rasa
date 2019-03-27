@@ -15,13 +15,13 @@ public class Recipe {
 
     private List<Ingredient> teas = new ArrayList<>();
 
-    private int primarySweetener;
-    private int primarySweetenerAmount;
+    private int primarySweetener = 0;
+    private int primarySweetenerAmount = 75;
 
-    private int secondarySweetener;
-    private int secondarySweetenerAmount;
+    private int secondarySweetener = 0;
+    private int secondarySweetenerAmount = 0;
 
-    private double water;
+    private double water = 1.0;
 
     private List<Ingredient> ingredients = new ArrayList<>();
 
@@ -78,11 +78,7 @@ public class Recipe {
      * Required empty constructor for Firestore & Entry activity
      */
     public Recipe() {
-        primarySweetener = 0;
-        primarySweetenerAmount = 75;
-        secondarySweetener = 0;
-        secondarySweetenerAmount = 0;
-        water = 1.0;
+
     }
 
     // GETTERS
@@ -159,6 +155,14 @@ public class Recipe {
 
     public void setWater(double water) {
         this.water = water;
+    }
+
+    public void addIngredient(Ingredient ingredient) {
+        ingredients.add(ingredient);
+    }
+
+    public void removeIngredient(Ingredient ingredient) {
+        ingredients.remove(ingredient);
     }
 
     public void setIngredients(List<Ingredient> ingredients) {
