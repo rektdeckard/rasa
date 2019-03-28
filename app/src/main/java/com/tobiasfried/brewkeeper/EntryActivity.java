@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -13,14 +15,10 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.util.TimeUtils;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -29,7 +27,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -50,6 +47,8 @@ import com.tobiasfried.brewkeeper.utils.TimeUtility;
 import com.tobiasfried.brewkeeper.viewmodel.EntryViewModel;
 import com.tobiasfried.brewkeeper.viewmodel.EntryViewModelFactory;
 
+import org.joda.time.format.DateTimeFormat;
+
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -65,8 +64,6 @@ public class EntryActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = EntryActivity.class.getSimpleName();
     public static String EXTRA_BREW_ID = "brewID";
-
-    private DateTimeFormatter formatter;
 
     // Database
     private FirebaseFirestore db;
@@ -105,9 +102,6 @@ public class EntryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entry);
 
-        // Get Date
-        formatter = DateTimeFormatter.ofPattern("LLL d");
-
         // Bind Views
         brewNameEditText = findViewById(R.id.create_edit_text);
         primaryDateTextView = findViewById(R.id.primary_date_calendar);
@@ -140,8 +134,7 @@ public class EntryActivity extends AppCompatActivity {
         //toolbar.setTitle("");
         toolbar.inflateMenu(R.menu.menu_entry);
 
-
-
+        // Get ViewModel
         brewId = getIntent().hasExtra(EXTRA_BREW_ID) ? Objects.requireNonNull(getIntent().getExtras()).getString(EXTRA_BREW_ID) : null;
         EntryViewModelFactory factory = new EntryViewModelFactory(db, brewId);
         viewModel = ViewModelProviders.of(this, factory).get(EntryViewModel.class);
@@ -238,7 +231,12 @@ public class EntryActivity extends AppCompatActivity {
     }
 
     private void setupDialogs() {
-        primaryDateTextView.setText(formatter.format(LocalDateTime.now()));
+        // Set Default Date Strings
+        if (currentBrew != null) {
+            refreshDates();
+        }
+
+        // Set OnClickListeners
         primaryDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -256,7 +254,6 @@ public class EntryActivity extends AppCompatActivity {
             }
         });
 
-        secondaryDateTextView.setText(formatter.format(LocalDateTime.now().plusDays(10)));
         secondaryDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -275,7 +272,6 @@ public class EntryActivity extends AppCompatActivity {
             }
         });
 
-        endDateTextView.setText(formatter.format(LocalDateTime.now().plusDays(12)));
         endDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -357,7 +353,7 @@ public class EntryActivity extends AppCompatActivity {
             final Chip chip = new Chip(this, null, R.style.ChipTheme);
             chip.setText(i.getName().toLowerCase());
             chip.setTextColor(getColorStateList(R.color.color_states_chips));
-            chip.setTypeface(getResources().getFont(R.font.google_sans_medium));
+            chip.setTypeface(ResourcesCompat.getFont(this, R.font.google_sans_medium));
             chip.setChipBackgroundColorResource(android.R.color.transparent);
             chip.setChipStrokeColorResource(R.color.color_states_chips);
             chip.setChipStrokeWidth(4.0f);
@@ -430,18 +426,17 @@ public class EntryActivity extends AppCompatActivity {
     }
 
     private void refreshDates() {
-        primaryDateTextView.setText(formatter.format(LocalDateTime.ofInstant(Instant.ofEpochMilli(currentBrew.getPrimaryStartDate()),
-                ZoneId.systemDefault())));
+        primaryDateTextView.setText(TimeUtility.formatDateShort(currentBrew.getPrimaryStartDate()));
         int primaryDays = TimeUtility.daysBetween(currentBrew.getPrimaryStartDate(), currentBrew.getSecondaryStartDate());
         String primaryString = getResources().getQuantityString(R.plurals.pluralDays, primaryDays, primaryDays);
         primaryRemainingDaysTextView.setText(primaryString);
-        secondaryDateTextView.setText(formatter.format(LocalDateTime.ofInstant(Instant.ofEpochMilli(currentBrew.getSecondaryStartDate()),
-                ZoneId.systemDefault())));
+
+        secondaryDateTextView.setText(TimeUtility.formatDateShort(currentBrew.getSecondaryStartDate()));
         int secondaryDays = TimeUtility.daysBetween(currentBrew.getSecondaryStartDate(), currentBrew.getEndDate());
         String secondaryString = getResources().getQuantityString(R.plurals.pluralDays, secondaryDays, secondaryDays);
         secondaryRemainingDaysTextView.setText(secondaryString);
-        endDateTextView.setText(formatter.format(LocalDateTime.ofInstant(Instant.ofEpochMilli(currentBrew.getEndDate()),
-                ZoneId.systemDefault())));
+
+        endDateTextView.setText(TimeUtility.formatDateShort(currentBrew.getEndDate()));
     }
 
     private void saveBrew() {
@@ -461,17 +456,20 @@ public class EntryActivity extends AppCompatActivity {
         tea.setAmount(Integer.parseInt(teaAmountEditText.getText().toString()));
         currentBrew.getRecipe().addTea(tea);
 
-        if (Instant.now().isAfter(Instant.ofEpochMilli(currentBrew.getPrimaryStartDate())) &&
-                Instant.now().isBefore(Instant.ofEpochMilli(currentBrew.getSecondaryStartDate()))) {
+        if (System.currentTimeMillis() > currentBrew.getPrimaryStartDate() &&
+                System.currentTimeMillis() < currentBrew.getSecondaryStartDate()) {
             currentBrew.setStage(Stage.PRIMARY);
             currentBrew.setRunning(true);
-        } else if (Instant.now().isAfter(Instant.ofEpochMilli(currentBrew.getSecondaryStartDate())) &&
-                Instant.now().isBefore(Instant.ofEpochMilli(currentBrew.getEndDate()))) {
+        } else if (System.currentTimeMillis() > currentBrew.getSecondaryStartDate() &&
+                System.currentTimeMillis() < currentBrew.getEndDate()) {
             currentBrew.setStage(Stage.SECONDARY);
             currentBrew.setRunning(true);
-        } else {
+        } else if (System.currentTimeMillis() < currentBrew.getPrimaryStartDate()){
+            currentBrew.setStage(Stage.PAUSED);
             currentBrew.setRunning(false);
-            currentBrew.setStage(null);
+        } else if (System.currentTimeMillis() > currentBrew.getEndDate()) {
+            currentBrew.setStage(Stage.COMPLETE);
+            currentBrew.setRunning(false);
         }
 
         docRef.set(currentBrew).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -479,15 +477,16 @@ public class EntryActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     finish();
-//                } else {
-//                    Snackbar.make(XX, "Error making database changes", Snackbar.LENGTH_INDEFINITE)
-//                            .setAction("Retry", new View.OnClickListener() {
-//                                @Override
-//                                public void onClick(View v) {
-//                                    saveBrew();
-//                                }
-//                            })
-//                            .show();
+                } else {
+                    CoordinatorLayout rootView = findViewById(R.id.root_view);
+                    Snackbar.make(rootView, "Error making database changes", Snackbar.LENGTH_INDEFINITE)
+                            .setAction("Retry", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    saveBrew();
+                                }
+                            })
+                            .show();
                 }
             }
         });

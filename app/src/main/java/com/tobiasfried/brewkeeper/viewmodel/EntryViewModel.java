@@ -56,7 +56,9 @@ public class EntryViewModel extends ViewModel {
             });
         }
         // Get all Teas
-        database.collection(Ingredient.COLLECTION).whereEqualTo("type", IngredientType.TEA).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        database.collection(Ingredient.COLLECTION)
+                .whereEqualTo("type", IngredientType.TEA)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 if (queryDocumentSnapshots != null && e == null) {
@@ -65,7 +67,9 @@ public class EntryViewModel extends ViewModel {
             }
         });
         // Get all Ingredients
-        database.collection(Ingredient.COLLECTION).whereEqualTo("type", IngredientType.FLAVOR).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        database.collection(Ingredient.COLLECTION)
+                .whereEqualTo("type", IngredientType.FLAVOR)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 if (queryDocumentSnapshots != null && e == null) {
@@ -74,6 +78,10 @@ public class EntryViewModel extends ViewModel {
             }
         });
     }
+
+    //
+
+    // Getters
 
     public DocumentReference getDocumentReference() {
         return mDocRef;

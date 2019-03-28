@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.tobiasfried.brewkeeper"
-        minSdkVersion 26
+        minSdkVersion 24
         targetSdkVersion 28
         versionCode 1
         versionName "1.1"
@@ -43,6 +43,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:17.5.0'
     implementation 'com.google.firebase:firebase-auth:16.2.0'
     implementation 'com.firebaseui:firebase-ui-firestore:4.3.1'
+
+    // Joda Time for API < 26
+    implementation 'joda-time:joda-time:2.9.4'
 
 }
 

@@ -2,6 +2,7 @@ package com.tobiasfried.brewkeeper.constants;
 
 public enum Stage {
 
+    PAUSED(-1),
     COMPLETE(0),
     PRIMARY(1),
     SECONDARY(2),

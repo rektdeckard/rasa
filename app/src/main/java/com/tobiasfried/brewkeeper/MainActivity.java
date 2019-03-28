@@ -32,12 +32,12 @@ public class MainActivity extends AppCompatActivity {
         // Set TabHose
         mTabHost = findViewById(R.id.fragment_tab_host);
         mTabHost.setup(this, getSupportFragmentManager(), android.R.id.tabcontent);
-        mTabHost.addTab(mTabHost.newTabSpec("history").setIndicator("History"),
-                HistoryFragment.class, null);
-        mTabHost.addTab(mTabHost.newTabSpec("brews").setIndicator("Brews"),
-                CurrentFragment.class, null);
-        mTabHost.addTab(mTabHost.newTabSpec("recipes").setIndicator("Recipes"),
-               RecipeFragment.class, null);
+        mTabHost.addTab(mTabHost.newTabSpec("history")
+                .setIndicator("History"), HistoryFragment.class, null);
+        mTabHost.addTab(mTabHost.newTabSpec("brews")
+                .setIndicator("Brews"), CurrentFragment.class, null);
+        mTabHost.addTab(mTabHost.newTabSpec("recipes")
+                .setIndicator("Recipes"), RecipeFragment.class, null);
         mTabHost.setCurrentTab(1);
 
         FloatingActionButton floatingActionButton = findViewById(R.id.floating_action_button);

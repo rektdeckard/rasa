@@ -72,4 +72,5 @@
     <string name="add_tea">+ Add tea</string>
     <string name="action_cancel">Cancel brew</string>
     <string name="sort_by">Sort by\:</string>
+    <string name="select_dates">Select dates</string>
 </resources>

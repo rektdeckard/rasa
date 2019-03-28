@@ -33,11 +33,6 @@ import com.tobiasfried.brewkeeper.messaging.MessageService;
 import com.tobiasfried.brewkeeper.model.Brew;
 import com.tobiasfried.brewkeeper.utils.TimeUtility;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
-
 import static com.tobiasfried.brewkeeper.EntryActivity.EXTRA_BREW_ID;
 
 public class CurrentFragment extends Fragment {
@@ -97,7 +92,9 @@ public class CurrentFragment extends Fragment {
 
     private void setupRecyclerView(String sortOption) {
         // Inflate and setup RecyclerView
-        Query query = db.collection(Brew.COLLECTION).orderBy(sortOption, Query.Direction.ASCENDING);
+        Query query = db.collection(Brew.COLLECTION)
+                .whereEqualTo("running", true)
+                .orderBy(sortOption, Query.Direction.ASCENDING);
         FirestoreRecyclerOptions<Brew> options = new FirestoreRecyclerOptions.Builder<Brew>()
                 .setQuery(query, Brew.class)
                 .setLifecycleOwner(this)
@@ -122,7 +119,7 @@ public class CurrentFragment extends Fragment {
                 } else {
                     endDate = brew.getEndDate();
                 }
-                double days = TimeUtility.daysBetween(Instant.now().toEpochMilli(), endDate);
+                double days = TimeUtility.daysBetween(System.currentTimeMillis(), endDate);
                 String remainingString;
                 if (days <= 0) {
                     remainingString = "Complete";
@@ -162,6 +159,8 @@ public class CurrentFragment extends Fragment {
                         startActivity(intent);
                     }
                 });
+
+
             }
 
         };
@@ -191,8 +190,6 @@ public class CurrentFragment extends Fragment {
                                         public void onComplete(@NonNull Task<DocumentReference> task) {
                                             if (task.isSuccessful()) {
                                                 deleted = null;
-                                            } else {
-                                                Log.i(LOG_TAG, "Failed to reinsert to the database");
                                             }
                                         }
                                     });

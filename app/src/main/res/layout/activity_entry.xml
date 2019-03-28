@@ -2,6 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -78,7 +79,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                tools:text="Mar 1 – Mar 12" />
+                                android:text="@string/select_dates" />
 
                             <TextView
                                 android:id="@+id/primary_remaining_days"
@@ -324,7 +325,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                tools:text="Mar 12 – Mar 15" />
+                                android:text="@string/select_dates" />
 
                             <TextView
                                 android:id="@+id/secondary_remaining_days"
@@ -428,7 +429,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/end_label"
                         android:layout_marginHorizontal="@dimen/card_margin_horizontal"
-                        tools:text="Mar 15" />
+                        android:text="@string/select_dates" />
 
                 </RelativeLayout>
 

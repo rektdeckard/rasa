@@ -87,9 +87,9 @@ public class Brew {
      */
     public Brew() {
         recipe = new Recipe();
-        primaryStartDate = Instant.now().toEpochMilli();
-        secondaryStartDate = ZonedDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()).plusDays(10).toEpochSecond() * 1000;
-        endDate = ZonedDateTime.ofInstant(Instant.now(), ZoneId.systemDefault()).plusDays(12).toEpochSecond() * 1000;
+        primaryStartDate = System.currentTimeMillis();
+        secondaryStartDate = primaryStartDate + 864000000;
+        endDate = secondaryStartDate + 172800000;
         stage = Stage.PRIMARY;
         isRunning = false;
     }
