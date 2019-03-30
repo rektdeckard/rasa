@@ -386,7 +386,7 @@ public class EntryActivity extends AppCompatActivity {
         for (int i = 1; i < currentBrew.getRecipe().getTeas().size(); i++) {
             Ingredient tea = currentBrew.getRecipe().getTeas().get(i);
 
-            View teaItem = inflater.inflate(R.layout.list_item_tea, null);
+            final View teaItem = inflater.inflate(R.layout.list_item_tea, null);
 
             AutoCompleteTextView nameEditText = teaItem.findViewById(R.id.tea_name_autocomplete);
             nameEditText.setText(tea.getName(), TextView.BufferType.EDITABLE);
@@ -396,6 +396,14 @@ public class EntryActivity extends AppCompatActivity {
 
             Spinner typeSpinner = teaItem.findViewById(R.id.tea_picker);
             setupTeaSpinner(typeSpinner, tea.getTeaType().getCode());
+
+            ImageButton removeButton = teaItem.findViewById(R.id.remove_button);
+            removeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    teaList.removeView(teaItem);
+                }
+            });
 
             teaList.addView(teaItem);
         }
@@ -511,13 +519,6 @@ public class EntryActivity extends AppCompatActivity {
             EditText amountEditText = teaItem.findViewById(R.id.tea_amount_picker);
             int amount = Integer.parseInt(amountEditText.getText().toString());
             currentBrew.getRecipe().addTea(new Ingredient(name, IngredientType.TEA, type, amount));
-            ImageButton removeButton = teaItem.findViewById(R.id.remove_button);
-            removeButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    teaList.removeView(teaItem);
-                }
-            });
         }
 
         if (System.currentTimeMillis() > currentBrew.getPrimaryStartDate() &&
