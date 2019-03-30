@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "344325664666",
+    "firebase_url": "https://brewkeeper-app.firebaseio.com",
+    "project_id": "brewkeeper-app",
+    "storage_bucket": "brewkeeper-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:344325664666:android:878b20dc5d700640",
+        "android_client_info": {
+          "package_name": "com.tobiasfried.brewkeeper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "344325664666-3s5vusl7jstbd3uaeqaff89ui6u21tcd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tobiasfried.brewkeeper",
+            "certificate_hash": "f38639b3bc20c5413c09d5573134f8a09d006f9c"
+          }
+        },
+        {
+          "client_id": "344325664666-qsf6m3v0m35gjgc70sm1tugk214s2bv6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKM88g9OM2jM0D2ToJlJfIwtwhXQA5yOQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "344325664666-qsf6m3v0m35gjgc70sm1tugk214s2bv6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

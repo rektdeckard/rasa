@@ -1,42 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <LinearLayout
-        android:id="@+id/container"
+    <androidx.fragment.app.FragmentTabHost
+        android:id="@+id/fragment_tab_host"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/navigation"
-        android:orientation="vertical"/>
+        android:layout_height="wrap_content">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floating_action_button"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom" />
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+    </androidx.fragment.app.FragmentTabHost>
+
+
+    <!--<com.google.android.material.floatingactionbutton.FloatingActionButton-->
+        <!--android:id="@+id/floating_action_button"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_margin="24dp"-->
+        <!--app:backgroundTint="@color/colorAccent"-->
+        <!--android:src="@drawable/ic_add_black_24dp"/>-->
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/extended_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_above="@id/navigation"
-        android:layout_margin="24dp"
-        app:backgroundTint="@color/colorAccent"
-        android:src="@drawable/ic_create_24dp"
-        app:tint="@android:color/white"/>
+        android:layout_gravity="bottom|center"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/colorAccent"
+        android:gravity="center"
+        android:text="Create brew"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="?android:attr/windowBackground"
-        app:menu="@menu/navigation"/>
 
-    <!--<androidx.appcompat.widget.Toolbar-->
-        <!--android:id="@+id/toolbar"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="?attr/actionBarSize"-->
-        <!--android:elevation="0dp"-->
-        <!--android:theme="@style/ActionBarTheme" />-->
-
-</RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

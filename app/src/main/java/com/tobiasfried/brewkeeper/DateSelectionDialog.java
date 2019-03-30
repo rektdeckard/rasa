@@ -3,10 +3,8 @@ package com.tobiasfried.brewkeeper;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Calendar;
 
 import androidx.annotation.NonNull;
@@ -14,11 +12,13 @@ import androidx.fragment.app.DialogFragment;
 
 public class DateSelectionDialog extends DialogFragment {
 
+    private static final String LOG_TAG = DateSelectionDialog.class.getSimpleName();
+
     // Member variables
     private DatePickerDialog.OnDateSetListener mListener;
-    private LocalDate minDate;
-    private LocalDate maxDate;
-    private LocalDate date;
+    private Long minDate;
+    private Long maxDate;
+    private Long date;
 
     // Instead of generic constructor
     public static DateSelectionDialog getInstance() {
@@ -40,14 +40,19 @@ public class DateSelectionDialog extends DialogFragment {
 
         // Create a new instance of DateSelectionDialog and return it
         DatePickerDialog dialog = new DatePickerDialog(getActivity(), mListener, year, month, day);
-        if (minDate != null) {
-            dialog.getDatePicker().setMinDate(Instant.from(minDate.atStartOfDay().atZone(ZoneId.systemDefault())).toEpochMilli());
+        if (minDate != null && minDate != 0) {
+            dialog.getDatePicker().setMinDate(minDate);
+            Log.i(LOG_TAG, "minDate: " + minDate.toString());
         }
-        if (maxDate != null) {
-            dialog.getDatePicker().setMaxDate(Instant.from(maxDate.atStartOfDay().atZone(ZoneId.systemDefault())).toEpochMilli());
+        if (maxDate != null && maxDate != 0) {
+            dialog.getDatePicker().setMaxDate(maxDate);
+            Log.i(LOG_TAG, "maxDate: " + maxDate.toString());
         }
-        if (date != null) {
-            dialog.updateDate(date.getYear(), date.getMonthValue() - 1, date.getDayOfMonth());
+        if (date != null && date != 0) {
+            Calendar d = Calendar.getInstance();
+            d.setTimeInMillis(date);
+            dialog.updateDate(d.get(Calendar.YEAR), d.get(Calendar.MONTH), d.get(Calendar.DAY_OF_MONTH));
+            Log.i(LOG_TAG, "date: " + date.toString());
         }
         return dialog;
     }
@@ -56,15 +61,15 @@ public class DateSelectionDialog extends DialogFragment {
         this.mListener = listener;
     }
 
-    public void setMinDate(LocalDate minDate) {
+    public void setMinDate(long minDate) {
         this.minDate = minDate;
     }
 
-    public void setMaxDate(LocalDate maxDate) {
+    public void setMaxDate(long maxDate) {
         this.maxDate = maxDate;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(long date) {
         this.date = date;
     }
 

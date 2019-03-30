@@ -2,13 +2,6 @@ package com.tobiasfried.brewkeeper;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,22 +11,24 @@ import android.widget.Spinner;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-
 import com.tobiasfried.brewkeeper.constants.Stage;
 import com.tobiasfried.brewkeeper.model.Brew;
 import com.tobiasfried.brewkeeper.utils.TimeUtility;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import static com.tobiasfried.brewkeeper.EntryActivity.EXTRA_BREW_ID;
+import static com.tobiasfried.brewkeeper.EntryActivity.EXTRA_BREW_ID_HISTORY;
 
-public class CurrentFragment extends Fragment {
+public class HistoryFragment extends Fragment {
 
-    private static final String LOG_TAG = CurrentFragment.class.getSimpleName();
+    private static final String LOG_TAG = HistoryFragment.class.getSimpleName();
 
     private FirebaseFirestore db;
     private Brew deleted;
@@ -41,10 +36,6 @@ public class CurrentFragment extends Fragment {
     private View rootView;
     private RecyclerView recyclerView;
     private FirestoreRecyclerAdapter<Brew, BrewViewHolder> mAdapter;
-
-    public CurrentFragment() {
-        // Required empty public constructor
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,9 +45,10 @@ public class CurrentFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
     }
 
+    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        super.onCreateView(inflater, container, savedInstanceState);
 
         rootView = inflater.inflate(R.layout.brew_list, container, false);
         recyclerView = rootView.findViewById(R.id.list);
@@ -77,18 +69,12 @@ public class CurrentFragment extends Fragment {
 
             }
         });
-
-        // Get token
-        // MessageService.getInstanceId();
-
-        //setupRecyclerView("name");
-
         return rootView;
     }
 
     private void setupRecyclerView(String sortOption) {
         // Inflate and setup RecyclerView
-        Query query = db.collection(Brew.CURRENT)
+        Query query = db.collection(Brew.HISTORY)
                 .orderBy(sortOption, Query.Direction.ASCENDING);
         FirestoreRecyclerOptions<Brew> options = new FirestoreRecyclerOptions.Builder<Brew>()
                 .setQuery(query, Brew.class)
@@ -150,53 +136,14 @@ public class CurrentFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(getActivity(), EntryActivity.class);
-                        intent.putExtra(EXTRA_BREW_ID, brewId);
+                        intent.putExtra(EXTRA_BREW_ID_HISTORY, brewId);
                         startActivity(intent);
                     }
                 });
-
-
             }
 
         };
 
-        // Attach Touch Listener
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                if (direction == ItemTouchHelper.RIGHT) {
-                    // Move brew to recently deleted and delete it from database
-                    String brewId = mAdapter.getSnapshots().getSnapshot(viewHolder.getAdapterPosition()).getId();
-                    deleted = mAdapter.getSnapshots().getSnapshot(viewHolder.getAdapterPosition()).toObject(Brew.class);
-                    db.collection(Brew.CURRENT).document(brewId).delete();
-
-                    // Show Snackbar with undo action
-                    Snackbar.make(rootView, "Brew Deleted", Snackbar.LENGTH_LONG)
-                            .setAction("UNDO", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    db.collection(Brew.CURRENT).add(deleted).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DocumentReference> task) {
-                                            if (task.isSuccessful()) {
-                                                deleted = null;
-                                            }
-                                        }
-                                    });
-                                }
-                            })
-                            .setActionTextColor(getResources().getColor(android.R.color.white, getActivity().getTheme()))
-
-                            .show();
-                }
-            }
-        }).attachToRecyclerView(recyclerView);
         recyclerView.setAdapter(mAdapter);
     }
-
 }
