@@ -34,7 +34,7 @@ public class MainViewModel extends AndroidViewModel {
         FirebaseFirestore database = FirebaseFirestore.getInstance();
 
         // Get Current Brews
-        database.collection(Brew.COLLECTION).whereEqualTo("isRunning", true).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        database.collection(Brew.CURRENT).whereEqualTo("isRunning", true).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 if (queryDocumentSnapshots != null && e == null) {
@@ -48,7 +48,7 @@ public class MainViewModel extends AndroidViewModel {
         });
 
         // Get Completed Brews
-        database.collection(Brew.COLLECTION).whereEqualTo("isRunning", false).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        database.collection(Brew.CURRENT).whereEqualTo("isRunning", false).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                 if (queryDocumentSnapshots != null && e == null) {

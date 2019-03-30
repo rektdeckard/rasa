@@ -11,10 +11,6 @@ import android.widget.Spinner;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.tobiasfried.brewkeeper.constants.Stage;
@@ -24,11 +20,11 @@ import com.tobiasfried.brewkeeper.utils.TimeUtility;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import static com.tobiasfried.brewkeeper.EntryActivity.EXTRA_BREW_ID;
+import static com.tobiasfried.brewkeeper.EntryActivity.EXTRA_BREW_ID_HISTORY;
 
 public class HistoryFragment extends Fragment {
 
@@ -78,10 +74,8 @@ public class HistoryFragment extends Fragment {
 
     private void setupRecyclerView(String sortOption) {
         // Inflate and setup RecyclerView
-        Query query = db.collection(Brew.COLLECTION)
-                //.whereEqualTo("stage", Stage.COMPLETE)
-                .whereEqualTo("running", false);
-                //.orderBy(sortOption, Query.Direction.ASCENDING);
+        Query query = db.collection(Brew.HISTORY)
+                .orderBy(sortOption, Query.Direction.ASCENDING);
         FirestoreRecyclerOptions<Brew> options = new FirestoreRecyclerOptions.Builder<Brew>()
                 .setQuery(query, Brew.class)
                 .setLifecycleOwner(this)
@@ -114,8 +108,8 @@ public class HistoryFragment extends Fragment {
                     holder.progressBar.setVisibility(View.INVISIBLE);
                     holder.remainingDays.setVisibility(View.INVISIBLE);
                     holder.check.setVisibility(View.VISIBLE);
-                    holder.name.setTextColor(getResources().getColor(android.R.color.white, getContext().getTheme()));
-                    holder.stage.setTextColor(getResources().getColor(android.R.color.white, getContext().getTheme()));
+                    //holder.name.setTextColor(getResources().getColor(android.R.color.white, getContext().getTheme()));
+                    //holder.stage.setTextColor(getResources().getColor(android.R.color.white, getContext().getTheme()));
                 } else if (days == 1) {
                     remainingString = "Ending tomorrow";
                 } else {
@@ -142,7 +136,7 @@ public class HistoryFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(getActivity(), EntryActivity.class);
-                        intent.putExtra(EXTRA_BREW_ID, brewId);
+                        intent.putExtra(EXTRA_BREW_ID_HISTORY, brewId);
                         startActivity(intent);
                     }
                 });

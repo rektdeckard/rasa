@@ -1,15 +1,13 @@
 package com.tobiasfried.brewkeeper.viewmodel;
 
-import android.util.Log;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.tobiasfried.brewkeeper.constants.IngredientType;
 import com.tobiasfried.brewkeeper.model.Brew;
@@ -39,13 +37,13 @@ public class EntryViewModel extends ViewModel {
      * @param database DB instance
      * @param brewId ID of edited Brew
      */
-    public EntryViewModel(FirebaseFirestore database, String brewId) {
+    public EntryViewModel(FirebaseFirestore database, String c, String brewId) {
         // Get Brew
         if (brewId == null) {
-            mDocRef = database.collection(Brew.COLLECTION).document();
+            mDocRef = database.collection(c).document();
             mBrew.setValue(new Brew());
         } else {
-            mDocRef = database.collection(Brew.COLLECTION).document(brewId);
+            mDocRef = database.collection(c).document(brewId);
             mDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {

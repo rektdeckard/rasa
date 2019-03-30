@@ -14,7 +14,8 @@ import androidx.annotation.Nullable;
 
 public class Brew {
 
-    public static final String COLLECTION = "brews";
+    public static final String CURRENT = "brews";
+    public static final String HISTORY = "history";
 
     // MEMBER FIELDS
     private Recipe recipe;

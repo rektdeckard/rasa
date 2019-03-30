@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#96C2E7</color>
+    <color name="colorPrimary">#FFC37D</color>
+    <color name="colorPrimaryLight">#FFF1E0</color>
     <color name="colorPrimaryDark">#6FB3E4</color>
-    <color name="colorAccent">#9E79E2</color>
+    <color name="colorAccent">#222222</color>
 
     <color name="colorLightGray">#DDDDDD</color>
     <color name="colorGray">#999999</color>
     <color name="colorMediumGray">#666666</color>
     <color name="colorDarkGray">#333333</color>
 
-    <color name="background">#F3EFEF</color>
+    <color name="background">@android:color/white</color>
     <color name="backgroundWithAlpha">#CCD1CBCB</color>
     <color name="backgroundStart">#FFD18E</color>
     <color name="backgroundEnd">#FFB342</color>
     <color name="cardHeader">#BFABE4</color>
-    <color name="colorCompleted">#31C285</color>
+    <color name="colorCompleted">#66D5A0</color>
 
 </resources>

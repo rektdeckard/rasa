@@ -37,15 +37,15 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
 
-    // Firebase dependencies
+    // Firebase
     implementation 'com.google.firebase:firebase-core:16.0.8'
     implementation 'com.google.firebase:firebase-firestore:18.1.0'
     implementation 'com.google.firebase:firebase-messaging:17.5.0'
     implementation 'com.google.firebase:firebase-auth:16.2.0'
     implementation 'com.firebaseui:firebase-ui-firestore:4.3.1'
 
-    // Joda Time for API < 26
-    implementation 'joda-time:joda-time:2.9.4'
+    // AndroidTheeTenBP
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.2.0'
 
 }
 

@@ -1,7 +1,6 @@
 package com.tobiasfried.brewkeeper;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -15,16 +14,18 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -47,13 +48,6 @@ import com.tobiasfried.brewkeeper.utils.TimeUtility;
 import com.tobiasfried.brewkeeper.viewmodel.EntryViewModel;
 import com.tobiasfried.brewkeeper.viewmodel.EntryViewModelFactory;
 
-import org.joda.time.format.DateTimeFormat;
-
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -64,11 +58,13 @@ public class EntryActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = EntryActivity.class.getSimpleName();
     public static String EXTRA_BREW_ID = "brewID";
+    public static String EXTRA_BREW_ID_HISTORY = "brewIDHistory";
 
     // Database
     private FirebaseFirestore db;
     private EntryViewModel viewModel;
     private String brewId;
+    private String collection = Brew.CURRENT;
     private DocumentReference docRef;
 
     // Model
@@ -81,9 +77,11 @@ public class EntryActivity extends AppCompatActivity {
     private EditText brewNameEditText;
     private TextView primaryDateTextView;
     private TextView primaryRemainingDaysTextView;
+    private LinearLayout teaList;
     private AutoCompleteTextView teaNameEditText;
     private EditText teaAmountEditText;
     private Spinner teaSpinner;
+    private MaterialButton teaAddButton;
     private Spinner primarySugarSpinner;
     private EditText primarySugarAmountEditText;
     private EditText waterAmountEditText;
@@ -92,7 +90,7 @@ public class EntryActivity extends AppCompatActivity {
     private Spinner secondarySugarSpinner;
     private EditText secondarySugarAmountEditText;
     private ChipGroup flavorChipGroup;
-    private TextView flavorAddTextView;
+    private MaterialButton flavorAddButton;
     private TextView endDateTextView;
     private EditText notesEditText;
     private MaterialButton submitButton;
@@ -106,9 +104,11 @@ public class EntryActivity extends AppCompatActivity {
         brewNameEditText = findViewById(R.id.create_edit_text);
         primaryDateTextView = findViewById(R.id.primary_date_calendar);
         primaryRemainingDaysTextView = findViewById(R.id.primary_remaining_days);
+        teaList = findViewById(R.id.tea);
         teaNameEditText = findViewById(R.id.tea_name_autocomplete);
         teaAmountEditText = findViewById(R.id.tea_amount_picker);
         teaSpinner = findViewById(R.id.tea_picker);
+        teaAddButton = findViewById(R.id.add_tea_button);
         primarySugarSpinner = findViewById(R.id.primary_sugar_picker);
         primarySugarAmountEditText = findViewById(R.id.sugar_amount_picker);
         waterAmountEditText = findViewById(R.id.water_amount_picker);
@@ -117,7 +117,7 @@ public class EntryActivity extends AppCompatActivity {
         secondarySugarSpinner = findViewById(R.id.secondary_sugar_picker);
         secondarySugarAmountEditText = findViewById(R.id.secondary_sugar_amount_picker);
         flavorChipGroup = findViewById(R.id.ingredient_chip_group);
-        flavorAddTextView = findViewById(R.id.add_ingredient_edit_text);
+        flavorAddButton = findViewById(R.id.add_ingredient_button);
         endDateTextView = findViewById(R.id.end_date_calendar);
         notesEditText = findViewById(R.id.notes);
         submitButton = findViewById(R.id.button_start);
@@ -135,17 +135,20 @@ public class EntryActivity extends AppCompatActivity {
         toolbar.inflateMenu(R.menu.menu_entry);
 
         // Get ViewModel
-        brewId = getIntent().hasExtra(EXTRA_BREW_ID) ? Objects.requireNonNull(getIntent().getExtras()).getString(EXTRA_BREW_ID) : null;
-        EntryViewModelFactory factory = new EntryViewModelFactory(db, brewId);
+        if (getIntent().hasExtra(EXTRA_BREW_ID)) {
+            brewId = Objects.requireNonNull(getIntent().getExtras()).getString(EXTRA_BREW_ID);
+        } else if (getIntent().hasExtra(EXTRA_BREW_ID_HISTORY)) {
+            brewId = Objects.requireNonNull(getIntent().getExtras()).getString(EXTRA_BREW_ID_HISTORY);
+            collection = Brew.HISTORY;
+        }
+        EntryViewModelFactory factory = new EntryViewModelFactory(db, collection, brewId);
         viewModel = ViewModelProviders.of(this, factory).get(EntryViewModel.class);
         fetchBrew();
 
         docRef = viewModel.getDocumentReference();
-        Log.i(LOG_TAG, docRef.toString());
 
-        setupSpinners();
         setupDialogs();
-        setupEntryFields();
+        setupFieldWatchers();
         setupButtons();
 
     }
@@ -174,31 +177,23 @@ public class EntryActivity extends AppCompatActivity {
         fetchIngredients();
     }
 
-    private void setupSpinners() {
+    private void setupTeaSpinner(Spinner spinner, int position) {
         ArrayAdapter<CharSequence> teaTypes = ArrayAdapter.createFromResource(this, R.array.array_tea_types, R.layout.spinner_item_small);
         teaTypes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        teaSpinner.setAdapter(teaTypes);
-        teaSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // TODO set values on current brew (also in other pickers)
-                //currentTeas.getRecipe().getTeas().get(0).setTeaType(TeaType.get(position));
-            }
+        spinner.setAdapter(teaTypes);
+        spinner.setSelection(position);
+    }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
+    private void setupSugarSpinners() {
         ArrayAdapter<CharSequence> sweetenerTypes = ArrayAdapter.createFromResource(this, R.array.array_sugar_types, R.layout.spinner_item);
         sweetenerTypes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         primarySugarSpinner.setAdapter(sweetenerTypes);
         secondarySugarSpinner.setAdapter(sweetenerTypes);
     }
 
-    private void setupEntryFields() {
-        TextWatcher requiredWatcher = new TextWatcher(){
+    private void setupFieldWatchers() {
+
+        TextWatcher requiredWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -298,6 +293,48 @@ public class EntryActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        teaAddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (teaList.getChildCount() < 4) {
+                    LayoutInflater inflater = getLayoutInflater();
+                    final View tea = inflater.inflate(R.layout.list_item_tea, null);
+                    ImageButton removeButton = tea.findViewById(R.id.remove_button);
+                    removeButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            teaList.removeView(tea);
+                        }
+                    });
+                    teaList.addView(tea);
+
+                    Spinner spinner = tea.findViewById(R.id.tea_picker);
+                    setupTeaSpinner(spinner, 0);
+                } else {
+                    teaAddButton.setError("Cannot add any more!");
+                }
+            }
+        });
+
+        flavorAddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                InputDialog newFragment = InputDialog.getInstance();
+                newFragment.setOnClickListener(new InputDialog.InputSubmitListener() {
+                    @Override
+                    public void onSubmitInput(DialogFragment dialog, final String input) {
+                        if (!input.equals("")) {
+                            Ingredient newIngredient = new Ingredient(input, IngredientType.FLAVOR, null, 0);
+                            db.collection(Ingredient.COLLECTION).add(newIngredient);
+                            setupChips();
+                        }
+                    }
+                });
+
+                newFragment.show(getSupportFragmentManager(), "ingredientInput");
+            }
+        });
     }
 
     private void fetchBrew() {
@@ -308,6 +345,8 @@ public class EntryActivity extends AppCompatActivity {
                 if (brewId != null) {
                     setupBrew();
                 } else {
+                    setupTeaSpinner(teaSpinner, 0);
+                    setupSugarSpinners();
                     refreshDates();
                 }
             }
@@ -332,17 +371,47 @@ public class EntryActivity extends AppCompatActivity {
     }
 
     private void setupBrew() {
-        brewNameEditText.setText(currentBrew.getRecipe().getName());
         refreshDates();
-        teaNameEditText.setText(currentBrew.getRecipe().getTeas().get(0).getName(), TextView.BufferType.EDITABLE);
-        teaAmountEditText.setText(String.valueOf(currentBrew.getRecipe().getTeas().get(0).getAmount()), TextView.BufferType.EDITABLE);
-        teaSpinner.setSelection(currentBrew.getRecipe().getTeas().get(0).getTeaType().getCode());
+
+        brewNameEditText.setText(currentBrew.getRecipe().getName());
+
+        // Populate Teas
+        LayoutInflater inflater = getLayoutInflater();
+
+        Ingredient firstTea = currentBrew.getRecipe().getTeas().get(0);
+        teaNameEditText.setText(firstTea.getName());
+        setupTeaSpinner(teaSpinner, firstTea.getTeaType().getCode());
+        teaAmountEditText.setText(String.valueOf(firstTea.getAmount()));
+
+        for (int i = 1; i < currentBrew.getRecipe().getTeas().size(); i++) {
+            Ingredient tea = currentBrew.getRecipe().getTeas().get(i);
+
+            View teaItem = inflater.inflate(R.layout.list_item_tea, null);
+
+            AutoCompleteTextView nameEditText = teaItem.findViewById(R.id.tea_name_autocomplete);
+            nameEditText.setText(tea.getName(), TextView.BufferType.EDITABLE);
+
+            EditText amountEditText = teaItem.findViewById(R.id.tea_amount_picker);
+            amountEditText.setText(String.valueOf(tea.getAmount()), TextView.BufferType.EDITABLE);
+
+            Spinner typeSpinner = teaItem.findViewById(R.id.tea_picker);
+            setupTeaSpinner(typeSpinner, tea.getTeaType().getCode());
+
+            teaList.addView(teaItem);
+        }
+
+        setupSugarSpinners();
+
         primarySugarSpinner.setSelection(currentBrew.getRecipe().getPrimarySweetener());
         primarySugarAmountEditText.setText(String.valueOf(currentBrew.getRecipe().getPrimarySweetenerAmount()), TextView.BufferType.EDITABLE);
+
         waterAmountEditText.setText(String.valueOf(currentBrew.getRecipe().getWater()));
+
         secondarySugarSpinner.setSelection(currentBrew.getRecipe().getSecondarySweetener());
         secondarySugarAmountEditText.setText(String.valueOf(currentBrew.getRecipe().getSecondarySweetenerAmount()), TextView.BufferType.EDITABLE);
+
         selectedIngredients.addAll(currentBrew.getRecipe().getIngredients());
+
         notesEditText.setText(currentBrew.getRecipe().getNotes());
 
     }
@@ -405,24 +474,6 @@ public class EntryActivity extends AppCompatActivity {
             flavorChipGroup.addView(chip);
         }
 
-        flavorAddTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                InputDialog newFragment = InputDialog.getInstance();
-                newFragment.setOnClickListener(new InputDialog.InputSubmitListener() {
-                    @Override
-                    public void onSubmitInput(DialogFragment dialog, final String input) {
-                        if (!input.equals("")) {
-                            Ingredient newIngredient = new Ingredient(input, IngredientType.FLAVOR, null, 0);
-                            db.collection(Ingredient.COLLECTION).add(newIngredient);
-                            setupChips();
-                        }
-                    }
-                });
-
-                newFragment.show(getSupportFragmentManager(), "ingredientInput");
-            }
-        });
     }
 
     private void refreshDates() {
@@ -449,12 +500,25 @@ public class EntryActivity extends AppCompatActivity {
         currentBrew.getRecipe().setIngredients(selectedIngredients);
         currentBrew.getRecipe().setNotes(notesEditText.getText().toString().trim());
 
-        Ingredient tea = new Ingredient();
-        tea.setName(teaNameEditText.getText().toString().trim());
-        tea.setType(IngredientType.TEA);
-        tea.setTeaType(TeaType.get(teaSpinner.getSelectedItemPosition()));
-        tea.setAmount(Integer.parseInt(teaAmountEditText.getText().toString()));
-        currentBrew.getRecipe().addTea(tea);
+        // Read each tea row
+        currentBrew.getRecipe().getTeas().clear();
+        for (int i = 0; i < teaList.getChildCount(); i++) {
+            final View teaItem = teaList.getChildAt(i);
+            AutoCompleteTextView nameEditText = teaItem.findViewById(R.id.tea_name_autocomplete);
+            String name = nameEditText.getText().toString().trim();
+            Spinner typeSpinner = teaItem.findViewById(R.id.tea_picker);
+            TeaType type = TeaType.get(typeSpinner.getSelectedItemPosition());
+            EditText amountEditText = teaItem.findViewById(R.id.tea_amount_picker);
+            int amount = Integer.parseInt(amountEditText.getText().toString());
+            currentBrew.getRecipe().addTea(new Ingredient(name, IngredientType.TEA, type, amount));
+            ImageButton removeButton = teaItem.findViewById(R.id.remove_button);
+            removeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    teaList.removeView(teaItem);
+                }
+            });
+        }
 
         if (System.currentTimeMillis() > currentBrew.getPrimaryStartDate() &&
                 System.currentTimeMillis() < currentBrew.getSecondaryStartDate()) {
@@ -464,33 +528,55 @@ public class EntryActivity extends AppCompatActivity {
                 System.currentTimeMillis() < currentBrew.getEndDate()) {
             currentBrew.setStage(Stage.SECONDARY);
             currentBrew.setRunning(true);
-        } else if (System.currentTimeMillis() < currentBrew.getPrimaryStartDate()){
+        } else if (System.currentTimeMillis() < currentBrew.getPrimaryStartDate()) {
             currentBrew.setStage(Stage.PAUSED);
-            currentBrew.setRunning(false);
+            currentBrew.setRunning(true);
         } else if (System.currentTimeMillis() > currentBrew.getEndDate()) {
             currentBrew.setStage(Stage.COMPLETE);
             currentBrew.setRunning(false);
         }
 
-        docRef.set(currentBrew).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    finish();
-                } else {
-                    CoordinatorLayout rootView = findViewById(R.id.root_view);
-                    Snackbar.make(rootView, "Error making database changes", Snackbar.LENGTH_INDEFINITE)
-                            .setAction("Retry", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    saveBrew();
-                                }
-                            })
-                            .show();
+        if (currentBrew.isRunning()) {
+            docRef.set(currentBrew).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        finish();
+                    } else {
+                        CoordinatorLayout rootView = findViewById(R.id.root_view);
+                        Snackbar.make(rootView, "Error making database changes", Snackbar.LENGTH_INDEFINITE)
+                                .setAction("Retry", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        saveBrew();
+                                    }
+                                })
+                                .show();
+                    }
                 }
-            }
-        });
-
+            });
+        } else {
+            docRef.delete();
+            db.collection(Brew.HISTORY).add(currentBrew).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentReference> task) {
+                    if (task.isSuccessful()) {
+                        finish();
+                    } else {
+                        CoordinatorLayout rootView = findViewById(R.id.root_view);
+                        Snackbar.make(rootView, "Error making database changes", Snackbar.LENGTH_INDEFINITE)
+                                .setAction("Retry", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        saveBrew();
+                                    }
+                                })
+                                .show();
+                    }
+                }
+            });
+        }
 
     }
+
 }

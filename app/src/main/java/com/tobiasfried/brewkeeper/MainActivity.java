@@ -4,9 +4,11 @@ import android.content.Intent;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.tobiasfried.brewkeeper.model.Brew;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTabHost;
@@ -40,8 +42,17 @@ public class MainActivity extends AppCompatActivity {
                 .setIndicator("Recipes"), RecipeFragment.class, null);
         mTabHost.setCurrentTab(1);
 
-        FloatingActionButton floatingActionButton = findViewById(R.id.floating_action_button);
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+//        FloatingActionButton floatingActionButton = findViewById(R.id.floating_action_button);
+//        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(MainActivity.this, EntryActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+
+        ExtendedFloatingActionButton fab = findViewById(R.id.extended_fab);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, EntryActivity.class);

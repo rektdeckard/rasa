@@ -13,9 +13,9 @@
         <item name="android:windowBackground">@color/background</item>
         <item name="android:statusBarColor">@color/background</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:navigationBarColor">@color/background</item>
+        <!--<item name="android:navigationBarColor">@color/background</item>-->
         <item name="actionBarStyle">@style/ToolbarTheme</item>
-        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
+        <!--<item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>-->
 
         <!-- Additional colors -->
         <!--<item name="colorPrimaryVariant">@color/primaryVariant</item>-->
@@ -36,6 +36,11 @@
 
     </style>
 
+    <style name="AppThemeDark" parent="AppTheme">
+        <item name="android:statusBarColor">@color/colorAccent</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
     <!-- BUTTONS -->
     <style name="MaterialButtonTheme" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="backgroundTint">@color/color_states_buttons</item>
@@ -46,7 +51,7 @@
     <style name="CardTheme" parent="@style/Widget.MaterialComponents.CardView">
         <item name="cardElevation">0dp</item>
         <item name="android:clipChildren">true</item>
-        <item name="cardCornerRadius">6dp</item>
+        <item name="cardCornerRadius">40dp</item>
     </style>
 
     <!-- CHIPS -->
@@ -73,13 +78,13 @@
     <style name="ProgressBarTheme" parent="@style/Widget.AppCompat.ProgressBar.Horizontal">
         <item name="android:progressTint">@color/color_states_progress</item>
         <item name="android:secondaryProgressTint">@color/colorPrimary</item>
-        <item name="android:progressBackgroundTint">@android:color/white</item>
-        <item name="android:background">@android:color/white</item>
+        <item name="android:progressBackgroundTint">@color/colorPrimaryLight</item>
+        <item name="android:background">@color/colorPrimaryLight</item>
     </style>
 
     <!-- TOOLBAR -->
     <style name="ToolbarTheme">
-        <item name="android:background">@color/backgroundWithAlpha</item>
+        <item name="android:background">@color/background</item>
         <item name="android:actionBarDivider">@android:color/transparent</item>
     </style>
 

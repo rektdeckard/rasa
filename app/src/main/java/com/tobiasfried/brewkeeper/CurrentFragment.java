@@ -1,6 +1,5 @@
 package com.tobiasfried.brewkeeper;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -10,7 +9,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,13 +21,11 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 import com.tobiasfried.brewkeeper.constants.Stage;
-import com.tobiasfried.brewkeeper.messaging.MessageService;
 import com.tobiasfried.brewkeeper.model.Brew;
 import com.tobiasfried.brewkeeper.utils.TimeUtility;
 
@@ -92,8 +88,7 @@ public class CurrentFragment extends Fragment {
 
     private void setupRecyclerView(String sortOption) {
         // Inflate and setup RecyclerView
-        Query query = db.collection(Brew.COLLECTION)
-                .whereEqualTo("running", true)
+        Query query = db.collection(Brew.CURRENT)
                 .orderBy(sortOption, Query.Direction.ASCENDING);
         FirestoreRecyclerOptions<Brew> options = new FirestoreRecyclerOptions.Builder<Brew>()
                 .setQuery(query, Brew.class)
@@ -127,8 +122,8 @@ public class CurrentFragment extends Fragment {
                     holder.progressBar.setVisibility(View.INVISIBLE);
                     holder.remainingDays.setVisibility(View.INVISIBLE);
                     holder.check.setVisibility(View.VISIBLE);
-                    holder.name.setTextColor(getResources().getColor(android.R.color.white, getContext().getTheme()));
-                    holder.stage.setTextColor(getResources().getColor(android.R.color.white, getContext().getTheme()));
+                    //holder.name.setTextColor(getResources().getColor(android.R.color.white, getContext().getTheme()));
+                    //holder.stage.setTextColor(getResources().getColor(android.R.color.white, getContext().getTheme()));
                 } else if (days == 1) {
                     remainingString = "Ending tomorrow";
                 } else {
@@ -166,7 +161,7 @@ public class CurrentFragment extends Fragment {
         };
 
         // Attach Touch Listener
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(1, ItemTouchHelper.RIGHT) {
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
@@ -178,14 +173,14 @@ public class CurrentFragment extends Fragment {
                     // Move brew to recently deleted and delete it from database
                     String brewId = mAdapter.getSnapshots().getSnapshot(viewHolder.getAdapterPosition()).getId();
                     deleted = mAdapter.getSnapshots().getSnapshot(viewHolder.getAdapterPosition()).toObject(Brew.class);
-                    db.collection(Brew.COLLECTION).document(brewId).delete();
+                    db.collection(Brew.CURRENT).document(brewId).delete();
 
                     // Show Snackbar with undo action
                     Snackbar.make(rootView, "Brew Deleted", Snackbar.LENGTH_LONG)
                             .setAction("UNDO", new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    db.collection(Brew.COLLECTION).add(deleted).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                    db.collection(Brew.CURRENT).add(deleted).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                         @Override
                                         public void onComplete(@NonNull Task<DocumentReference> task) {
                                             if (task.isSuccessful()) {
@@ -195,7 +190,8 @@ public class CurrentFragment extends Fragment {
                                     });
                                 }
                             })
-                            .setActionTextColor(getResources().getColor(R.color.colorAccent, getActivity().getTheme()))
+                            .setActionTextColor(getResources().getColor(android.R.color.white, getActivity().getTheme()))
+
                             .show();
                 }
             }
