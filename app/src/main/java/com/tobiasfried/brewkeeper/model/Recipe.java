@@ -7,7 +7,6 @@ import com.tobiasfried.brewkeeper.constants.*;
 
 public class Recipe {
 
-    private static final String LOG_TAG = Recipe.class.getSimpleName();
     public static final String COLLECTION = "recipes";
 
     // MEMBER FIELDS

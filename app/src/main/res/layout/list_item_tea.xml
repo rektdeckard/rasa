@@ -1,65 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content" >
 
-    <ImageButton
-        android:id="@+id/remove_button"
-        android:layout_width="24dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="center_vertical"
-        android:layout_marginEnd="8dp"
-        android:background="@android:color/transparent"
-        android:src="@drawable/ic_remove_black_24dp" />
-
-    <AutoCompleteTextView
-        android:id="@+id/tea_name_autocomplete"
-        style="@style/MainTextStyle"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/tea_item"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:backgroundTint="@android:color/transparent"
-        android:completionThreshold="1"
-        android:ellipsize="end"
-        android:hint="@string/tea_name"
-        android:inputType="textCapWords"
-        android:paddingStart="0dp"
-        android:paddingEnd="0dp"
-        tools:text="Blue Mountain" />
+        android:orientation="horizontal">
 
-    <Spinner
-        android:id="@+id/tea_picker"
-        style="@style/LabelTextStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:background="@null"
-        android:paddingStart="0dp"
-        android:paddingEnd="16dp"
-        android:spinnerMode="dialog"
-        tools:listitem="@layout/spinner_item_small" />
+        <ImageButton
+            android:id="@+id/remove_button"
+            android:layout_width="24dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="8dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_collapse_circle" />
 
-    <EditText
-        android:id="@+id/tea_amount_picker"
-        style="@style/LabelTextStyle"
-        android:layout_width="40dp"
-        android:layout_height="match_parent"
-        android:backgroundTint="@android:color/transparent"
-        android:hint="@string/default_amount"
-        android:importantForAutofill="no"
-        android:inputType="number"
-        android:maxLength="3"
-        android:selectAllOnFocus="true"
-        android:text="@string/default_amount_tea"
-        android:textAlignment="textEnd" />
+        <AutoCompleteTextView
+            android:id="@+id/tea_name_autocomplete"
+            style="@style/MainTextStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@android:color/transparent"
+            android:completionThreshold="1"
+            android:hint="@string/tea_name"
+            android:inputType="textCapWords|textMultiLine"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            tools:text="Blue Mountain" />
 
-    <TextView
-        android:id="@+id/unit_suffix1"
-        style="@style/LabelTextStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:text="@string/unit_grams" />
+        <Spinner
+            android:id="@+id/tea_picker"
+            style="@style/LabelTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:paddingStart="8dp"
+            android:paddingEnd="16dp"
+            android:spinnerMode="dropdown"
+            tools:listitem="@layout/spinner_item_small" />
 
-</LinearLayout>
+        <EditText
+            android:id="@+id/tea_amount_picker"
+            style="@style/LabelTextStyle"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:backgroundTint="@android:color/transparent"
+            android:hint="@string/default_amount"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:maxLength="3"
+            android:selectAllOnFocus="true"
+            android:text="@string/default_amount_tea"
+            android:textAlignment="textEnd" />
+
+        <TextView
+            android:id="@+id/unit_suffix1"
+            style="@style/LabelTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/unit_grams" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider_add_teas"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/tea_item"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/colorLightGray" />
+
+</RelativeLayout>

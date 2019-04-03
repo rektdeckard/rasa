@@ -4,10 +4,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,16 +23,15 @@ import android.widget.Spinner;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 import com.tobiasfried.brewkeeper.constants.Stage;
 import com.tobiasfried.brewkeeper.model.Brew;
 import com.tobiasfried.brewkeeper.utils.TimeUtility;
+
+import java.util.Objects;
 
 import static com.tobiasfried.brewkeeper.EntryActivity.EXTRA_BREW_ID;
 
@@ -39,8 +43,10 @@ public class CurrentFragment extends Fragment {
     private Brew deleted;
 
     private View rootView;
-    private RecyclerView recyclerView;
+    @BindView(R.id.list) RecyclerView recyclerView;
     private FirestoreRecyclerAdapter<Brew, BrewViewHolder> mAdapter;
+
+    private Unbinder unbinder;
 
     public CurrentFragment() {
         // Required empty public constructor
@@ -57,12 +63,12 @@ public class CurrentFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         rootView = inflater.inflate(R.layout.brew_list, container, false);
-        recyclerView = rootView.findViewById(R.id.list);
+        unbinder = ButterKnife.bind(this, rootView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
 
-        ArrayAdapter<CharSequence> sortAdapter = ArrayAdapter.createFromResource(getContext(), R.array.array_sort_names, R.layout.spinner_item_sort);
+        ArrayAdapter<CharSequence> sortAdapter = ArrayAdapter.createFromResource(Objects.requireNonNull(getContext()),
+                R.array.array_sort_names, R.layout.spinner_item_sort);
         Spinner sortSpinner = rootView.findViewById(R.id.spinner_sort_by);
         sortSpinner.setAdapter(sortAdapter);
         sortSpinner.setSelection(0);
@@ -80,8 +86,6 @@ public class CurrentFragment extends Fragment {
 
         // Get token
         // MessageService.getInstanceId();
-
-        //setupRecyclerView("name");
 
         return rootView;
     }
@@ -102,59 +106,69 @@ public class CurrentFragment extends Fragment {
                 return new BrewViewHolder(itemView);
             }
 
+
             @Override
             protected void onBindViewHolder(@NonNull BrewViewHolder holder, int position, @NonNull Brew brew) {
-                // Bind name and ColorStateList
-                holder.name.setText(brew.getRecipe().getName());
+                // Bind Views
+                holder.bind(brew);
 
-                // Calculate and bind remaining days
-                long endDate;
-                if (brew.getStage() == Stage.PRIMARY) {
-                    endDate = brew.getSecondaryStartDate();
-                } else {
-                    endDate = brew.getEndDate();
-                }
-                double days = TimeUtility.daysBetween(System.currentTimeMillis(), endDate);
-                String remainingString;
-                if (days <= 0) {
-                    remainingString = "Complete";
-                    holder.card.getLayoutParams().height = 140;
-                    holder.progressBar.setVisibility(View.INVISIBLE);
-                    holder.remainingDays.setVisibility(View.INVISIBLE);
-                    holder.check.setVisibility(View.VISIBLE);
-                    //holder.name.setTextColor(getResources().getColor(android.R.color.white, getContext().getTheme()));
-                    //holder.stage.setTextColor(getResources().getColor(android.R.color.white, getContext().getTheme()));
-                } else if (days == 1) {
-                    remainingString = "Ending tomorrow";
-                } else {
-                    remainingString = getResources().getQuantityString(R.plurals.pluralDays, (int) days, (int) days) + " left";
-                }
-                holder.remainingDays.setText(remainingString);
-
-                // Set progress indicators
-                double totalDays;
-                if (brew.getStage() == (Stage.PRIMARY)) {
-                    holder.stage.setText(R.string.stage_primary);
-                    totalDays = TimeUtility.daysBetween(brew.getPrimaryStartDate(), brew.getSecondaryStartDate());
-                } else {
-                    holder.stage.setText(R.string.stage_secondary);
-                    totalDays = TimeUtility.daysBetween(brew.getSecondaryStartDate(), brew.getEndDate());
-                }
-                int progress = (int) (((totalDays - days) / totalDays) * 100);
-                holder.progressBar.setProgress(progress);
-                holder.progressBar.setSecondaryProgress(progress + 1);
-
-                // Set ClickListener
-                final String brewId = getSnapshots().getSnapshot(position).getId();
-                holder.card.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getActivity(), EntryActivity.class);
-                        intent.putExtra(EXTRA_BREW_ID, brewId);
-                        startActivity(intent);
+                // Set expander ClickListener
+                holder.card.setOnClickListener(v -> {
+                    holder.expanded = !holder.expanded;
+                    for (int i = 0; i < mAdapter.getItemCount(); i++) {
+                        if (i != position) {
+                            BrewViewHolder vh = ((BrewViewHolder) recyclerView.getChildViewHolder(recyclerView.getChildAt(i)));
+                            vh.expanded = false;
+                        }
                     }
+                    notifyItemRangeChanged(0, mAdapter.getItemCount());
                 });
 
+                // Set quick action ClickListeners
+                holder.details.setOnClickListener(v -> {
+                    holder.expanded = false;
+                    String brewId = getSnapshots().getSnapshot(position).getId();
+                    Intent intent = new Intent(getActivity(), EntryActivity.class);
+                    intent.putExtra(EXTRA_BREW_ID, brewId);
+                    startActivity(intent);
+                });
+
+                holder.markComplete.setOnClickListener(v -> {
+                    db.collection(Brew.HISTORY).add(brew);
+                    String brewId = mAdapter.getSnapshots().getSnapshot(position).getId();
+                    deleted = mAdapter.getSnapshots().getSnapshot(position).toObject(Brew.class);
+                    db.collection(Brew.CURRENT).document(brewId).delete();
+
+                    // Show Snackbar with undo action
+                    Snackbar.make(rootView, "Brew marked complete", Snackbar.LENGTH_INDEFINITE)
+                            .setAction("UNDO", v2 -> {
+                                db.collection(Brew.CURRENT).add(deleted).addOnCompleteListener(task -> {
+                                    if (task.isSuccessful()) {
+                                        deleted = null;
+                                    }
+                                });
+                                db.collection(Brew.HISTORY).document(brewId).delete();
+                            })
+                            .setActionTextColor(getResources().getColor(android.R.color.white, Objects.requireNonNull(getActivity()).getTheme()))
+                            .show();
+
+                });
+
+                holder.delete.setOnClickListener(v -> {
+                    String brewId = mAdapter.getSnapshots().getSnapshot(position).getId();
+                    deleted = mAdapter.getSnapshots().getSnapshot(position).toObject(Brew.class);
+                    db.collection(Brew.CURRENT).document(brewId).delete();
+
+                    // Show Snackbar with undo action
+                    Snackbar.make(rootView, "Brew Deleted", Snackbar.LENGTH_INDEFINITE)
+                            .setAction("UNDO", h -> db.collection(Brew.CURRENT).add(deleted).addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    deleted = null;
+                                }
+                            }))
+                            .setActionTextColor(getResources().getColor(android.R.color.white, Objects.requireNonNull(getActivity()).getTheme()))
+                            .show();
+                });
 
             }
 
@@ -176,27 +190,24 @@ public class CurrentFragment extends Fragment {
                     db.collection(Brew.CURRENT).document(brewId).delete();
 
                     // Show Snackbar with undo action
-                    Snackbar.make(rootView, "Brew Deleted", Snackbar.LENGTH_LONG)
-                            .setAction("UNDO", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    db.collection(Brew.CURRENT).add(deleted).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DocumentReference> task) {
-                                            if (task.isSuccessful()) {
-                                                deleted = null;
-                                            }
-                                        }
-                                    });
+                    Snackbar.make(rootView, "Brew Deleted", Snackbar.LENGTH_INDEFINITE)
+                            .setAction("UNDO", v -> db.collection(Brew.CURRENT).add(deleted).addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    deleted = null;
                                 }
-                            })
-                            .setActionTextColor(getResources().getColor(android.R.color.white, getActivity().getTheme()))
-
+                            }))
+                            .setActionTextColor(getResources().getColor(android.R.color.white, Objects.requireNonNull(getActivity()).getTheme()))
                             .show();
                 }
             }
         }).attachToRecyclerView(recyclerView);
+        ((SimpleItemAnimator) Objects.requireNonNull(recyclerView.getItemAnimator())).setSupportsChangeAnimations(false);
         recyclerView.setAdapter(mAdapter);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
 }

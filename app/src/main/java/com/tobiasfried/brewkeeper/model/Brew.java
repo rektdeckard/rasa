@@ -1,11 +1,9 @@
 package com.tobiasfried.brewkeeper.model;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.temporal.TemporalAmount;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 
 import com.tobiasfried.brewkeeper.constants.*;
 
@@ -17,135 +15,128 @@ public class Brew {
     public static final String CURRENT = "brews";
     public static final String HISTORY = "history";
 
+
     // MEMBER FIELDS
     private Recipe recipe;
-
-    private long primaryStartDate;
-    private long secondaryStartDate;
-    private long endDate;
-
-    private Stage stage;
-    private boolean isRunning;
-
+    private List<Ferment> ferments = new ArrayList<>();
 
     // CONSTRUCTORS
 
     /**
      * Constructor for programmatic use
      *
-     * @param name                     Brew name
+     * @param name                      Brew name
      * @param teas                      Tea {@link Ingredient}
-     * @param primarySweetener         Sweetener {@link Ingredient}
-     * @param primarySweetenerAmount   in grams
-     * @param secondarySweetener       Sweetener {@link Ingredient}
-     * @param secondarySweetenerAmount in grams
-     * @param water                    in Liters
-     * @param ingredients              ArrayList<{@link Ingredient}>
-     * @param primaryStartDate         UNIX Timestamp
-     * @param secondaryStartDate       UNIX Timestamp
-     * @param endDate                  UNIX Timestamp
-     * @param stage                    Stage {@link Stage}
-     * @param isRunning                boolean
+     * @param primarySweetener          Sweetener {@link Ingredient}
+     * @param primarySweetenerAmount    in grams
+     * @param secondarySweetener        Sweetener {@link Ingredient}
+     * @param secondarySweetenerAmount  in grams
+     * @param water                     in Liters
+     * @param ingredients               ArrayList<{@link Ingredient}>
+     * @param ferment                   ArrayDeque<{@link Ferment}>
      */
     public Brew(@NonNull String name, @NonNull List<Ingredient> teas,
                 int primarySweetener, int primarySweetenerAmount,
                 int secondarySweetener, int secondarySweetenerAmount,
                 double water, @Nullable List<Ingredient> ingredients, @Nullable String notes,
-                long primaryStartDate, long secondaryStartDate, long endDate,
-                @Nullable Stage stage, boolean isRunning) {
+                Ferment ferment) {
         this.recipe = new Recipe(name, teas, primarySweetener, primarySweetenerAmount,
                 secondarySweetener, secondarySweetenerAmount, water, ingredients, notes);
-        this.primaryStartDate = primaryStartDate;
-        this.secondaryStartDate = secondaryStartDate;
-        this.endDate = endDate;
-        this.stage = stage;
-        this.isRunning = isRunning;
+        this.ferments.add(ferment);
     }
 
     /**
      * Constructor to start from recipe
      *
-     * @param recipe from recipe
-     * @param primaryStartDate         {@link LocalDate}
-     * @param secondaryStartDate       {@link LocalDate}
-     * @param endDate                  {@link LocalDate}
-     * @param stage                    Stage {@link Stage}
-     * @param isRunning                boolean
+     * @param recipe                    from recipe
+     * @param ferment                   ArrayDeque<{@link Ferment}>
      */
     public Brew(@NonNull Recipe recipe,
-                long primaryStartDate, long secondaryStartDate, long endDate,
-                @Nullable Stage stage, boolean isRunning) {
+                Ferment ferment) {
         this.recipe = recipe;
-        this.primaryStartDate = primaryStartDate;
-        this.secondaryStartDate = secondaryStartDate;
-        this.endDate = endDate;
-        this.stage = stage;
-        this.isRunning = isRunning;
+        this.ferments.add(ferment);
     }
 
     /**
      * Empty constructor for editor activity
      */
     public Brew() {
-        recipe = new Recipe();
-        primaryStartDate = System.currentTimeMillis();
-        secondaryStartDate = primaryStartDate + 864000000;
-        endDate = secondaryStartDate + 172800000;
-        stage = Stage.PRIMARY;
-        isRunning = false;
+        this.recipe = new Recipe();
     }
 
-    // GETTERS
+    // METHODS
+
+    public boolean pauseStage() {
+        if (!ferments.isEmpty()) {
+//            ferments.peek().pause();
+            ferments.get(0).pause();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean advanceStage() {
+        // return ferments.size() > 1 && ferments.add(ferments.poll());
+        return ferments.size() > 1 && ferments.add(ferments.remove(0));
+    }
+
+    // SETTERS & GETTERS
 
     public @NonNull Recipe getRecipe() {
         return recipe;
     }
 
-    public long getPrimaryStartDate() {
-        return primaryStartDate;
-    }
-
-    public long getSecondaryStartDate() {
-        return secondaryStartDate;
-    }
-
-    public long getEndDate() {
-        return this.endDate;
-    }
-
-    public @Nullable Stage getStage() {
-        return stage;
-    }
-
-    public boolean isRunning() {
-        return isRunning;
-    }
-
-
-    // SETTERS
-
     public void setRecipe(@NonNull Recipe recipe) {
         this.recipe = recipe;
     }
 
-    public void setPrimaryStartDate(long primaryStartDate) {
-        this.primaryStartDate = primaryStartDate;
+    public Stage getStage() {
+//        return ferments.isEmpty() ? null : ferments.peek().getStage();
+        return ferments.isEmpty() ? null : ferments.get(0).getStage();
     }
 
-    public void setSecondaryStartDate(long secondaryStartDate) {
-        this.secondaryStartDate = secondaryStartDate;
+    public long getStartDate() {
+        if (!ferments.isEmpty()) {
+//            return ferments.peek().getStartDate();
+            return ferments.get(0).getStartDate();
+        } else {
+            throw new NullPointerException("Ferment does not contain a startDate");
+        }
+    }
+
+    public void setStartDate(long startDate) {
+        if (!ferments.isEmpty()) {
+//            ferments.peek().setStartDate(startDate);
+            ferments.get(0).setStartDate(startDate);
+        }
+    }
+
+    public long getEndDate() {
+        if (!ferments.isEmpty()) {
+//            return ferments.peek().getEndDate();
+            return ferments.get(0).getEndDate();
+        } else {
+            throw new NullPointerException("Ferment does not contain a endDate");
+        }
     }
 
     public void setEndDate(long endDate) {
-        this.endDate = endDate;
+        if (!ferments.isEmpty()) {
+//            ferments.peek().setEndDate(endDate);
+            ferments.get(0).setEndDate(endDate);
+        }
     }
 
-    public void setStage(@Nullable Stage stage) {
-        this.stage = stage;
+    public void addFerment(Ferment ferment) {
+        ferments.add(ferment);
     }
 
-    public void setRunning(boolean running) {
-        isRunning = running;
+    public List<Ferment> getFerments() {
+        return ferments;
     }
 
+    public void setFerments(List<Ferment> ferments) {
+        this.ferments = ferments;
+    }
 }

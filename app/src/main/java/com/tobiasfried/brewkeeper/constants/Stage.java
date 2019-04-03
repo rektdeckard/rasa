@@ -6,7 +6,7 @@ public enum Stage {
     COMPLETE(0),
     PRIMARY(1),
     SECONDARY(2),
-    TERTIARY(3);
+    UPCOMING(9);
 
     private int code;
 

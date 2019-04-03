@@ -37,8 +37,8 @@
     </style>
 
     <style name="AppThemeDark" parent="AppTheme">
-        <item name="android:statusBarColor">@color/colorAccent</item>
-        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <!-- BUTTONS -->

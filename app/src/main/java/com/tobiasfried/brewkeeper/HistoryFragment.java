@@ -17,13 +17,16 @@ import com.tobiasfried.brewkeeper.constants.Stage;
 import com.tobiasfried.brewkeeper.model.Brew;
 import com.tobiasfried.brewkeeper.utils.TimeUtility;
 
+import java.util.Objects;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-import static com.tobiasfried.brewkeeper.EntryActivity.EXTRA_BREW_ID;
 import static com.tobiasfried.brewkeeper.EntryActivity.EXTRA_BREW_ID_HISTORY;
 
 public class HistoryFragment extends Fragment {
@@ -31,11 +34,10 @@ public class HistoryFragment extends Fragment {
     private static final String LOG_TAG = HistoryFragment.class.getSimpleName();
 
     private FirebaseFirestore db;
-    private Brew deleted;
 
     private View rootView;
-    private RecyclerView recyclerView;
-    private FirestoreRecyclerAdapter<Brew, BrewViewHolder> mAdapter;
+    @BindView(R.id.list) RecyclerView recyclerView;
+    private FirestoreRecyclerAdapter<Brew, HistoryViewHolder> mAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,12 +51,11 @@ public class HistoryFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-
         rootView = inflater.inflate(R.layout.brew_list, container, false);
-        recyclerView = rootView.findViewById(R.id.list);
+        ButterKnife.bind(this, rootView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
 
-        ArrayAdapter<CharSequence> sortAdapter = ArrayAdapter.createFromResource(getContext(), R.array.array_sort_names, R.layout.spinner_item_sort);
+        ArrayAdapter<CharSequence> sortAdapter = ArrayAdapter.createFromResource(Objects.requireNonNull(getContext()), R.array.array_sort_names, R.layout.spinner_item_sort);
         Spinner sortSpinner = rootView.findViewById(R.id.spinner_sort_by);
         sortSpinner.setAdapter(sortAdapter);
         sortSpinner.setSelection(0);
@@ -80,68 +81,28 @@ public class HistoryFragment extends Fragment {
                 .setQuery(query, Brew.class)
                 .setLifecycleOwner(this)
                 .build();
-        mAdapter = new FirestoreRecyclerAdapter<Brew, BrewViewHolder>(options) {
+        mAdapter = new FirestoreRecyclerAdapter<Brew, HistoryViewHolder>(options) {
             @NonNull
             @Override
-            public BrewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View itemView = getLayoutInflater().inflate(R.layout.list_item_card, parent, false);
-                return new BrewViewHolder(itemView);
+            public HistoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View itemView = getLayoutInflater().inflate(R.layout.list_item_history, parent, false);
+                return new HistoryViewHolder(itemView);
             }
 
             @Override
-            protected void onBindViewHolder(@NonNull BrewViewHolder holder, int position, @NonNull Brew brew) {
-                // Bind name and ColorStateList
+            protected void onBindViewHolder(@NonNull HistoryViewHolder holder, int position, @NonNull Brew brew) {
+                // Apply fields
                 holder.name.setText(brew.getRecipe().getName());
-
-                // Calculate and bind remaining days
-                long endDate;
-                if (brew.getStage() == Stage.PRIMARY) {
-                    endDate = brew.getSecondaryStartDate();
-                } else {
-                    endDate = brew.getEndDate();
-                }
-                double days = TimeUtility.daysBetween(System.currentTimeMillis(), endDate);
-                String remainingString;
-                if (days <= 0) {
-                    remainingString = "Complete";
-                    holder.card.getLayoutParams().height = 140;
-                    holder.progressBar.setVisibility(View.INVISIBLE);
-                    holder.remainingDays.setVisibility(View.INVISIBLE);
-                    holder.check.setVisibility(View.VISIBLE);
-                    //holder.name.setTextColor(getResources().getColor(android.R.color.white, getContext().getTheme()));
-                    //holder.stage.setTextColor(getResources().getColor(android.R.color.white, getContext().getTheme()));
-                } else if (days == 1) {
-                    remainingString = "Ending tomorrow";
-                } else {
-                    remainingString = getResources().getQuantityString(R.plurals.pluralDays, (int) days, (int) days) + " left";
-                }
-                holder.remainingDays.setText(remainingString);
-
-                // Set progress indicators
-                double totalDays;
-                if (brew.getStage() == (Stage.PRIMARY)) {
-                    holder.stage.setText(R.string.stage_primary);
-                    totalDays = TimeUtility.daysBetween(brew.getPrimaryStartDate(), brew.getSecondaryStartDate());
-                } else {
-                    holder.stage.setText(R.string.stage_secondary);
-                    totalDays = TimeUtility.daysBetween(brew.getSecondaryStartDate(), brew.getEndDate());
-                }
-                int progress = (int) (((totalDays - days) / totalDays) * 100);
-                holder.progressBar.setProgress(progress);
-                holder.progressBar.setSecondaryProgress(progress + 1);
+                holder.date.setText(TimeUtility.formatDateShort(brew.getEndDate()));
 
                 // Set ClickListener
                 final String brewId = getSnapshots().getSnapshot(position).getId();
-                holder.card.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(getActivity(), EntryActivity.class);
-                        intent.putExtra(EXTRA_BREW_ID_HISTORY, brewId);
-                        startActivity(intent);
-                    }
+                holder.card.setOnClickListener(v -> {
+                    Intent intent = new Intent(getActivity(), EntryActivity.class);
+                    intent.putExtra(EXTRA_BREW_ID_HISTORY, brewId);
+                    startActivity(intent);
                 });
             }
-
         };
 
         recyclerView.setAdapter(mAdapter);

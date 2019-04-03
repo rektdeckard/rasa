@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/pip3"
+        android:layout_width="3dp"
+        android:layout_height="3dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/tl_pips" />
+
+    <View
+        android:id="@+id/pip4"
+        android:layout_width="3dp"
+        android:layout_height="3dp"
+        android:layout_below="@+id/pip3"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/tl_pips" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/secondary_card"
+        style="@style/CardTheme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/pip4"
+        android:layout_marginTop="12dp"
+        app:cardCornerRadius="20dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/secondary_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/card_margin_horizontal"
+                android:paddingTop="30dp"
+                android:paddingEnd="@dimen/card_margin_horizontal"
+                android:paddingBottom="@dimen/card_margin_horizontal">
+
+                <TextView
+                    android:id="@+id/secondary_label"
+                    style="@style/LabelTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/second_fermentation" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/secondary_label"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/secondary_date_calendar"
+                        style="@style/MainTextStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/select_dates" />
+
+                    <TextView
+                        android:id="@+id/secondary_remaining_days"
+                        style="@style/LabelTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="24dp"
+                        tools:text="3 days" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/secondary_date"
+                android:layout_marginStart="@dimen/card_margin_horizontal"
+                android:background="@color/colorAccent" />
+
+            <LinearLayout
+                android:id="@+id/secondary_sugar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/secondary_date"
+                android:layout_marginStart="@dimen/card_margin_horizontal"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="@dimen/card_margin_horizontal"
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/secondary_sugar_picker"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:spinnerMode="dialog"
+                    tools:listitem="@layout/spinner_item" />
+
+                <EditText
+                    android:id="@+id/secondary_sugar_amount_picker"
+                    style="@style/LabelTextStyle"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@android:color/transparent"
+                    android:hint="@string/default_amount"
+                    android:importantForAutofill="no"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:selectAllOnFocus="true"
+                    android:text="@string/default_amount"
+                    android:textAlignment="textEnd" />
+
+                <TextView
+                    android:id="@+id/unit_suffix3"
+                    style="@style/LabelTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/unit_grams" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/secondary_sugar"
+                android:layout_marginStart="@dimen/card_margin_horizontal"
+                android:background="@color/colorLightGray" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/ingredient_chip_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/secondary_sugar"
+                android:layout_marginStart="@dimen/card_margin_horizontal"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="@dimen/card_margin_horizontal"
+                app:chipSpacing="8dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/ingredient_chip_group"
+                android:layout_marginStart="@dimen/card_margin_horizontal"
+                android:background="@color/colorLightGray" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/add_ingredient_button"
+                style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ingredient_chip_group"
+                android:layout_marginStart="@dimen/card_margin_horizontal"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="@dimen/card_margin_horizontal"
+                android:layout_marginBottom="8dp"
+                android:minWidth="96dp"
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp"
+                android:text="@string/add_ingredient"
+                android:textAlignment="viewStart"
+                android:textAllCaps="false"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_size_label"
+                android:textStyle="bold"
+                app:icon="@drawable/ic_expand_circle"
+                app:iconPadding="8dp"
+                app:iconTint="@color/colorAccent" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/add_ingredient_button"
+                android:layout_marginStart="@dimen/card_margin_horizontal"
+                android:background="@color/colorLightGray" />
+
+            <TextView
+                android:id="@+id/end_label"
+                style="@style/LabelTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/add_ingredient_button"
+                android:layout_marginStart="@dimen/card_margin_horizontal"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="@dimen/card_margin_horizontal"
+                android:text="@string/completion_date" />
+
+            <TextView
+                android:id="@+id/end_date_calendar"
+                style="@style/MainTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/end_label"
+                android:layout_marginStart="@dimen/card_margin_horizontal"
+                android:layout_marginEnd="@dimen/card_margin_horizontal"
+                android:text="@string/select_dates" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

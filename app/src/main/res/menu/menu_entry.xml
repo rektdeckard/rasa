@@ -7,7 +7,8 @@
     <item
         android:id="@+id/action_cancel"
         android:title="@string/action_cancel"
-        android:icon="@drawable/ic_close_white_24dp"
+        android:icon="@drawable/ic_close"
+        android:iconTint="@android:color/white"
         app:showAsAction="ifRoom" />
 
 </menu>

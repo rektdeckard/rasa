@@ -13,6 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 public class RecipeFragment extends Fragment {
 
@@ -21,16 +24,23 @@ public class RecipeFragment extends Fragment {
     private FirebaseFirestore db;
 
     private View rootView;
-    private RecyclerView recyclerView;
+    @BindView(R.id.list) RecyclerView recyclerView;
     private FirestoreRecyclerAdapter<Recipe, BrewViewHolder> mAdapter;
+    private Unbinder unbinder;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-
         rootView = inflater.inflate(R.layout.brew_list, container, false);
+        unbinder = ButterKnife.bind(this, rootView);
 
         return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }
