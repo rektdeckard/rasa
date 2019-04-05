@@ -106,7 +106,6 @@ public class CurrentFragment extends Fragment {
                 return new BrewViewHolder(itemView);
             }
 
-
             @Override
             protected void onBindViewHolder(@NonNull BrewViewHolder holder, int position, @NonNull Brew brew) {
                 // Bind Views
@@ -114,44 +113,52 @@ public class CurrentFragment extends Fragment {
 
                 // Set expander ClickListener
                 holder.card.setOnClickListener(v -> {
-                    holder.expanded = !holder.expanded;
                     for (int i = 0; i < mAdapter.getItemCount(); i++) {
                         if (i != position) {
                             BrewViewHolder vh = ((BrewViewHolder) recyclerView.getChildViewHolder(recyclerView.getChildAt(i)));
                             vh.expanded = false;
                         }
                     }
+                    holder.expanded = !holder.expanded;
                     notifyItemRangeChanged(0, mAdapter.getItemCount());
                 });
 
                 // Set quick action ClickListeners
                 holder.details.setOnClickListener(v -> {
-                    holder.expanded = false;
                     String brewId = getSnapshots().getSnapshot(position).getId();
-                    Intent intent = new Intent(getActivity(), EntryActivity.class);
+                    Intent intent = new Intent(getActivity(), DetailActivity.class);
                     intent.putExtra(EXTRA_BREW_ID, brewId);
                     startActivity(intent);
+                    holder.expanded = false;
+                    //notifyItemRangeChanged(0, mAdapter.getItemCount());
                 });
 
                 holder.markComplete.setOnClickListener(v -> {
-                    db.collection(Brew.HISTORY).add(brew);
                     String brewId = mAdapter.getSnapshots().getSnapshot(position).getId();
-                    deleted = mAdapter.getSnapshots().getSnapshot(position).toObject(Brew.class);
-                    db.collection(Brew.CURRENT).document(brewId).delete();
+                    if (!brew.advanceStage()) {
+                        brew.getSecondaryFerment().second = System.currentTimeMillis();
+                        db.collection(Brew.HISTORY).add(brew);
+                        deleted = mAdapter.getSnapshots().getSnapshot(position).toObject(Brew.class);
+                        db.collection(Brew.CURRENT).document(brewId).delete();
 
-                    // Show Snackbar with undo action
-                    Snackbar.make(rootView, "Brew marked complete", Snackbar.LENGTH_INDEFINITE)
-                            .setAction("UNDO", v2 -> {
-                                db.collection(Brew.CURRENT).add(deleted).addOnCompleteListener(task -> {
-                                    if (task.isSuccessful()) {
-                                        deleted = null;
-                                    }
-                                });
-                                db.collection(Brew.HISTORY).document(brewId).delete();
-                            })
-                            .setActionTextColor(getResources().getColor(android.R.color.white, Objects.requireNonNull(getActivity()).getTheme()))
-                            .show();
-
+                        // Show Snackbar with undo action
+                        Snackbar.make(rootView, "Brew marked complete", Snackbar.LENGTH_INDEFINITE)
+                                .setAction("UNDO", v2 -> {
+                                    db.collection(Brew.CURRENT).add(deleted).addOnCompleteListener(task -> {
+                                        if (task.isSuccessful()) {
+                                            deleted = null;
+                                        }
+                                    });
+                                    // TODO get the correct history collection ID
+                                    db.collection(Brew.HISTORY).document(brewId).delete();
+                                })
+                                .setActionTextColor(getResources().getColor(android.R.color.white, Objects.requireNonNull(getActivity()).getTheme()))
+                                .show();
+                    } else {
+                        db.collection(Brew.CURRENT).document(brewId).set(brew);
+                    }
+                    holder.expanded = false;
+                    notifyItemChanged(position);
                 });
 
                 holder.delete.setOnClickListener(v -> {
@@ -168,8 +175,16 @@ public class CurrentFragment extends Fragment {
                             }))
                             .setActionTextColor(getResources().getColor(android.R.color.white, Objects.requireNonNull(getActivity()).getTheme()))
                             .show();
+
+                    holder.expanded = false;
+//                    notifyItemChanged(position);
                 });
 
+            }
+
+            @Override
+            public void onDataChanged() {
+                notifyItemRangeChanged(0, mAdapter.getItemCount());
             }
 
         };

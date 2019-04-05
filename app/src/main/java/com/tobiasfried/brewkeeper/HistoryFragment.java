@@ -55,14 +55,14 @@ public class HistoryFragment extends Fragment {
         ButterKnife.bind(this, rootView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
 
-        ArrayAdapter<CharSequence> sortAdapter = ArrayAdapter.createFromResource(Objects.requireNonNull(getContext()), R.array.array_sort_names, R.layout.spinner_item_sort);
+        ArrayAdapter<CharSequence> sortAdapter = ArrayAdapter.createFromResource(Objects.requireNonNull(getContext()), R.array.array_sort_names_history, R.layout.spinner_item_sort);
         Spinner sortSpinner = rootView.findViewById(R.id.spinner_sort_by);
         sortSpinner.setAdapter(sortAdapter);
         sortSpinner.setSelection(0);
         sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                setupRecyclerView(getResources().getStringArray(R.array.array_sort_options)[position]);
+                setupRecyclerView(getResources().getStringArray(R.array.array_sort_options_history)[position]);
             }
 
             @Override

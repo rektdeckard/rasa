@@ -17,6 +17,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,13 +37,14 @@ public class MainActivity extends AppCompatActivity {
         // Set TabHose
         mTabHost = findViewById(R.id.fragment_tab_host);
         mTabHost.setup(this, getSupportFragmentManager(), android.R.id.tabcontent);
-        mTabHost.addTab(mTabHost.newTabSpec("history")
-                .setIndicator("History"), HistoryFragment.class, null);
         mTabHost.addTab(mTabHost.newTabSpec("brews")
                 .setIndicator("Brews"), CurrentFragment.class, null);
+        mTabHost.addTab(mTabHost.newTabSpec("history")
+                .setIndicator("History"), HistoryFragment.class, null);
         mTabHost.addTab(mTabHost.newTabSpec("recipes")
                 .setIndicator("Recipes"), RecipeFragment.class, null);
-        mTabHost.setCurrentTab(1);
+        //mTabHost.addTab(mTabHost.newTabSpec("settings").setIndicator("Settings"), null, null);
+        mTabHost.setCurrentTab(0);
 
 //        FloatingActionButton floatingActionButton = findViewById(R.id.floating_action_button);
 //        floatingActionButton.setOnClickListener(new View.OnClickListener() {
@@ -52,12 +56,9 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
         ExtendedFloatingActionButton fab = findViewById(R.id.extended_fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, EntryActivity.class);
-                startActivity(intent);
-            }
+        fab.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, EntryActivity.class);
+            startActivity(intent);
         });
 
     }

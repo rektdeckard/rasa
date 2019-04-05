@@ -12,7 +12,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/progress_card"
-        style="@style/CardTheme"
+        style="@style/ListCardStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/list_item_height"
         app:cardBackgroundColor="@color/colorCompleted">
@@ -23,11 +23,10 @@
 
             <ProgressBar
                 android:id="@+id/progress_horizontal"
-                style="@style/ProgressBarTheme"
+                style="@style/ProgressBarStyle"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleY="20"
-                tools:progress="65" />
+                tools:progress="19" />
 
             <TextView
                 android:id="@+id/text_view_stage"
@@ -38,7 +37,7 @@
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="36dp"
                 android:fontFamily="@font/google_sans_medium"
-                android:textColor="@color/colorDarkGray"
+                android:textColor="@color/colorAccent"
                 android:textSize="12sp"
                 tools:text="2F" />
 
@@ -52,7 +51,7 @@
                 android:ellipsize="end"
                 android:fontFamily="@font/google_sans_medium"
                 android:maxLines="1"
-                android:textColor="@color/colorDarkGray"
+                android:textColor="@color/colorAccent"
                 android:textSize="16sp"
                 tools:text="Moonlight White" />
 
@@ -93,31 +92,31 @@
             android:id="@+id/mark_complete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_check"
+            android:drawablePadding="8dp"
             android:gravity="center"
             android:paddingStart="16dp"
-            android:text="@string/mark_complete"
-            android:drawablePadding="8dp"
-            android:drawableStart="@drawable/ic_check"/>
+            android:text="@string/mark_complete" />
 
         <TextView
             android:id="@+id/details"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_details"
+            android:drawablePadding="8dp"
             android:gravity="center"
             android:paddingStart="16dp"
-            android:text="@string/details"
-            android:drawablePadding="8dp"
-            android:drawableStart="@drawable/ic_details"/>
+            android:text="@string/details" />
 
         <TextView
             android:id="@+id/delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_delete"
+            android:drawablePadding="8dp"
             android:gravity="center"
             android:paddingStart="16dp"
-            android:text="@string/delete"
-            android:drawablePadding="8dp"
-            android:drawableStart="@drawable/ic_delete"/>
+            android:text="@string/delete" />
 
     </LinearLayout>
 

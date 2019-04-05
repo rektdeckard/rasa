@@ -12,6 +12,7 @@ public class Ingredient {
     private IngredientType type;
     private TeaType teaType;
     private int amount = 10;
+    private int timesUsed = 0;
 
 
     // CONSTRUCTORS
@@ -34,6 +35,11 @@ public class Ingredient {
     public Ingredient() {
     }
 
+    // METHODS
+    public void incrementUsed() {
+        timesUsed++;
+    }
+
     // GETTERS
 
     public String getName() {
@@ -50,6 +56,10 @@ public class Ingredient {
 
     public int getAmount() {
         return this.amount;
+    }
+
+    public int getTimesUsed() {
+        return this.timesUsed;
     }
 
 
@@ -69,6 +79,12 @@ public class Ingredient {
 
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+    public void setTimesUsed(int timesUsed) {
+        if (timesUsed >= 0) {
+            this.timesUsed = timesUsed;
+        }
     }
 
 }
