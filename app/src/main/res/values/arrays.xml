@@ -19,16 +19,26 @@
         <item>@string/sweetener_other</item>
     </string-array>
 
+    <!-- SORT OPTIONS -->
+    <!-- BREWS -->
+    <string-array name="array_sort_names">
+        <item>@string/time_remaining</item>
+        <item>@string/brew_name_label</item>
+        <item>@string/stage</item>
+    </string-array>
     <string-array name="array_sort_options">
+        <item>@string/sort_time_remaining</item>
         <item>@string/sort_name</item>
-        <item>@string/sort_secondary_date</item>
         <item>@string/sort_stage</item>
     </string-array>
-
-    <string-array name="array_sort_names">
+    <!-- HISTORY-->
+    <string-array name="array_sort_names_history">
+        <item>@string/most_recent</item>
         <item>@string/brew_name_label</item>
-        <item>@string/completion_date</item>
-        <item>@string/stage</item>
+    </string-array>
+    <string-array name="array_sort_options_history">
+        <item>@string/sort_recent</item>
+        <item>@string/sort_name</item>
     </string-array>
 
 </resources>

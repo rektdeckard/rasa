@@ -9,7 +9,13 @@
     android:orientation="horizontal"
     android:paddingStart="20dp"
     android:paddingEnd="20dp"
-    android:background="@drawable/card_border">
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/card_border_list">
 
     <TextView
         android:id="@+id/text_view_name"
@@ -19,7 +25,7 @@
         android:ellipsize="end"
         android:fontFamily="@font/google_sans_medium"
         android:maxLines="1"
-        android:textColor="@color/colorDarkGray"
+        android:textColor="@color/colorAccent"
         android:textSize="16sp"
         tools:text="Moonlight White" />
 

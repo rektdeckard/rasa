@@ -4,23 +4,22 @@ import android.content.Intent;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.tobiasfried.brewkeeper.model.Brew;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTabHost;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FragmentTabHost mTabHost;
+    //private FragmentTabHost mTabHost;
     private FirebaseAuth mAuth;
 
     @Override
@@ -31,33 +30,55 @@ public class MainActivity extends AppCompatActivity {
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
-        // Set TabHose
-        mTabHost = findViewById(R.id.fragment_tab_host);
-        mTabHost.setup(this, getSupportFragmentManager(), android.R.id.tabcontent);
-        mTabHost.addTab(mTabHost.newTabSpec("history")
-                .setIndicator("History"), HistoryFragment.class, null);
-        mTabHost.addTab(mTabHost.newTabSpec("brews")
-                .setIndicator("Brews"), CurrentFragment.class, null);
-        mTabHost.addTab(mTabHost.newTabSpec("recipes")
-                .setIndicator("Recipes"), RecipeFragment.class, null);
-        mTabHost.setCurrentTab(1);
-
-//        FloatingActionButton floatingActionButton = findViewById(R.id.floating_action_button);
-//        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(MainActivity.this, EntryActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-
-        ExtendedFloatingActionButton fab = findViewById(R.id.extended_fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        // Set ViewPager and FragmentAdapter
+        ViewPager viewPager = findViewById(R.id.viewpager);
+        FragmentPagerAdapter adapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @NonNull
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, EntryActivity.class);
-                startActivity(intent);
+            public Fragment getItem(int position) {
+                if (position == 0) {
+                    return new CurrentFragment();
+                } else if (position == 1) {
+                    return new HistoryFragment();
+                } else if (position == 2) {
+                    return new RecipeFragment();
+                } else {
+                    return new SettingsFragment();
+                }
             }
+
+            @Nullable
+            @Override
+            public CharSequence getPageTitle(int position) {
+                if (position == 0) {
+                    return getString(R.string.title_brews);
+                } else if (position == 1) {
+                    return getString(R.string.title_history);
+                } else if (position == 2) {
+                    return getString(R.string.title_recipes);
+                } else {
+                    return getString(R.string.title_settings);
+                }
+            }
+
+            @Override
+            public int getCount() {
+                return 4;
+            }
+        };
+
+        // Set the Adapter onto the ViewPager
+        viewPager.setAdapter(adapter);
+
+        // Set the TabLayout to the ViewPager
+        TabLayout tabLayout = findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(viewPager);
+
+        // Set FAB
+        FloatingActionButton floatingActionButton = findViewById(R.id.floating_action_button);
+        floatingActionButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, EntryActivity.class);
+            startActivity(intent);
         });
 
     }

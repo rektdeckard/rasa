@@ -27,7 +27,7 @@
     <string name="sweetener_honey">Honey</string>
     <string name="sweetener_other">Other</string>
 
-    <string name="action_save">Save brew</string>
+    <string name="action_save">Save</string>
     <string name="action_delete">Delete brew</string>
     <string name="action_delete_all">Delete all</string>
     <string name="title_activity_entry">New brew</string>
@@ -44,7 +44,7 @@
     <string name="add">Add</string>
     <string name="unit_grams">g</string>
     <string name="default_amount_sweetener">75</string>
-    <string name="brew_name_label">Brew Name</string>
+    <string name="brew_name_label">Brew name</string>
     <string name="tea_label">Tea</string>
     <string name="notes_hint">Enter your notes here</string>
     <string name="flavors">Flavors</string>
@@ -64,16 +64,26 @@
         <item quantity="other">%d days</item>
     </plurals>
 
+    <string name="sort_by">Sort by\:</string>
     <string name="sort_name">recipe.name</string>
     <string name="sort_secondary_date">secondaryStartDate</string>
     <string name="sort_end_date">endDate</string>
     <string name="sort_stage">stage</string>
+    <string name="sort_recent">secondaryFerment.second</string>
+    <string name="sort_time_remaining">endDate</string>
 
     <string name="add_tea">Add tea</string>
     <string name="action_cancel">Cancel brew</string>
-    <string name="sort_by">Sort by\:</string>
     <string name="select_dates">Select dates</string>
     <string name="delete">Delete</string>
     <string name="details">Details</string>
     <string name="mark_complete">Mark complete</string>
+    <string name="edit">Edit brew</string>
+
+    <string name="most_recent">Most recent</string>
+    <string name="time_remaining">Time remaining</string>
+    <string name="title_brews">Brews</string>
+    <string name="title_history">History</string>
+    <string name="title_recipes">Recipes</string>
+    <string name="title_settings">Settings</string>
 </resources>

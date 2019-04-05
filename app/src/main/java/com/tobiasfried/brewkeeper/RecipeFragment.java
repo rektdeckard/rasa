@@ -25,6 +25,7 @@ public class RecipeFragment extends Fragment {
 
     private View rootView;
     @BindView(R.id.list) RecyclerView recyclerView;
+
     private FirestoreRecyclerAdapter<Recipe, BrewViewHolder> mAdapter;
     private Unbinder unbinder;
 
@@ -32,7 +33,7 @@ public class RecipeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        rootView = inflater.inflate(R.layout.brew_list, container, false);
+        rootView = inflater.inflate(R.layout.fragment_recipe, container, false);
         unbinder = ButterKnife.bind(this, rootView);
 
         return rootView;

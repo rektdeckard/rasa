@@ -1,14 +1,9 @@
 package com.tobiasfried.brewkeeper.model;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
-
 import com.tobiasfried.brewkeeper.constants.*;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.core.util.Pair;
 
 public class Brew {
 
@@ -18,43 +13,18 @@ public class Brew {
 
     // MEMBER FIELDS
     private Recipe recipe;
-    private List<Ferment> ferments = new ArrayList<>();
+    private Stage stage;
+    private Ferment primaryFerment;
+    private Ferment secondaryFerment;
 
     // CONSTRUCTORS
-
-    /**
-     * Constructor for programmatic use
-     *
-     * @param name                      Brew name
-     * @param teas                      Tea {@link Ingredient}
-     * @param primarySweetener          Sweetener {@link Ingredient}
-     * @param primarySweetenerAmount    in grams
-     * @param secondarySweetener        Sweetener {@link Ingredient}
-     * @param secondarySweetenerAmount  in grams
-     * @param water                     in Liters
-     * @param ingredients               ArrayList<{@link Ingredient}>
-     * @param ferment                   ArrayDeque<{@link Ferment}>
-     */
-    public Brew(@NonNull String name, @NonNull List<Ingredient> teas,
-                int primarySweetener, int primarySweetenerAmount,
-                int secondarySweetener, int secondarySweetenerAmount,
-                double water, @Nullable List<Ingredient> ingredients, @Nullable String notes,
-                Ferment ferment) {
-        this.recipe = new Recipe(name, teas, primarySweetener, primarySweetenerAmount,
-                secondarySweetener, secondarySweetenerAmount, water, ingredients, notes);
-        this.ferments.add(ferment);
-    }
-
     /**
      * Constructor to start from recipe
      *
      * @param recipe                    from recipe
-     * @param ferment                   ArrayDeque<{@link Ferment}>
      */
-    public Brew(@NonNull Recipe recipe,
-                Ferment ferment) {
+    public Brew(@NonNull Recipe recipe) {
         this.recipe = recipe;
-        this.ferments.add(ferment);
     }
 
     /**
@@ -66,19 +36,69 @@ public class Brew {
 
     // METHODS
 
-    public boolean pauseStage() {
-        if (!ferments.isEmpty()) {
-//            ferments.peek().pause();
-            ferments.get(0).pause();
-            return true;
-        } else {
-            return false;
+    public boolean advanceStage() {
+        switch (stage) {
+            case PRIMARY:
+                stage = Stage.PAUSED;
+                // TODO use method to update 1F end and 2F start simultaneously
+                primaryFerment.second = System.currentTimeMillis();
+                secondaryFerment.first = System.currentTimeMillis();
+                break;
+            case PAUSED:
+                if (secondaryFerment != null) {
+                    stage = Stage.SECONDARY;
+                    primaryFerment.second = System.currentTimeMillis();
+                    secondaryFerment.first = System.currentTimeMillis();
+                } else {
+                    return false;
+                }
+                break;
+            case SECONDARY:
+                stage = Stage.COMPLETE;
+                // TODO also here
+                secondaryFerment.second = System.currentTimeMillis();
+                break;
+            case COMPLETE:
+            default:
+                secondaryFerment.second = System.currentTimeMillis();
+                return false;
+
+        }
+        return true;
+    }
+
+    public long getStartDate() {
+        switch (stage) {
+            case PRIMARY:
+            case PAUSED:
+                if (primaryFerment.first != null) {
+                    return primaryFerment.first;
+                }
+            case SECONDARY:
+            case COMPLETE:
+                if (secondaryFerment.first != null) {
+                    return secondaryFerment.first;
+                }
+            default:
+                throw new NullPointerException("No appropriate stage found.");
         }
     }
 
-    public boolean advanceStage() {
-        // return ferments.size() > 1 && ferments.add(ferments.poll());
-        return ferments.size() > 1 && ferments.add(ferments.remove(0));
+    public long getEndDate() {
+        switch (stage) {
+            case PRIMARY:
+            case PAUSED:
+                if (primaryFerment.second != null) {
+                    return primaryFerment.second;
+                }
+            case SECONDARY:
+            case COMPLETE:
+                if (secondaryFerment.second != null) {
+                    return secondaryFerment.second;
+                }
+            default:
+                throw new NullPointerException("No appropriate stage found.");
+        }
     }
 
     // SETTERS & GETTERS
@@ -92,51 +112,26 @@ public class Brew {
     }
 
     public Stage getStage() {
-//        return ferments.isEmpty() ? null : ferments.peek().getStage();
-        return ferments.isEmpty() ? null : ferments.get(0).getStage();
+        return stage;
     }
 
-    public long getStartDate() {
-        if (!ferments.isEmpty()) {
-//            return ferments.peek().getStartDate();
-            return ferments.get(0).getStartDate();
-        } else {
-            throw new NullPointerException("Ferment does not contain a startDate");
-        }
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 
-    public void setStartDate(long startDate) {
-        if (!ferments.isEmpty()) {
-//            ferments.peek().setStartDate(startDate);
-            ferments.get(0).setStartDate(startDate);
-        }
+    public Ferment getPrimaryFerment() {
+        return primaryFerment;
     }
 
-    public long getEndDate() {
-        if (!ferments.isEmpty()) {
-//            return ferments.peek().getEndDate();
-            return ferments.get(0).getEndDate();
-        } else {
-            throw new NullPointerException("Ferment does not contain a endDate");
-        }
+    public void setPrimaryFerment(Ferment primaryFerment) {
+        this.primaryFerment = primaryFerment;
     }
 
-    public void setEndDate(long endDate) {
-        if (!ferments.isEmpty()) {
-//            ferments.peek().setEndDate(endDate);
-            ferments.get(0).setEndDate(endDate);
-        }
+    public Ferment getSecondaryFerment() {
+        return secondaryFerment;
     }
 
-    public void addFerment(Ferment ferment) {
-        ferments.add(ferment);
-    }
-
-    public List<Ferment> getFerments() {
-        return ferments;
-    }
-
-    public void setFerments(List<Ferment> ferments) {
-        this.ferments = ferments;
+    public void setSecondaryFerment(Ferment secondaryFerment) {
+        this.secondaryFerment = secondaryFerment;
     }
 }

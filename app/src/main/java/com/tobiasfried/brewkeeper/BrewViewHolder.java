@@ -20,6 +20,7 @@ import butterknife.ButterKnife;
 public class BrewViewHolder extends RecyclerView.ViewHolder {
 
     public boolean expanded = false;
+    private int MIN_PROGRESS = 19;
 
     // Member views
     @BindView(R.id.progress_card)
@@ -68,10 +69,6 @@ public class BrewViewHolder extends RecyclerView.ViewHolder {
         String remainingString;
         if (days <= 0) {
             remainingString = "Complete";
-            card.getLayoutParams().height = 140;
-            progressBar.setVisibility(View.INVISIBLE);
-            remainingDays.setVisibility(View.INVISIBLE);
-            check.setVisibility(View.VISIBLE);
         } else if (days == 1) {
             remainingString = "Ending tomorrow";
         } else {
@@ -79,14 +76,39 @@ public class BrewViewHolder extends RecyclerView.ViewHolder {
         }
         remainingDays.setText(remainingString);
 
-        // Set progress indicators
-        double totalDays = TimeUtility.daysBetween(brew.getStartDate(), brew.getEndDate());
-        if (brew.getStage() == (Stage.PRIMARY)) {
-            stage.setText(R.string.stage_primary);
-        } else {
-            stage.setText(R.string.stage_secondary);
+        // Check for complete
+        switch (brew.getStage()) {
+            case PRIMARY:
+            case SECONDARY:
+                card.getLayoutParams().height = 192;
+                progressBar.setVisibility(View.VISIBLE);
+                remainingDays.setVisibility(View.VISIBLE);
+                check.setVisibility(View.INVISIBLE);
+                break;
+            case PAUSED:
+            case COMPLETE:
+                card.getLayoutParams().height = 132;
+                progressBar.setVisibility(View.INVISIBLE);
+                remainingDays.setVisibility(View.INVISIBLE);
+                check.setVisibility(View.VISIBLE);
+                break;
         }
+
+        // Set progress indicators
+        switch (brew.getStage()) {
+            case PRIMARY:
+            case PAUSED:
+                stage.setText(R.string.stage_primary);
+                break;
+            case SECONDARY:
+            case COMPLETE:
+                stage.setText(R.string.stage_secondary);
+                break;
+        }
+
+        double totalDays = TimeUtility.daysBetween(brew.getStartDate(), brew.getEndDate());
         int progress = (int) (((totalDays - days) / totalDays) * 100);
+        if (progress < MIN_PROGRESS) progress = MIN_PROGRESS;
         progressBar.setProgress(progress);
         progressBar.setSecondaryProgress(progress + 1);
 

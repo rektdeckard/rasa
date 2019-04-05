@@ -9,6 +9,7 @@
         android:id="@+id/tea_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/card_margin_horizontal"
         android:orientation="horizontal">
 
         <ImageButton
@@ -70,11 +71,9 @@
 
     <View
         android:id="@+id/divider_add_teas"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
+        style="@style/DividerStyle"
         android:layout_below="@id/tea_item"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@color/colorLightGray" />
+        android:layout_marginBottom="8dp" />
 
 </RelativeLayout>

@@ -13,7 +13,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.tobiasfried.brewkeeper.constants.Stage;
 import com.tobiasfried.brewkeeper.model.Brew;
 import com.tobiasfried.brewkeeper.utils.TimeUtility;
 
@@ -51,18 +50,18 @@ public class HistoryFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        rootView = inflater.inflate(R.layout.brew_list, container, false);
+        rootView = inflater.inflate(R.layout.fragment_brews, container, false);
         ButterKnife.bind(this, rootView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
 
-        ArrayAdapter<CharSequence> sortAdapter = ArrayAdapter.createFromResource(Objects.requireNonNull(getContext()), R.array.array_sort_names, R.layout.spinner_item_sort);
+        ArrayAdapter<CharSequence> sortAdapter = ArrayAdapter.createFromResource(Objects.requireNonNull(getContext()), R.array.array_sort_names_history, R.layout.spinner_item_sort);
         Spinner sortSpinner = rootView.findViewById(R.id.spinner_sort_by);
         sortSpinner.setAdapter(sortAdapter);
         sortSpinner.setSelection(0);
         sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                setupRecyclerView(getResources().getStringArray(R.array.array_sort_options)[position]);
+                setupRecyclerView(getResources().getStringArray(R.array.array_sort_options_history)[position]);
             }
 
             @Override

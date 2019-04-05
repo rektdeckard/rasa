@@ -18,4 +18,5 @@
     <dimen name="card_margin_horizontal">20dp</dimen>
     <dimen name="tall_toolbar_height">180dp</dimen>
     <dimen name="history_item_height">40dp</dimen>
+    <dimen name="tab_layout_height">64dp</dimen>
 </resources>
