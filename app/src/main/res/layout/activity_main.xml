@@ -28,7 +28,7 @@
             android:background="@color/colorAccent"
             app:tabIndicatorFullWidth="false"
             app:tabMode="fixed"
-            app:tabTextColor="@color/colorGrayWhite" />
+            app:tabTextColor="@color/colorWhiteThin" />
 
     </RelativeLayout>
 

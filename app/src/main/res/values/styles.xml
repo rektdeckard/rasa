@@ -122,7 +122,7 @@
     </style>
     <style name="TabStyle" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">@dimen/text_size</item>
-        <item name="android:textColor">@color/colorGrayWhite</item>
+        <item name="android:textColor">@color/colorWhiteThin</item>
         <item name="textAllCaps">false</item>
     </style>
 

@@ -11,6 +11,7 @@ import android.widget.Spinner;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.tobiasfried.brewkeeper.model.Brew;
@@ -25,6 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 import static com.tobiasfried.brewkeeper.EntryActivity.EXTRA_BREW_ID_HISTORY;
 
@@ -33,10 +35,22 @@ public class HistoryFragment extends Fragment {
     private static final String LOG_TAG = HistoryFragment.class.getSimpleName();
 
     private FirebaseFirestore db;
+    private FirestoreRecyclerAdapter<Brew, HistoryViewHolder> mAdapter;
+    private FirestoreRecyclerOptions<Brew> options;
+    private String sortOptions;
+    private Query.Direction sortOrder = Query.Direction.ASCENDING;
+    private Unbinder unbinder;
 
     private View rootView;
-    @BindView(R.id.list) RecyclerView recyclerView;
-    private FirestoreRecyclerAdapter<Brew, HistoryViewHolder> mAdapter;
+
+    @BindView(R.id.list)
+    RecyclerView recyclerView;
+
+    @BindView(R.id.spinner_sort_by)
+    Spinner sortSpinner;
+
+    @BindView(R.id.button_sort_order)
+    MaterialButton sortOrderButton;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,22 +60,23 @@ public class HistoryFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         rootView = inflater.inflate(R.layout.fragment_brews, container, false);
-        ButterKnife.bind(this, rootView);
+        unbinder = ButterKnife.bind(this, rootView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
 
-        ArrayAdapter<CharSequence> sortAdapter = ArrayAdapter.createFromResource(Objects.requireNonNull(getContext()), R.array.array_sort_names_history, R.layout.spinner_item_sort);
-        Spinner sortSpinner = rootView.findViewById(R.id.spinner_sort_by);
+        // Set Spinner Adapter
+        ArrayAdapter<CharSequence> sortAdapter = ArrayAdapter.createFromResource(Objects.requireNonNull(getContext()),
+                R.array.array_sort_names_history, R.layout.spinner_item_sort);
         sortSpinner.setAdapter(sortAdapter);
         sortSpinner.setSelection(0);
         sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                setupRecyclerView(getResources().getStringArray(R.array.array_sort_options_history)[position]);
+                sortOptions = getResources().getStringArray(R.array.array_sort_options)[position];
+                setupRecyclerView();
             }
 
             @Override
@@ -69,13 +84,22 @@ public class HistoryFragment extends Fragment {
 
             }
         });
+
+        // Set Sort Order Button
+        sortOrderButton.setOnClickListener(v -> {
+            float rotation = v.getRotation();
+            v.setRotation(rotation == 0 ? 180 : 0);
+            sortOrder = rotation == 0 ? Query.Direction.ASCENDING : Query.Direction.DESCENDING;
+            setupRecyclerView();
+        });
+
         return rootView;
     }
 
-    private void setupRecyclerView(String sortOption) {
+    private void setupRecyclerView() {
         // Inflate and setup RecyclerView
         Query query = db.collection(Brew.HISTORY)
-                .orderBy(sortOption, Query.Direction.ASCENDING);
+                .orderBy(sortOptions, sortOrder);
         FirestoreRecyclerOptions<Brew> options = new FirestoreRecyclerOptions.Builder<Brew>()
                 .setQuery(query, Brew.class)
                 .setLifecycleOwner(this)
@@ -105,5 +129,11 @@ public class HistoryFragment extends Fragment {
         };
 
         recyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

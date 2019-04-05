@@ -24,7 +24,9 @@ public class RecipeFragment extends Fragment {
     private FirebaseFirestore db;
 
     private View rootView;
-    @BindView(R.id.list) RecyclerView recyclerView;
+
+    @BindView(R.id.list)
+    RecyclerView recyclerView;
 
     private FirestoreRecyclerAdapter<Recipe, BrewViewHolder> mAdapter;
     private Unbinder unbinder;

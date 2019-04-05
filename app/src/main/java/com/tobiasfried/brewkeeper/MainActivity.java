@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public Fragment getItem(int position) {
                 if (position == 0) {
-                    return new CurrentFragment();
+                    return new BrewsFragment();
                 } else if (position == 1) {
                     return new HistoryFragment();
                 } else if (position == 2) {
