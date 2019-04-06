@@ -1,6 +1,8 @@
 package com.tobiasfried.brewkeeper;
 
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -21,6 +23,8 @@ public class BrewViewHolder extends RecyclerView.ViewHolder {
 
     public boolean expanded = false;
     private int MIN_PROGRESS = 19;
+    private LinearLayout.LayoutParams expandedParams;
+    private LinearLayout.LayoutParams collapsedParams;
 
     // Member views
     @BindView(R.id.progress_card)
@@ -56,7 +60,10 @@ public class BrewViewHolder extends RecyclerView.ViewHolder {
     public BrewViewHolder(@NonNull final View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
-
+        expandedParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                itemView.getContext().getResources().getDimensionPixelSize(R.dimen.list_item_height));
+        collapsedParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                itemView.getContext().getResources().getDimensionPixelSize(R.dimen.list_item_height_collapsed));
     }
 
     public void bind(Brew brew) {
@@ -80,14 +87,14 @@ public class BrewViewHolder extends RecyclerView.ViewHolder {
         switch (brew.getStage()) {
             case PRIMARY:
             case SECONDARY:
-                card.getLayoutParams().height = 192;
+                card.setLayoutParams(expandedParams);
                 progressBar.setVisibility(View.VISIBLE);
                 remainingDays.setVisibility(View.VISIBLE);
                 check.setVisibility(View.INVISIBLE);
                 break;
             case PAUSED:
             case COMPLETE:
-                card.getLayoutParams().height = 132;
+                card.setLayoutParams(collapsedParams);
                 progressBar.setVisibility(View.INVISIBLE);
                 remainingDays.setVisibility(View.INVISIBLE);
                 check.setVisibility(View.VISIBLE);
@@ -112,7 +119,7 @@ public class BrewViewHolder extends RecyclerView.ViewHolder {
         progressBar.setProgress(progress);
         progressBar.setSecondaryProgress(progress + 1);
 
-        quickActions.setVisibility(expanded ? View.VISIBLE : View.GONE);
+        //quickActions.setVisibility(expanded ? View.VISIBLE : View.GONE);
 
     }
 

@@ -1,9 +1,9 @@
 package com.tobiasfried.brewkeeper.model;
 
+import androidx.annotation.NonNull;
+import com.google.firebase.firestore.ServerTimestamp;
 import com.tobiasfried.brewkeeper.constants.*;
 
-import androidx.annotation.NonNull;
-import androidx.core.util.Pair;
 
 public class Brew {
 
@@ -17,11 +17,15 @@ public class Brew {
     private Ferment primaryFerment;
     private Ferment secondaryFerment;
 
+    @ServerTimestamp
+    private long serverTimestamp;
+
     // CONSTRUCTORS
+
     /**
      * Constructor to start from recipe
      *
-     * @param recipe                    from recipe
+     * @param recipe from recipe
      */
     public Brew(@NonNull Recipe recipe) {
         this.recipe = recipe;
@@ -84,6 +88,23 @@ public class Brew {
         }
     }
 
+//    private void setStartDate(long startDate) {
+//        switch (stage) {
+//            case PRIMARY:
+//            case PAUSED:
+//                if (primaryFerment != null) {
+//                    primaryFerment.first = startDate;
+//                }
+//            case SECONDARY:
+//            case COMPLETE:
+//                if (secondaryFerment != null) {
+//                    secondaryFerment.first = startDate;
+//                }
+//            default:
+//                throw new NullPointerException("No appropriate stage found.");
+//        }
+//    }
+
     public long getEndDate() {
         switch (stage) {
             case PRIMARY:
@@ -101,9 +122,27 @@ public class Brew {
         }
     }
 
+//    private void setEndDate(long endDate) {
+//        switch (stage) {
+//            case PRIMARY:
+//            case PAUSED:
+//                if (primaryFerment != null) {
+//                    primaryFerment.second = endDate;
+//                }
+//            case SECONDARY:
+//            case COMPLETE:
+//                if (secondaryFerment != null) {
+//                    secondaryFerment.second = endDate;
+//                }
+//            default:
+//                throw new NullPointerException("No appropriate stage found.");
+//        }
+//    }
+
     // SETTERS & GETTERS
 
-    public @NonNull Recipe getRecipe() {
+    public @NonNull
+    Recipe getRecipe() {
         return recipe;
     }
 

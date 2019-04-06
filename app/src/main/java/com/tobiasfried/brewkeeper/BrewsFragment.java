@@ -2,6 +2,7 @@ package com.tobiasfried.brewkeeper;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -27,6 +28,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import com.tobiasfried.brewkeeper.messaging.MessageService;
 import com.tobiasfried.brewkeeper.model.Brew;
 
 import java.util.Objects;
@@ -100,9 +102,6 @@ public class BrewsFragment extends Fragment {
             setupRecyclerView();
         });
 
-        // Get token
-        // MessageService.getInstanceId();
-
         return rootView;
     }
 
@@ -115,10 +114,13 @@ public class BrewsFragment extends Fragment {
                 .setLifecycleOwner(this)
                 .build();
         mAdapter = new FirestoreRecyclerAdapter<Brew, BrewViewHolder>(options) {
+
+            private int expandedItemIndex = -1;
+
             @NonNull
             @Override
             public BrewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View itemView = getLayoutInflater().inflate(R.layout.list_item_card, parent, false);
+                View itemView = getLayoutInflater().inflate(R.layout.list_item_brew, parent, false);
                 return new BrewViewHolder(itemView);
             }
 
@@ -129,15 +131,23 @@ public class BrewsFragment extends Fragment {
 
                 // Set expander ClickListener
                 holder.card.setOnClickListener(v -> {
-                    for (int i = 0; i < mAdapter.getItemCount(); i++) {
-                        if (i != position) {
-                            BrewViewHolder vh = ((BrewViewHolder) recyclerView.getChildViewHolder(recyclerView.getChildAt(i)));
-                            vh.expanded = false;
+                    if (position == expandedItemIndex) {
+                        notifyItemChanged(position);
+                        expandedItemIndex = -1;
+                    } else {
+                        if (expandedItemIndex != -1) {
+                            notifyItemChanged(expandedItemIndex);
                         }
+                        expandedItemIndex = position;
+                        notifyItemChanged(position);
                     }
-                    holder.expanded = !holder.expanded;
-                    notifyItemRangeChanged(0, mAdapter.getItemCount());
                 });
+
+                if (position == expandedItemIndex) {
+                    holder.quickActions.setVisibility(View.VISIBLE);
+                } else {
+                    holder.quickActions.setVisibility(View.GONE);
+                }
 
                 // Set quick action ClickListeners
                 holder.details.setOnClickListener(v -> {
@@ -193,14 +203,16 @@ public class BrewsFragment extends Fragment {
                             .show();
 
                     holder.expanded = false;
-//                    notifyItemChanged(position);
+                    expandedItemIndex = -1;
+                    notifyItemRangeChanged(0, mAdapter.getItemCount());
                 });
 
             }
 
             @Override
-            public void onDataChanged() {
-                notifyItemRangeChanged(0, mAdapter.getItemCount());
+            public void onViewRecycled(@NonNull BrewViewHolder holder) {
+                super.onViewRecycled(holder);
+                holder.expanded = false;
             }
 
         };
@@ -233,6 +245,7 @@ public class BrewsFragment extends Fragment {
             }
         }).attachToRecyclerView(recyclerView);
         ((SimpleItemAnimator) Objects.requireNonNull(recyclerView.getItemAnimator())).setSupportsChangeAnimations(false);
+
         recyclerView.setAdapter(mAdapter);
     }
 
