@@ -86,4 +86,7 @@
     <string name="title_history">History</string>
     <string name="title_recipes">Recipes</string>
     <string name="title_settings">Settings</string>
+    <string name="stat_most_brewed">Most brewed recipe</string>
+    <string name="stat_favorite_ingredient">Favorite ingredient</string>
+    <string name="stat_total_brews">Total brews completed</string>
 </resources>

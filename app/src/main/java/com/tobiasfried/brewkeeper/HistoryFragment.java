@@ -63,7 +63,7 @@ public class HistoryFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        rootView = inflater.inflate(R.layout.fragment_brews, container, false);
+        rootView = inflater.inflate(R.layout.fragment_history, container, false);
         unbinder = ButterKnife.bind(this, rootView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
 
@@ -121,7 +121,7 @@ public class HistoryFragment extends Fragment {
                 // Set ClickListener
                 final String brewId = getSnapshots().getSnapshot(position).getId();
                 holder.card.setOnClickListener(v -> {
-                    Intent intent = new Intent(getActivity(), EntryActivity.class);
+                    Intent intent = new Intent(getActivity(), EntryExtendedActivity.class);
                     intent.putExtra(EXTRA_BREW_ID_HISTORY, brewId);
                     startActivity(intent);
                 });

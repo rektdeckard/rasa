@@ -33,7 +33,7 @@
             android:label=""
             android:theme="@style/AppTheme.Color"/>
 
-        <activity android:name=".DetailActivity"
+        <activity android:name=".EntryExtendedActivity"
             android:label=""
             android:theme="@style/AppTheme.Color"/>
 

@@ -62,6 +62,9 @@
         <item name="android:clipChildren">true</item>
         <item name="cardCornerRadius">40dp</item>
     </style>
+    <style name="CardStyle.History" parent="@style/CardStyle">
+        <item name="cardBackgroundColor">@android:color/transparent</item>
+    </style>
 
     <!-- CHIPS -->
     <style name="ChipStyle" parent="@style/Widget.MaterialComponents.Chip.Filter">

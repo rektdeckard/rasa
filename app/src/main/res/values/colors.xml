@@ -5,6 +5,7 @@
     <color name="colorPrimaryDark">#FFB342</color>
     <color name="colorAccent">#222222</color>
     <color name="colorCompleted">#66D5A0</color>
+    <color name="colorSecondary">#CE93FD</color>
 
     <color name="colorLightGray">#22222222</color>
     <color name="colorGray">#44222222</color>

@@ -71,6 +71,7 @@ public class BrewViewHolder extends RecyclerView.ViewHolder {
         name.setText(brew.getRecipe().getName());
 
         // Calculate and bind remaining days
+
         long endDate = brew.getEndDate();
         double days = TimeUtility.daysBetween(System.currentTimeMillis(), endDate);
         String remainingString;

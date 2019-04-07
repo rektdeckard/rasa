@@ -114,7 +114,7 @@ public class Brew {
                 }
             case SECONDARY:
             case COMPLETE:
-                if (secondaryFerment.second != null) {
+                if (secondaryFerment != null && secondaryFerment.second != null) {
                     return secondaryFerment.second;
                 }
             default:

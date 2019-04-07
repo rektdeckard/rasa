@@ -28,7 +28,6 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
-import com.tobiasfried.brewkeeper.messaging.MessageService;
 import com.tobiasfried.brewkeeper.model.Brew;
 
 import java.util.Objects;
@@ -42,6 +41,7 @@ public class BrewsFragment extends Fragment {
     private FirebaseFirestore db;
     private FirestoreRecyclerAdapter<Brew, BrewViewHolder> mAdapter;
     private FirestoreRecyclerOptions<Brew> options;
+    private Query query;
     private String sortOptions;
     private Query.Direction sortOrder = Query.Direction.ASCENDING;
     private Brew deleted;
@@ -107,12 +107,14 @@ public class BrewsFragment extends Fragment {
 
     private void setupRecyclerView() {
         // Inflate and setup RecyclerView
-        Query query = db.collection(Brew.CURRENT)
+        query = db.collection(Brew.CURRENT)
                 .orderBy(sortOptions, sortOrder);
+
         options = new FirestoreRecyclerOptions.Builder<Brew>()
                 .setQuery(query, Brew.class)
                 .setLifecycleOwner(this)
                 .build();
+
         mAdapter = new FirestoreRecyclerAdapter<Brew, BrewViewHolder>(options) {
 
             private int expandedItemIndex = -1;
@@ -131,15 +133,15 @@ public class BrewsFragment extends Fragment {
 
                 // Set expander ClickListener
                 holder.card.setOnClickListener(v -> {
-                    if (position == expandedItemIndex) {
-                        notifyItemChanged(position);
+                    if (holder.getAdapterPosition() == expandedItemIndex) {
+                        notifyItemChanged(holder.getAdapterPosition());
                         expandedItemIndex = -1;
                     } else {
                         if (expandedItemIndex != -1) {
                             notifyItemChanged(expandedItemIndex);
                         }
-                        expandedItemIndex = position;
-                        notifyItemChanged(position);
+                        expandedItemIndex = holder.getAdapterPosition();
+                        notifyItemChanged(holder.getAdapterPosition());
                     }
                 });
 
@@ -151,8 +153,8 @@ public class BrewsFragment extends Fragment {
 
                 // Set quick action ClickListeners
                 holder.details.setOnClickListener(v -> {
-                    String brewId = getSnapshots().getSnapshot(position).getId();
-                    Intent intent = new Intent(getActivity(), DetailActivity.class);
+                    String brewId = getSnapshots().getSnapshot(holder.getAdapterPosition()).getId();
+                    Intent intent = new Intent(getActivity(), EntryExtendedActivity.class);
                     intent.putExtra(EXTRA_BREW_ID, brewId);
                     startActivity(intent);
                     holder.expanded = false;
@@ -160,15 +162,15 @@ public class BrewsFragment extends Fragment {
                 });
 
                 holder.markComplete.setOnClickListener(v -> {
-                    String brewId = mAdapter.getSnapshots().getSnapshot(position).getId();
+                    String brewId = mAdapter.getSnapshots().getSnapshot(holder.getAdapterPosition()).getId();
                     if (!brew.advanceStage()) {
                         brew.getSecondaryFerment().second = System.currentTimeMillis();
                         db.collection(Brew.HISTORY).add(brew);
-                        deleted = mAdapter.getSnapshots().getSnapshot(position).toObject(Brew.class);
+                        deleted = mAdapter.getSnapshots().getSnapshot(holder.getAdapterPosition()).toObject(Brew.class);
                         db.collection(Brew.CURRENT).document(brewId).delete();
 
                         // Show Snackbar with undo action
-                        Snackbar.make(rootView, "Brew marked complete", Snackbar.LENGTH_INDEFINITE)
+                        Snackbar.make(rootView, "Brew marked complete", Snackbar.LENGTH_LONG)
                                 .setAction("UNDO", v2 -> {
                                     db.collection(Brew.CURRENT).add(deleted).addOnCompleteListener(task -> {
                                         if (task.isSuccessful()) {
@@ -184,16 +186,16 @@ public class BrewsFragment extends Fragment {
                         db.collection(Brew.CURRENT).document(brewId).set(brew);
                     }
                     holder.expanded = false;
-                    notifyItemChanged(position);
+                    notifyItemChanged(holder.getAdapterPosition());
                 });
 
                 holder.delete.setOnClickListener(v -> {
-                    String brewId = mAdapter.getSnapshots().getSnapshot(position).getId();
-                    deleted = mAdapter.getSnapshots().getSnapshot(position).toObject(Brew.class);
+                    String brewId = mAdapter.getSnapshots().getSnapshot(holder.getAdapterPosition()).getId();
+                    deleted = mAdapter.getSnapshots().getSnapshot(holder.getAdapterPosition()).toObject(Brew.class);
                     db.collection(Brew.CURRENT).document(brewId).delete();
 
                     // Show Snackbar with undo action
-                    Snackbar.make(rootView, "Brew Deleted", Snackbar.LENGTH_INDEFINITE)
+                    Snackbar.make(rootView, "Brew Deleted", Snackbar.LENGTH_LONG)
                             .setAction("UNDO", h -> db.collection(Brew.CURRENT).add(deleted).addOnCompleteListener(task -> {
                                 if (task.isSuccessful()) {
                                     deleted = null;
@@ -233,7 +235,7 @@ public class BrewsFragment extends Fragment {
                     db.collection(Brew.CURRENT).document(brewId).delete();
 
                     // Show Snackbar with undo action
-                    Snackbar.make(rootView, "Brew Deleted", Snackbar.LENGTH_INDEFINITE)
+                    Snackbar.make(rootView, "Brew Deleted", Snackbar.LENGTH_LONG)
                             .setAction("UNDO", v -> db.collection(Brew.CURRENT).add(deleted).addOnCompleteListener(task -> {
                                 if (task.isSuccessful()) {
                                     deleted = null;

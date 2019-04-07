@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -43,32 +42,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.res.ResourcesCompat;
-import androidx.core.util.Pair;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.tobiasfried.brewkeeper.EntryActivity.EXTRA_BREW_ID;
-import static com.tobiasfried.brewkeeper.EntryActivity.EXTRA_BREW_ID_HISTORY;
+public class EntryExtendedActivity extends EntryActivity {
 
-public class DetailActivity extends AppCompatActivity {
-
-    // Database
-    protected FirebaseFirestore db;
-    protected EntryViewModel viewModel;
-    protected String brewId;
-    protected String collection = Brew.CURRENT;
-    protected DocumentReference docRef;
-
-    // Model
-    protected Brew currentBrew;
-    protected List<Ingredient> teas;
     private List<Ingredient> ingredients;
     private List<Ingredient> selectedIngredients;
 
@@ -155,6 +139,8 @@ public class DetailActivity extends AppCompatActivity {
         } else if (getIntent().hasExtra(EXTRA_BREW_ID_HISTORY)) {
             brewId = Objects.requireNonNull(getIntent().getExtras()).getString(EXTRA_BREW_ID_HISTORY);
             collection = Brew.HISTORY;
+            // TODO Not this
+            setContentView(R.layout.card_history);
         }
         EntryViewModelFactory factory = new EntryViewModelFactory(db, collection, brewId);
         viewModel = ViewModelProviders.of(this, factory).get(EntryViewModel.class);
