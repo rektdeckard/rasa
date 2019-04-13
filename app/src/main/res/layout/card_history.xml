@@ -1,0 +1,365 @@
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/primary_card"
+    style="@style/CardStyle.History"
+    android:layout_below="@+id/pip2">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/card_border">
+
+        <RelativeLayout
+            android:id="@+id/primary_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/card_margin_horizontal"
+            android:paddingTop="30dp"
+            android:paddingEnd="@dimen/card_margin_horizontal"
+            android:paddingBottom="@dimen/card_margin_horizontal">
+
+            <TextView
+                android:id="@+id/primary_label"
+                style="@style/LabelTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/first_fermentation" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/primary_label"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/primary_date_calendar"
+                    style="@style/MainTextStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/select_dates" />
+
+                <TextView
+                    android:id="@+id/primary_remaining_days"
+                    style="@style/LabelTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    tools:text="11 days" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/divider_primary_date"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/primary_date"
+            android:layout_marginStart="@dimen/card_margin_horizontal"
+            android:layout_marginBottom="8dp"
+            android:background="@color/colorAccent" />
+
+        <LinearLayout
+            android:id="@+id/tea"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/divider_primary_date"
+            android:layout_marginStart="@dimen/card_margin_horizontal"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/first_tea"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/card_margin_horizontal"
+                    android:orientation="horizontal">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/tea_name_autocomplete"
+                        style="@style/MainTextStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:backgroundTint="@android:color/transparent"
+                        android:completionThreshold="1"
+                        android:hint="@string/tea_name"
+                        android:inputType="textCapWords|textMultiLine"
+                        android:paddingStart="0dp"
+                        android:paddingTop="12dp"
+                        android:paddingEnd="0dp"
+                        android:paddingBottom="12dp"
+                        tools:text="Blue Mountain Gingerbread Adventure" />
+
+                    <Spinner
+                        android:id="@+id/tea_picker"
+                        style="@style/LabelTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:gravity="top"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="16dp"
+                        android:spinnerMode="dropdown"
+                        tools:listitem="@layout/spinner_item_small" />
+
+                    <EditText
+                        android:id="@+id/tea_amount_picker"
+                        style="@style/LabelTextStyle"
+                        android:layout_width="40dp"
+                        android:layout_height="match_parent"
+                        android:backgroundTint="@android:color/transparent"
+                        android:hint="@string/default_amount"
+                        android:importantForAutofill="no"
+                        android:inputType="number"
+                        android:maxLength="3"
+                        android:selectAllOnFocus="true"
+                        android:text="@string/default_amount_tea"
+                        android:textAlignment="textEnd"
+                        tools:ignore="UnusedAttribute" />
+
+                    <TextView
+                        android:id="@+id/unit_suffix1"
+                        style="@style/LabelTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="@string/unit_grams" />
+
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/divider_tea"
+                    style="@style/DividerStyle"
+                    android:layout_below="@+id/first_tea" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/primary_sugar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tea"
+            android:layout_marginStart="@dimen/card_margin_horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/card_margin_horizontal"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/primary_sugar_picker"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:dropDownSelector="@drawable/ic_expand_circle"
+                android:spinnerMode="dropdown"
+                tools:listitem="@layout/spinner_item" />
+
+            <EditText
+                android:id="@+id/sugar_amount_picker"
+                style="@style/LabelTextStyle"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                android:hint="@string/default_amount"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:maxLength="3"
+                android:selectAllOnFocus="true"
+                android:text="@string/default_amount_sweetener"
+                android:textAlignment="textEnd"
+                tools:ignore="UnusedAttribute" />
+
+            <TextView
+                android:id="@+id/unit_suffix2"
+                style="@style/LabelTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/unit_grams" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divider_primary_sugar"
+            style="@style/DividerStyle"
+            android:layout_below="@id/primary_sugar"
+            android:layout_marginStart="@dimen/card_margin_horizontal"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp" />
+
+        <LinearLayout
+            android:id="@+id/water"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/divider_primary_sugar"
+            android:layout_marginStart="@dimen/card_margin_horizontal"
+            android:layout_marginEnd="@dimen/card_margin_horizontal"
+            android:layout_marginBottom="16dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/MainTextStyle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/water" />
+
+
+            <EditText
+                android:id="@+id/water_amount_picker"
+                style="@style/LabelTextStyle"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                android:hint="@string/default_amount"
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal"
+                android:maxLength="4"
+                android:selectAllOnFocus="true"
+                android:text="@string/default_amount_water"
+                android:textAlignment="textEnd"
+                tools:ignore="UnusedAttribute" />
+
+            <TextView
+                android:id="@+id/unit_suffix4"
+                style="@style/LabelTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/unit_liters" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/water"
+            android:background="@color/colorAccent" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+
+            android:layout_below="@id/water"
+            android:background="@color/colorAccent" />
+
+        <RelativeLayout
+            android:id="@+id/secondary_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/water"
+            android:paddingStart="@dimen/card_margin_horizontal"
+            android:paddingTop="30dp"
+            android:paddingEnd="@dimen/card_margin_horizontal"
+            android:paddingBottom="@dimen/card_margin_horizontal">
+
+            <TextView
+                android:id="@+id/secondary_label"
+                style="@style/LabelTextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/second_fermentation" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/secondary_label"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/secondary_date_calendar"
+                    style="@style/MainTextStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/select_dates" />
+
+                <TextView
+                    android:id="@+id/secondary_remaining_days"
+                    style="@style/LabelTextStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="24dp"
+                    tools:text="3 days" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/divider_secondary_date"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/secondary_date"
+            android:layout_marginStart="@dimen/card_margin_horizontal"
+            android:background="@color/colorAccent" />
+
+        <LinearLayout
+            android:id="@+id/secondary_sugar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/divider_secondary_date"
+            android:layout_marginStart="@dimen/card_margin_horizontal"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="@dimen/card_margin_horizontal"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/secondary_sugar_picker"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:spinnerMode="dropdown"
+                tools:listitem="@layout/spinner_item" />
+
+            <EditText
+                android:id="@+id/secondary_sugar_amount_picker"
+                style="@style/LabelTextStyle"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                android:hint="@string/default_amount"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                android:maxLength="3"
+                android:selectAllOnFocus="true"
+                android:text="@string/default_amount"
+                android:textAlignment="textEnd"
+                tools:ignore="UnusedAttribute" />
+
+            <TextView
+                android:id="@+id/unit_suffix3"
+                style="@style/LabelTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/unit_grams" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divider_secondary_sugar"
+            style="@style/DividerStyle"
+            android:layout_below="@+id/secondary_sugar"
+            android:layout_marginStart="@dimen/card_margin_horizontal"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/ingredient_chip_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/divider_secondary_sugar"
+            android:layout_marginStart="@dimen/card_margin_horizontal"
+            android:layout_marginEnd="@dimen/card_margin_horizontal"
+            android:layout_marginBottom="24dp"
+            app:chipSpacing="8dp" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

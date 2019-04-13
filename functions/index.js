@@ -3,7 +3,7 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp();
 
-const token = 'eAPfozHcTWQ:APA91bGhUF9SOFasFS-ALwRMguU7C0DJ71bLsuWT2YPHKYUblwDRqs6xVcMq3pRJOomgNvyl6DIx_XfrE9llmLMMEu19ipDgskbirP041e9m0_UcE3Lq38lJPZJ4EW7-whpSYP5nHzLD'
+const token = 'dxY6kmgREi4:APA91bHWXbFh5yxa4tqH99sSTgHCvxISQOX3IgTSUIpzVRv_OORJl6pN17KDtWov4Sm0AL-R7qDS3KOfm-ka-ubw6yMLssMuJX-rsfVdApQwFGF61HzBQponWP1j0Tr_nZjQqF2qf9Jo'
 
 exports.registerNotification = functions.firestore
     .document('brews/{brew}')
@@ -22,13 +22,17 @@ exports.registerNotification = functions.firestore
         var endDate;
         var message;
 
-        if (stage === 'PRIMARY' ) {
-            endDate = new Date(document.secondaryStartDate);
-            message = "Primary Fermentation";
-        } else if (stage === 'SECONDARY') {
-            endDate = new Date(document.endDate);
-            message = "Secondary Fermentation";
+        switch (stage) {
+            case "PRIMARY":
+            case "PAUSED":
+                message = "Primary Fermentation";
+                break;
+            case "SECONDARY":
+            case "COMPLETE":
+                message = "Secondary Fermentation";
+                break;
         }
+        endDate = new Date(document.endDate);
 
         var days;
 
@@ -39,13 +43,19 @@ exports.registerNotification = functions.firestore
         // Do the math.
         var millisecondsPerDay = 1000 * 60 * 60 * 24;
         var millisBetween = two.getTime() - one.getTime();
-        days = Math.floor(millisBetween / millisecondsPerDay);
+        days = Math.ceil(millisBetween / millisecondsPerDay);
+
+        if (days > 0) {
+            message += (" is ending in " + days + " days.");
+        } else {
+            message += " is done!"
+        }
 
         // Build Notification from document details
         const payload = {
             notification: {
                 title: name,
-                body: message + " is ending in " + days + " days."
+                body: message
             }
         };
 

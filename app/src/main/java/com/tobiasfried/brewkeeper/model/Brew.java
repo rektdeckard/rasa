@@ -1,151 +1,176 @@
 package com.tobiasfried.brewkeeper.model;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.temporal.TemporalAmount;
-import java.util.List;
-
+import androidx.annotation.NonNull;
+import com.google.firebase.firestore.ServerTimestamp;
 import com.tobiasfried.brewkeeper.constants.*;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 public class Brew {
 
     public static final String CURRENT = "brews";
     public static final String HISTORY = "history";
 
+
     // MEMBER FIELDS
     private Recipe recipe;
-
-    private long primaryStartDate;
-    private long secondaryStartDate;
-    private long endDate;
-
     private Stage stage;
-    private boolean isRunning;
+    private Ferment primaryFerment;
+    private Ferment secondaryFerment;
 
+    @ServerTimestamp
+    private long serverTimestamp;
 
     // CONSTRUCTORS
-
-    /**
-     * Constructor for programmatic use
-     *
-     * @param name                     Brew name
-     * @param teas                      Tea {@link Ingredient}
-     * @param primarySweetener         Sweetener {@link Ingredient}
-     * @param primarySweetenerAmount   in grams
-     * @param secondarySweetener       Sweetener {@link Ingredient}
-     * @param secondarySweetenerAmount in grams
-     * @param water                    in Liters
-     * @param ingredients              ArrayList<{@link Ingredient}>
-     * @param primaryStartDate         UNIX Timestamp
-     * @param secondaryStartDate       UNIX Timestamp
-     * @param endDate                  UNIX Timestamp
-     * @param stage                    Stage {@link Stage}
-     * @param isRunning                boolean
-     */
-    public Brew(@NonNull String name, @NonNull List<Ingredient> teas,
-                int primarySweetener, int primarySweetenerAmount,
-                int secondarySweetener, int secondarySweetenerAmount,
-                double water, @Nullable List<Ingredient> ingredients, @Nullable String notes,
-                long primaryStartDate, long secondaryStartDate, long endDate,
-                @Nullable Stage stage, boolean isRunning) {
-        this.recipe = new Recipe(name, teas, primarySweetener, primarySweetenerAmount,
-                secondarySweetener, secondarySweetenerAmount, water, ingredients, notes);
-        this.primaryStartDate = primaryStartDate;
-        this.secondaryStartDate = secondaryStartDate;
-        this.endDate = endDate;
-        this.stage = stage;
-        this.isRunning = isRunning;
-    }
 
     /**
      * Constructor to start from recipe
      *
      * @param recipe from recipe
-     * @param primaryStartDate         {@link LocalDate}
-     * @param secondaryStartDate       {@link LocalDate}
-     * @param endDate                  {@link LocalDate}
-     * @param stage                    Stage {@link Stage}
-     * @param isRunning                boolean
      */
-    public Brew(@NonNull Recipe recipe,
-                long primaryStartDate, long secondaryStartDate, long endDate,
-                @Nullable Stage stage, boolean isRunning) {
+    public Brew(@NonNull Recipe recipe) {
         this.recipe = recipe;
-        this.primaryStartDate = primaryStartDate;
-        this.secondaryStartDate = secondaryStartDate;
-        this.endDate = endDate;
-        this.stage = stage;
-        this.isRunning = isRunning;
     }
 
     /**
      * Empty constructor for editor activity
      */
     public Brew() {
-        recipe = new Recipe();
-        primaryStartDate = System.currentTimeMillis();
-        secondaryStartDate = primaryStartDate + 864000000;
-        endDate = secondaryStartDate + 172800000;
-        stage = Stage.PRIMARY;
-        isRunning = false;
+        this.recipe = new Recipe();
     }
 
-    // GETTERS
+    // METHODS
 
-    public @NonNull Recipe getRecipe() {
-        return recipe;
+    public boolean advanceStage() {
+        switch (stage) {
+            case PRIMARY:
+                stage = Stage.PAUSED;
+                // TODO use method to update 1F end and 2F start simultaneously
+                primaryFerment.second = System.currentTimeMillis();
+                secondaryFerment.first = System.currentTimeMillis();
+                break;
+            case PAUSED:
+                if (secondaryFerment != null) {
+                    stage = Stage.SECONDARY;
+                    primaryFerment.second = System.currentTimeMillis();
+                    secondaryFerment.first = System.currentTimeMillis();
+                } else {
+                    return false;
+                }
+                break;
+            case SECONDARY:
+                stage = Stage.COMPLETE;
+                // TODO also here
+                secondaryFerment.second = System.currentTimeMillis();
+                break;
+            case COMPLETE:
+            default:
+                secondaryFerment.second = System.currentTimeMillis();
+                return false;
+
+        }
+        return true;
     }
 
-    public long getPrimaryStartDate() {
-        return primaryStartDate;
+    public long getStartDate() {
+        switch (stage) {
+            case PRIMARY:
+            case PAUSED:
+                if (primaryFerment.first != null) {
+                    return primaryFerment.first;
+                }
+            case SECONDARY:
+            case COMPLETE:
+                if (secondaryFerment.first != null) {
+                    return secondaryFerment.first;
+                }
+            default:
+                throw new NullPointerException("No appropriate stage found.");
+        }
     }
 
-    public long getSecondaryStartDate() {
-        return secondaryStartDate;
-    }
+//    private void setStartDate(long startDate) {
+//        switch (stage) {
+//            case PRIMARY:
+//            case PAUSED:
+//                if (primaryFerment != null) {
+//                    primaryFerment.first = startDate;
+//                }
+//            case SECONDARY:
+//            case COMPLETE:
+//                if (secondaryFerment != null) {
+//                    secondaryFerment.first = startDate;
+//                }
+//            default:
+//                throw new NullPointerException("No appropriate stage found.");
+//        }
+//    }
 
     public long getEndDate() {
-        return this.endDate;
+        switch (stage) {
+            case PRIMARY:
+            case PAUSED:
+                if (primaryFerment.second != null) {
+                    return primaryFerment.second;
+                }
+            case SECONDARY:
+            case COMPLETE:
+                if (secondaryFerment != null && secondaryFerment.second != null) {
+                    return secondaryFerment.second;
+                }
+            default:
+                throw new NullPointerException("No appropriate stage found.");
+        }
     }
 
-    public @Nullable Stage getStage() {
-        return stage;
+//    private void setEndDate(long endDate) {
+//        switch (stage) {
+//            case PRIMARY:
+//            case PAUSED:
+//                if (primaryFerment != null) {
+//                    primaryFerment.second = endDate;
+//                }
+//            case SECONDARY:
+//            case COMPLETE:
+//                if (secondaryFerment != null) {
+//                    secondaryFerment.second = endDate;
+//                }
+//            default:
+//                throw new NullPointerException("No appropriate stage found.");
+//        }
+//    }
+
+    // SETTERS & GETTERS
+
+    public @NonNull
+    Recipe getRecipe() {
+        return recipe;
     }
-
-    public boolean isRunning() {
-        return isRunning;
-    }
-
-
-    // SETTERS
 
     public void setRecipe(@NonNull Recipe recipe) {
         this.recipe = recipe;
     }
 
-    public void setPrimaryStartDate(long primaryStartDate) {
-        this.primaryStartDate = primaryStartDate;
+    public Stage getStage() {
+        return stage;
     }
 
-    public void setSecondaryStartDate(long secondaryStartDate) {
-        this.secondaryStartDate = secondaryStartDate;
-    }
-
-    public void setEndDate(long endDate) {
-        this.endDate = endDate;
-    }
-
-    public void setStage(@Nullable Stage stage) {
+    public void setStage(Stage stage) {
         this.stage = stage;
     }
 
-    public void setRunning(boolean running) {
-        isRunning = running;
+    public Ferment getPrimaryFerment() {
+        return primaryFerment;
     }
 
+    public void setPrimaryFerment(Ferment primaryFerment) {
+        this.primaryFerment = primaryFerment;
+    }
+
+    public Ferment getSecondaryFerment() {
+        return secondaryFerment;
+    }
+
+    public void setSecondaryFerment(Ferment secondaryFerment) {
+        this.secondaryFerment = secondaryFerment;
+    }
 }

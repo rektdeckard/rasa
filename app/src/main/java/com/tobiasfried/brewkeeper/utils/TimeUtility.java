@@ -9,6 +9,8 @@ import org.threeten.bp.temporal.ChronoUnit;
 
 public class TimeUtility {
 
+    public static final long MAX_DATE = 1893455999000L;
+
     public static int daysBetween(long startTimestamp, long endTimestamp) {
         return (int) ChronoUnit.DAYS.between(Instant.ofEpochMilli(startTimestamp).atZone(ZoneId.systemDefault()).toLocalDate(),
                 Instant.ofEpochMilli(endTimestamp).atZone(ZoneId.systemDefault()).toLocalDate());

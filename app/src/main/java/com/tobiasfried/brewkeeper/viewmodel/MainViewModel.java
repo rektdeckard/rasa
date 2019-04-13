@@ -28,6 +28,7 @@ public class MainViewModel extends AndroidViewModel {
     private MutableLiveData<List<Brew>> completedBrews = new MutableLiveData<>();
     private MutableLiveData<List<Recipe>> recipes = new MutableLiveData<>();
 
+    // TODO is this needed anymore?? think about how to update brew stage based on time
     public MainViewModel(Application application) {
         super(application);
         // Get DB Instance
