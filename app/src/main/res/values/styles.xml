@@ -12,6 +12,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/background</item>
         <item name="android:statusBarColor">@color/colorAccent</item>
+        <!--<item name="android:windowTranslucentStatus">true</item>-->
         <item name="android:windowLightStatusBar">false</item>
         <item name="actionBarStyle">@style/ToolbarStyle</item>
         <!--<item name="android:navigationBarColor">@color/background</item>-->

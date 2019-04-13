@@ -55,7 +55,7 @@ import butterknife.ButterKnife;
 import static com.tobiasfried.brewkeeper.EntryActivity.EXTRA_BREW_ID;
 import static com.tobiasfried.brewkeeper.EntryActivity.EXTRA_BREW_ID_HISTORY;
 
-public class EntryExtendedActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity {
 
     // Database
     protected FirebaseFirestore db;
@@ -92,9 +92,6 @@ public class EntryExtendedActivity extends AppCompatActivity {
     @BindView(R.id.tea_picker)
     Spinner teaSpinner;
 
-    @BindView(R.id.add_tea_button)
-    MaterialButton teaAddButton;
-
     @BindView(R.id.primary_sugar_picker)
     Spinner primarySugarSpinner;
 
@@ -119,21 +116,15 @@ public class EntryExtendedActivity extends AppCompatActivity {
     @BindView(R.id.ingredient_chip_group)
     ChipGroup flavorChipGroup;
 
-    @BindView(R.id.add_ingredient_button)
-    MaterialButton flavorAddButton;
-
     @BindView(R.id.notes)
     EditText notesEditText;
-
-    @BindView(R.id.button_start)
-    ExtendedFloatingActionButton submitButton;
 
     private boolean editing = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_entry_extended);
+        setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
 
         // TODO fetch from loaded brew
@@ -154,7 +145,6 @@ public class EntryExtendedActivity extends AppCompatActivity {
             brewId = Objects.requireNonNull(getIntent().getExtras()).getString(EXTRA_BREW_ID_HISTORY);
             collection = Brew.HISTORY;
             // TODO Not this
-            setContentView(R.layout.card_history);
         }
         EntryViewModelFactory factory = new EntryViewModelFactory(db, collection, brewId);
         viewModel = ViewModelProviders.of(this, factory).get(EntryViewModel.class);
@@ -163,35 +153,14 @@ public class EntryExtendedActivity extends AppCompatActivity {
         docRef = viewModel.getDocumentReference();
 
         setupDialogs();
-        setupFieldWatchers();
-        setupButtons();
-        setFieldsEditable();
-        setupFab();
-    }
-
-    private void toggleEditMode() {
-        editing = !editing;
-        submitButton.setText(editing ? R.string.action_save : R.string.edit);
         setFieldsEditable();
     }
 
     private void setFieldsEditable() {
-        CardView primaryCard = findViewById(R.id.primary_card);
-        RelativeLayout primaryLayout = findViewById(R.id.primary_layout);
-        if (!editing) {
-            primaryCard.setCardBackgroundColor(getResources().getColor(android.R.color.transparent, getTheme()));
-            primaryLayout.setBackground(getDrawable(R.drawable.card_border));
-        } else {
-            primaryCard.setCardBackgroundColor(getResources().getColor(android.R.color.white, getTheme()));
-            primaryLayout.setBackground(null);
-        }
-
         brewNameEditText.setEnabled(editing);
         teaNameEditText.setEnabled(editing);
         teaSpinner.setEnabled(editing);
         teaAmountEditText.setEnabled(editing);
-        teaAddButton.setVisibility(editing ? View.VISIBLE : View.GONE);
-        findViewById(R.id.divider_teas).setVisibility(editing ? View.VISIBLE : View.GONE);
         primarySugarSpinner.setEnabled(editing);
         primarySugarAmountEditText.setEnabled(editing);
         waterAmountEditText.setEnabled(editing);
@@ -221,12 +190,6 @@ public class EntryExtendedActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        fetchIngredients();
-    }
-
     private void setupTeaSpinner(Spinner spinner, int position) {
         ArrayAdapter<CharSequence> teaTypes = ArrayAdapter.createFromResource(this, R.array.array_tea_types, R.layout.spinner_item_small);
         teaTypes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -239,40 +202,6 @@ public class EntryExtendedActivity extends AppCompatActivity {
         sweetenerTypes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         primarySugarSpinner.setAdapter(sweetenerTypes);
         secondarySugarSpinner.setAdapter(sweetenerTypes);
-    }
-
-    private void setupFieldWatchers() {
-
-        TextWatcher requiredWatcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String name = brewNameEditText.getText().toString().trim();
-                String teaName = teaNameEditText.getText().toString().trim();
-                String teaAmount = teaAmountEditText.getText().toString().trim();
-                String primarySugarAmount = primarySugarAmountEditText.getText().toString().trim();
-                String waterAmount = waterAmountEditText.getText().toString().trim();
-
-                submitButton.setEnabled(!name.isEmpty() && !teaName.isEmpty() && !teaAmount.isEmpty() &&
-                        !primarySugarAmount.isEmpty() && !waterAmount.isEmpty());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        };
-
-        brewNameEditText.addTextChangedListener(requiredWatcher);
-        teaNameEditText.addTextChangedListener(requiredWatcher);
-        teaAmountEditText.addTextChangedListener(requiredWatcher);
-        primarySugarAmountEditText.addTextChangedListener(requiredWatcher);
-        waterAmountEditText.addTextChangedListener(requiredWatcher);
-
     }
 
     private void setupDialogs() {
@@ -351,44 +280,6 @@ public class EntryExtendedActivity extends AppCompatActivity {
         });
     }
 
-    private void setupButtons() {
-
-        teaAddButton.setOnClickListener(v -> {
-            LayoutInflater inflater = getLayoutInflater();
-            final View tea = inflater.inflate(R.layout.list_item_tea, null);
-            ImageButton removeButton = tea.findViewById(R.id.remove_button);
-            removeButton.setOnClickListener(v1 -> teaList.removeView(tea));
-            teaList.addView(tea);
-
-            Spinner spinner = tea.findViewById(R.id.tea_picker);
-            setupTeaSpinner(spinner, 0);
-        });
-
-        flavorAddButton.setOnClickListener(v -> {
-            InputDialog newFragment = InputDialog.getInstance();
-            newFragment.setOnClickListener((dialog, input) -> {
-                if (!input.equals("")) {
-                    Ingredient newIngredient = new Ingredient(input, IngredientType.FLAVOR, null, 0);
-                    db.collection(Ingredient.COLLECTION).add(newIngredient);
-                    setupChips();
-                }
-            });
-
-            newFragment.show(getSupportFragmentManager(), "ingredientInput");
-        });
-    }
-
-    private void setupFab() {
-        submitButton.setOnClickListener(v -> {
-            if (editing) {
-                saveBrew();
-                toggleEditMode();
-            } else {
-                toggleEditMode();
-            }
-        });
-    }
-
     private void fetchBrew() {
         viewModel.getBrew().observe(this, brew -> {
             currentBrew = brew;
@@ -413,6 +304,7 @@ public class EntryExtendedActivity extends AppCompatActivity {
 
     private void setupBrew() {
         refreshDates();
+        fetchIngredients();
 
         brewNameEditText.setText(currentBrew.getRecipe().getName());
 
@@ -463,15 +355,16 @@ public class EntryExtendedActivity extends AppCompatActivity {
     private void setupChips() {
         flavorChipGroup.removeAllViews();
         // Populate ChipGroup from ingredients list
-        for (final Ingredient i : ingredients) {
+        for (final Ingredient i : currentBrew.getRecipe().getIngredients()) {
             final Chip chip = new Chip(this, null, R.style.ChipStyle);
             chip.setText(i.getName().toLowerCase());
             chip.setTextColor(getColorStateList(R.color.color_states_chip_text));
             chip.setTypeface(ResourcesCompat.getFont(this, R.font.google_sans_medium));
-            chip.setChipBackgroundColorResource(android.R.color.transparent);
+            chip.setChipBackgroundColor(getResources().getColorStateList(R.color.color_states_chips, getTheme()));
             chip.setChipStrokeColorResource(R.color.color_states_chip_text);
             chip.setChipStrokeWidth(4.0f);
-            chip.setCheckable(true);
+            chip.setChecked(true);
+            chip.setCheckable(false);
             chip.setCheckedIconVisible(false);
 
             // TODO fix check chip
@@ -541,66 +434,4 @@ public class EntryExtendedActivity extends AppCompatActivity {
         }
     }
 
-    private void saveBrew() {
-
-        // Read Fields
-        currentBrew.getRecipe().setName(brewNameEditText.getText().toString().trim());
-        currentBrew.getRecipe().setPrimarySweetenerAmount(Integer.parseInt(primarySugarAmountEditText.getText().toString()));
-        currentBrew.getRecipe().setWater(Double.parseDouble(waterAmountEditText.getText().toString()));
-        currentBrew.getRecipe().setSecondarySweetenerAmount(Integer.parseInt(secondarySugarAmountEditText.getText().toString()));
-        currentBrew.getRecipe().setIngredients(selectedIngredients);
-        currentBrew.getRecipe().setNotes(notesEditText.getText().toString().trim());
-
-        // Read each tea row
-        currentBrew.getRecipe().getTeas().clear();
-        for (int i = 0; i < teaList.getChildCount(); i++) {
-            final View teaItem = teaList.getChildAt(i);
-            AutoCompleteTextView nameEditText = teaItem.findViewById(R.id.tea_name_autocomplete);
-            String name = nameEditText.getText().toString().trim();
-            if (!name.isEmpty()) {
-                Spinner typeSpinner = teaItem.findViewById(R.id.tea_picker);
-                TeaType type = TeaType.get(typeSpinner.getSelectedItemPosition());
-                EditText amountEditText = teaItem.findViewById(R.id.tea_amount_picker);
-                int amount = Integer.parseInt(amountEditText.getText().toString());
-                currentBrew.getRecipe().addTea(new Ingredient(name, IngredientType.TEA, type, amount));
-            }
-        }
-
-        if (currentBrew.getSecondaryFerment().first != null && System.currentTimeMillis() > currentBrew.getSecondaryFerment().first) {
-            if(currentBrew.getSecondaryFerment().second != null && System.currentTimeMillis() > currentBrew.getSecondaryFerment().second) {
-                currentBrew.setStage(Stage.COMPLETE);
-                docRef.delete();
-                db.collection(Brew.HISTORY).add(currentBrew).addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        finish();
-                    } else {
-                        CoordinatorLayout rootView = findViewById(R.id.root_view);
-                        Snackbar.make(rootView, "Error making database changes", Snackbar.LENGTH_LONG)
-                                .setAction("Retry", v -> saveBrew())
-                                .show();
-                    }
-                });
-            } else {
-                currentBrew.setStage(Stage.SECONDARY);
-            }
-        } else if (System.currentTimeMillis() > currentBrew.getPrimaryFerment().second) {
-            currentBrew.setStage(Stage.PAUSED);
-        } else {
-            currentBrew.setStage(Stage.PRIMARY);
-        }
-
-        // Save brew, show SnackBar if save fails
-        docRef.set(currentBrew).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                finish();
-            } else {
-                CoordinatorLayout rootView = findViewById(R.id.root_view);
-                Snackbar.make(rootView, "Error making database changes", Snackbar.LENGTH_LONG)
-                        .setAction("Retry", v -> saveBrew())
-                        .show();
-            }
-        });
-
-
-    }
 }

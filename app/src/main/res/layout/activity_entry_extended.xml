@@ -23,22 +23,29 @@
             <View
                 android:id="@+id/pip1"
                 style="@style/PipStyle"
-                android:layout_alignParentTop="true"/>
+                android:layout_alignParentTop="true" />
 
             <View
                 android:id="@+id/pip2"
                 style="@style/PipStyle"
                 android:layout_below="@+id/pip1"
-                android:layout_marginBottom="12dp"/>
+                android:layout_marginBottom="12dp" />
 
-            <include layout="@layout/card_primary" />
+            <include layout="@layout/card_primary"
+                android:id="@+id/primary_card"/>
+
+            <include layout="@layout/card_secondary"
+                android:id="@+id/secondary_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/primary_card"/>
 
             <EditText
                 android:id="@+id/notes"
                 style="@style/MainTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/primary_card"
+                android:layout_below="@+id/secondary_card"
                 android:layout_marginStart="@dimen/card_margin_horizontal"
                 android:layout_marginEnd="@dimen/card_margin_horizontal"
                 android:backgroundTint="@android:color/transparent"
@@ -66,12 +73,11 @@
         android:layout_marginBottom="16dp"
         android:enabled="false"
         android:fontFamily="@font/google_sans_medium"
-        android:text="@string/start"
+        android:text="@string/edit"
         android:textAllCaps="false"
         android:textSize="16sp" />
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary">
@@ -122,9 +128,8 @@
                     android:textColor="@color/colorAccent"
                     android:textColorHint="@color/colorAccent"
                     android:textSize="32sp"
-                    app:autoSizeTextType="uniform"
                     tools:text="Wisteria Blue"
-                    tools:ignore="UnusedAttribute"/>
+                    tools:ignore="UnusedAttribute" />
 
             </RelativeLayout>
 

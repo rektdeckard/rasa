@@ -48,7 +48,7 @@ exports.registerNotification = functions.firestore
         if (days > 0) {
             message += (" is ending in " + days + " days.");
         } else {
-            message += "is done!"
+            message += " is done!"
         }
 
         // Build Notification from document details

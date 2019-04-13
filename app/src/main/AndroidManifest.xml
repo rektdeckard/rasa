@@ -37,9 +37,9 @@
             android:label=""
             android:theme="@style/AppTheme.Color"/>
 
-        <activity android:name=".SettingsFragment"
+        <activity android:name=".DetailActivity"
             android:label=""
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme.Color"/>
 
     </application>
 

@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.SimpleExpandableListAdapter;
 import android.widget.Spinner;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -121,7 +123,7 @@ public class HistoryFragment extends Fragment {
                 // Set ClickListener
                 final String brewId = getSnapshots().getSnapshot(position).getId();
                 holder.card.setOnClickListener(v -> {
-                    Intent intent = new Intent(getActivity(), EntryExtendedActivity.class);
+                    Intent intent = new Intent(getActivity(), DetailActivity.class);
                     intent.putExtra(EXTRA_BREW_ID_HISTORY, brewId);
                     startActivity(intent);
                 });

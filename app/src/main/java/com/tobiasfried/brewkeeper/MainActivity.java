@@ -4,8 +4,11 @@ import android.content.Intent;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.tobiasfried.brewkeeper.messaging.MessageService;
@@ -16,9 +19,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     //private FragmentTabHost mTabHost;
     private FirebaseAuth mAuth;
@@ -92,6 +99,22 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            mAuth.signInAnonymously().addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Log.d(LOG_TAG, "signInAnonymously:success");
+                    FirebaseUser user = mAuth.getCurrentUser();
+                    // UI updates if needed
+                    // Save UID in sharedpreferences
+                } else {
+                    Log.w(LOG_TAG, "signInAnonymously:failure", task.getException());
+                    // UI updates if needed
+                }
+            });
+        } else {
+            // ??
+        }
+
     }
 
 }

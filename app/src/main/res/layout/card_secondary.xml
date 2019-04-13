@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:showIn="@layout/activity_detail">
+    tools:showIn="@layout/activity_entry_extended">
 
     <View
         android:id="@+id/pip3"

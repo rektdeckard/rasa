@@ -76,7 +76,7 @@ public class DateRangeDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mSublimePicker = (SublimePicker) getLayoutInflater().inflate(R.layout.dialog_date_range, container);
+        mSublimePicker = (SublimePicker) inflater.inflate(R.layout.dialog_date_range, container);
 
         // Retrieve SublimeOptions
         Bundle arguments = getArguments();

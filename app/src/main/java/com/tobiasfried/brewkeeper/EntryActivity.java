@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import android.animation.ObjectAnimator;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.text.Editable;
@@ -34,8 +35,10 @@ import com.appeaser.sublimepickerlibrary.datepicker.SelectedDate;
 import com.appeaser.sublimepickerlibrary.helpers.SublimeOptions;
 import com.appeaser.sublimepickerlibrary.recurrencepicker.SublimeRecurrencePicker;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.internal.CollapsingTextHelper;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -126,6 +129,24 @@ public class EntryActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.inflateMenu(R.menu.menu_entry);
+
+        // Collapsing Text
+//        AppBarLayout appBarLayout = findViewById(R.id.app_bar);
+//        TextView createTextView = findViewById(R.id.create_text_view);
+//        appBarLayout.addOnOffsetChangedListener((l, verticalOffset) -> {
+//            if (verticalOffset != 0) {
+//                // TODO fine-tune scaling
+//                brewNameEditText.setEnabled(false);
+//                brewNameEditText.setScaleX(((float) (l.getTotalScrollRange() + verticalOffset)) / (float) l.getTotalScrollRange());
+//                brewNameEditText.setScaleY(((float) (l.getTotalScrollRange() + verticalOffset)) / (float) l.getTotalScrollRange());
+//                createTextView.setAlpha(((float) (l.getTotalScrollRange() + verticalOffset)) / (float) l.getTotalScrollRange());
+//            } else {
+//                brewNameEditText.setEnabled(true);
+//                brewNameEditText.setScaleX(1f);
+//                brewNameEditText.setScaleY(1f);
+//                createTextView.setAlpha(1f);
+//            }
+//        });
 
         // Get ViewModel
         if (getIntent().hasExtra(EXTRA_BREW_ID)) {
