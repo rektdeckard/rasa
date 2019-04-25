@@ -70,7 +70,13 @@
     <!-- CHIPS -->
     <style name="ChipStyle" parent="@style/Widget.MaterialComponents.Chip.Filter">
         <item name="android:fontFamily">@font/google_sans</item>
+        <item name="android:typeface">@font/google_sans_medium</item>
         <item name="android:textStyle">bold</item>
+        <item name="chipStrokeColor">@color/color_states_chips</item>
+        <item name="chipStrokeWidth">@dimen/chip_stroke_width</item>
+        <item name="android:textColor">@color/color_states_chip_text</item>
+        <item name="chipBackgroundColor">@color/color_states_chips</item>
+
     </style>
 
     <!-- DIVIDERS -->

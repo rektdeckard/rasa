@@ -16,7 +16,6 @@
         <item>@string/sweetener_raw_sugar</item>
         <item>@string/sweetener_agave</item>
         <item>@string/sweetener_honey</item>
-        <item>@string/sweetener_other</item>
     </string-array>
 
     <!-- SORT OPTIONS -->
@@ -33,7 +32,7 @@
     </string-array>
     <!-- HISTORY-->
     <string-array name="array_sort_names_history">
-        <item>@string/most_recent</item>
+        <item>@string/completed_on</item>
         <item>@string/brew_name_label</item>
     </string-array>
     <string-array name="array_sort_options_history">
@@ -41,4 +40,5 @@
         <item>@string/sort_name</item>
     </string-array>
 
+    <string name="completed_on">Date completed</string>
 </resources>

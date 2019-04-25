@@ -89,4 +89,7 @@
     <string name="stat_most_brewed">Most brewed recipe</string>
     <string name="stat_favorite_ingredient">Favorite ingredient</string>
     <string name="stat_total_brews">Total brews completed</string>
+
+    <!--<string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>-->
+
 </resources>
