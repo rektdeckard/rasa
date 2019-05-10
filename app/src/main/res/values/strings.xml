@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Brew Keeper</string>
+    <string name="app_name">Rasa</string>
     <string name="title_activity_landing">LandingActivity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>

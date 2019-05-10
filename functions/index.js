@@ -3,7 +3,7 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 admin.initializeApp();
 
-const token = 'dxY6kmgREi4:APA91bHWXbFh5yxa4tqH99sSTgHCvxISQOX3IgTSUIpzVRv_OORJl6pN17KDtWov4Sm0AL-R7qDS3KOfm-ka-ubw6yMLssMuJX-rsfVdApQwFGF61HzBQponWP1j0Tr_nZjQqF2qf9Jo'
+const token = 'dMmBFPcc6oY:APA91bGIFCJ4xHqC5NyS3UKXNAv4lQqXx9x0osAaNFEfZF6RFaGft2v_Jc3yZm1qYVQHaQ16MRSE3pPmEKXWgS8EVDmJ0KZSELXsVX-CTqOhzvcwv7MV_sBfEGJrYO5DsrxHwDaqtlpF'
 
 exports.registerNotification = functions.firestore
     .document('brews/{brew}')
