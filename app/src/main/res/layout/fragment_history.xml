@@ -46,7 +46,7 @@
             android:padding="0dp"
             android:scaleX=".6"
             android:scaleY=".6"
-            android:rotation="180"
+            android:rotation="0"
             style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
             app:icon="@drawable/ic_arrow_up"
             app:iconTint="@color/colorAccent"

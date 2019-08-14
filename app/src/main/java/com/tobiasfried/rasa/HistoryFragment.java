@@ -38,7 +38,7 @@ public class HistoryFragment extends Fragment {
     private FirestoreRecyclerAdapter<Brew, HistoryViewHolder> mAdapter;
     private FirestoreRecyclerOptions<Brew> options;
     private String sortOptions;
-    private Query.Direction sortOrder = Query.Direction.ASCENDING;
+    private Query.Direction sortOrder = Query.Direction.DESCENDING;
     private Unbinder unbinder;
 
     private View rootView;

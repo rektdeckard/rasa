@@ -262,10 +262,11 @@ public class DetailActivity extends AppCompatActivity {
         flavorChipGroup.removeAllViews();
         // Populate ChipGroup from ingredients list
         for (final Ingredient i : currentBrew.getRecipe().getIngredients()) {
-            final Chip chip = new Chip(this, null, R.style.ChipStyle);
+            Chip chip = new Chip(this, null, R.style.ChipStyle);
             chip.setText(i.getName().toLowerCase());
             chip.setTextColor(getResources().getColor(R.color.colorAccent, getTheme()));
             chip.setTypeface(ResourcesCompat.getFont(this, R.font.google_sans_medium));
+//            chip.setChipBackgroundColorResource(R.color.color_states_chips);
             chip.setChipBackgroundColorResource(android.R.color.transparent);
             chip.setChipStrokeColorResource(R.color.colorAccent);
             chip.setChipStrokeWidth(4.0f);

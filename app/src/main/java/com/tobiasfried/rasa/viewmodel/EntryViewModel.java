@@ -43,37 +43,28 @@ public class EntryViewModel extends ViewModel {
             mBrew.setValue(new Brew());
         } else {
             mDocRef = database.collection(c).document(brewId);
-            mDocRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful() && task.getResult() != null) {
-                        mBrew.setValue(task.getResult().toObject(Brew.class));
-                    }
+            mDocRef.get().addOnCompleteListener(task -> {
+                if (task.isSuccessful() && task.getResult() != null) {
+                    mBrew.setValue(task.getResult().toObject(Brew.class));
                 }
             });
         }
         // Get all Teas
         database.collection(Ingredient.COLLECTION)
                 .whereEqualTo("type", IngredientType.TEA)
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                if (queryDocumentSnapshots != null && e == null) {
-                    mTeas.setValue(queryDocumentSnapshots.toObjects(Ingredient.class));
-                }
-            }
-        });
+                .addSnapshotListener((queryDocumentSnapshots, e) -> {
+                    if (queryDocumentSnapshots != null && e == null) {
+                        mTeas.setValue(queryDocumentSnapshots.toObjects(Ingredient.class));
+                    }
+                });
         // Get all Ingredients
         database.collection(Ingredient.COLLECTION)
                 .whereEqualTo("type", IngredientType.FLAVOR)
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                if (queryDocumentSnapshots != null && e == null) {
-                   mFlavors.setValue(queryDocumentSnapshots.toObjects(Ingredient.class));
-                }
-            }
-        });
+                .addSnapshotListener((queryDocumentSnapshots, e) -> {
+                    if (queryDocumentSnapshots != null && e == null) {
+                       mFlavors.setValue(queryDocumentSnapshots.toObjects(Ingredient.class));
+                    }
+                });
     }
 
     //

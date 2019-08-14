@@ -1,11 +1,14 @@
 package com.tobiasfried.rasa;
 
+import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -29,6 +33,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
 import com.tobiasfried.rasa.model.Brew;
+import com.tobiasfried.rasa.viewmodel.MainViewModel;
+import com.tobiasfried.rasa.viewmodel.MainViewModelFactory;
 
 import java.util.Objects;
 
@@ -38,6 +44,7 @@ public class BrewsFragment extends Fragment {
 
     private static final String LOG_TAG = BrewsFragment.class.getSimpleName();
 
+    private MainViewModel viewModel;
     private FirebaseFirestore db;
     private FirestoreRecyclerAdapter<Brew, BrewViewHolder> mAdapter;
     private FirestoreRecyclerOptions<Brew> options;
@@ -68,6 +75,8 @@ public class BrewsFragment extends Fragment {
 
         // Get Database instance
         db = FirebaseFirestore.getInstance();
+        MainViewModelFactory factory = new MainViewModelFactory(db);
+        viewModel = ViewModelProviders.of(this, factory).get(MainViewModel.class);
     }
 
     @Override
@@ -232,6 +241,7 @@ public class BrewsFragment extends Fragment {
                     // Move brew to recently deleted and delete it from database
                     String brewId = mAdapter.getSnapshots().getSnapshot(viewHolder.getAdapterPosition()).getId();
                     deleted = mAdapter.getSnapshots().getSnapshot(viewHolder.getAdapterPosition()).toObject(Brew.class);
+                    // TODO delete view MainViewModel
                     db.collection(Brew.CURRENT).document(brewId).delete();
 
                     // Show Snackbar with undo action
