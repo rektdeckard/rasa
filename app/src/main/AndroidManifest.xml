@@ -29,11 +29,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.tobiasfried.rasa.EntryActivity"
+        <activity android:name="com.tobiasfried.rasa.entry.EntryActivity"
             android:label=""
             android:theme="@style/AppTheme.Color"/>
 
-        <activity android:name="com.tobiasfried.rasa.EntryExtendedActivity"
+        <activity android:name="com.tobiasfried.rasa.entry.EntryExtendedActivity"
             android:label=""
             android:theme="@style/AppTheme.Color"/>
 
